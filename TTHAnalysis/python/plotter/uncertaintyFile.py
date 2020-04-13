@@ -70,6 +70,11 @@ class Uncertainty:
             self.normUnc[1] = 1.0/self.normUnc[0]
         elif self.unc_type=="gmN":
             pass
+        elif self.unc_type=="altFileSym":
+            self.fakerate[0] = self.extra['suffix']
+            self.fakerate[1] = None
+            self.trivialFunc[1] = 'symmetrize_up_to_dn'
+
         elif self.unc_type=='none':
             pass
         else: raise RuntimeError, 'Uncertainty type "%s" not recognised' % self.unc_type
@@ -161,8 +166,11 @@ class Uncertainty:
         return self._year
     def getFR(self,sign):
         FR = self.fakerate[0 if sign=='up' else 1]
-        if FR: FR.loadFiles()
-        return FR
+        if type(FR) == str: 
+            return FR
+        else:
+            if FR: FR.loadFiles()
+            return FR
     def getFRToRemove(self):
         return self.removeFR
     def __str__(self):

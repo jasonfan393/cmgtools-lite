@@ -15,10 +15,10 @@ if __name__ == '__main__':
     fileIN = inputFile(filename)
     
     # classic temperature histogra
-    # xsecPlot = smsPlotXSEC(modelname, fileIN.HISTOGRAM, fileIN.OBSERVED, fileIN.EXPECTED, fileIN.ENERGY, fileIN.LUMI, 
-    #                        fileIN.PRELIMINARY, "XSEC")
-    # xsecPlot.Draw()
-    # xsecPlot.Save("%sXSEC" %outputname)
+    xsecPlot = smsPlotXSEC(modelname, fileIN.HISTOGRAM, fileIN.OBSERVED, fileIN.EXPECTED, fileIN.ENERGY, fileIN.LUMI, 
+                           fileIN.PRELIMINARY, "XSEC")
+    xsecPlot.Draw()
+    xsecPlot.Save("%sXSEC" %outputname)
 
     # only lines
     contPlot = smsPlotCONT(modelname, fileIN.HISTOGRAM, fileIN.OBSERVED, fileIN.EXPECTED, fileIN.ENERGY, fileIN.LUMI, 

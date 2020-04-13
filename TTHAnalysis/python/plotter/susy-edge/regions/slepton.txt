@@ -1,11 +1,11 @@
 +include_cuts : susy-edge/regions/dilep.txt
 zveto : lepsMll_Edge<65 || lepsMll_Edge>120
 pt50 : Lep1_pt_Edge > 50
-met : MET_pt_Edge > 100
-mt2 : mt2_Edge>100
 isotrackveto : nLepSelLoose_Edge<3 && nPFHad10==0 && nPFLep5<3
 SF: abs(Lep1_pdgId_Edge)==abs(Lep2_pdgId_Edge)
+mt2 : mt2_Edge>100
+met : MET_pt_Edge > 100
 
 sr_withjet : nJet25_Edge>0 && Lep2_pt_Edge/JetSel_Edge_pt[0] > 1.2 && abs(deltaPhi(JetSel_Edge_phi[0], MET_phi_Edge)) > 0.4; Disable=True
 sr_wojets  : nJet25_Edge == 0; Disable=True
-
+sideband : nJet25_Edge>0 && nBJetMedium25_Edge>0  ; Disable=True

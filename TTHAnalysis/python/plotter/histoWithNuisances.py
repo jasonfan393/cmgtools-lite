@@ -321,6 +321,13 @@ class HistoWithNuisances:
         else:
             hvars={}
             # compute up envelope and down envelope for all variations
+            # keep stat uncertainty
+            hvarup = _cloneNoDir(self.nominal)
+            hvardn = _cloneNoDir(self.nominal)
+            for b in xrange(1,self.GetNbinsX()+1):
+                hvarup.SetBinContent(b, self.nominal.GetBinError(b))
+                hvardn.SetBinContent(b, self.nominal.GetBinError(b))
+            #hvars['sergio_stat_unc'] = [ hvarup, hvardn]
             for var in toadd:
                 hvarup = _cloneNoDir(hempty)
                 hvardn = _cloneNoDir(hempty)

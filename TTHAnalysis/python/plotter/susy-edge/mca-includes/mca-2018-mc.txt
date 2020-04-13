@@ -1,6 +1,6 @@
-DY : DYJetsToLL_M10to50_2018 : xsec; FillColor=ROOT.kYellow-9	
-DY : DYJetsToLL_M50_amc_2018+DYJetsToLL_M50_amc_ext_2018_part1+DYJetsToLL_M50_amc_ext_2018_part2+DYJetsToLL_M50_amc_ext_2018_part3+DYJetsToLL_M50_amc_ext_2018_part4+DYJetsToLL_M50_amc_ext_2018_part5+DYJetsToLL_M50_amc_ext_2018_part6+DYJetsToLL_M50_amc_ext_2018_part7+DYJetsToLL_M50_amc_ext_2018_part8 : xsec; FillColor=ROOT.kYellow-9
-TT : TTTo2L2Nu_2018_part1+TTTo2L2Nu_2018_part2+TTTo2L2Nu_2018_part3+TTTo2L2Nu_2018_part4+TTTo2L2Nu_2018_part5+TTTo2L2Nu_2018_part6 : xsec;  FillColor=ROOT.kRed-9
+DY : DYJetsToLL_M10to50_2018+DYJetsToLL_M10to50_ext_2018 : 22635.09; FillColor=ROOT.kYellow-9	
+DY : DYJetsToLL_M50_amc_2018+DYJetsToLL_M50_amc_ext_2018_part1+DYJetsToLL_M50_amc_ext_2018_part2 : xsec; FillColor=ROOT.kYellow-9
+TT : TTTo2L2Nu_2018 : xsec;  FillColor=ROOT.kRed-9
 TT : TTToSemiLeptonic_2018 : xsec;  FillColor=ROOT.kRed-9
 TTV : TTWToLNu_2018 : xsec; FillColor=ROOT.kBlue-7
 TTV : TTZToLLNuNu_2018 : xsec; FillColor=ROOT.kBlue-7
@@ -14,7 +14,6 @@ Rare : WJetsToLNu_2018 : xsec ; FillColor=ROOT.kGreen-5
 Rare : WWW_2018 : xsec ; FillColor=ROOT.kGreen-5
 Rare : WWZ_2018 : xsec ; FillColor=ROOT.kGreen-5
 Rare : WZZ_2018 : xsec ; FillColor=ROOT.kGreen-5
-Rare : ZZZ_2018 : xsec ; FillColor=ROOT.kGreen-5
 Rare : TTWW_2018  : xsec ; FillColor=ROOT.kGreen-5
 Rare : TTWZ_2018 : xsec ; FillColor=ROOT.kGreen-5
 ZZ : ZZTo2Q2Nu_2018: xsec   ; FillColor=ROOT.kViolet-3
@@ -24,5 +23,5 @@ ZZ : GluGluToContinToZZTo2mu2nu_2018 : xsec   ; FillColor=ROOT.kViolet-3
 ZZ : GluGluToContinToZZTo4e_2018 : xsec   ; FillColor=ROOT.kViolet-3
 ZZ : GluGluToContinToZZTo4mu_2018 : xsec   ; FillColor=ROOT.kViolet-3
 ZZ : GluGluToContinToZZTo4tau_2018 : xsec   ; FillColor=ROOT.kViolet-3
-ZZ : ZZTo2L2Nu_2018 : xsec*kfactor_pt_2l   ; FillColor=ROOT.kViolet-3
-
+ZZ : VVTo2L2Nu_M1toInf_2018 : xsec : kfactor_pt_2l  ; FillColor=ROOT.kViolet-3
+ZZ_sub : VVTo2L2Nu_M1toInf_2018 : xsec : kfactor_pt_2l  ; AddWeight="-1", FakeRate="susy-edge/fakeRate-flavsym-mc.txt", FillColor=ROOT.kViolet-3

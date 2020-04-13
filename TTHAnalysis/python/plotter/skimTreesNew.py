@@ -4,6 +4,7 @@ from CMGTools.TTHAnalysis.plotter.mcAnalysis import MCAnalysis, CutsFile, addMCA
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 from collections import defaultdict
 import os
+import time
 
 def _runIt(args):
         (mysource,myoutpath,mycut,options) = args
@@ -77,12 +78,16 @@ if __name__ == "__main__":
         if len(cuts) > 1: mycut = "(" + (")||(".join(cuts)) + ")"
         else:             mycut = cuts.pop()
         src = fname + fname2friends[fname]
-        tasks.append((src,outdir,mycut,options))
+        os.system('mkdir -p %s'%(outdir+'/'+fname.split('/')[-3]+'/nanoAODskim'))
+        tasks.append((src,outdir+'/'+ fname.split('/')[-3]+'/nanoAODskim',mycut,options))
     if options.jobs == 0: 
         map(_runIt, tasks)
     else:
         from multiprocessing import Pool
-        Pool(options.jobs).map(_runIt, tasks)
+        ret_temp = Pool(options.jobs).map_async(_runIt, tasks)
+        while not ret_temp.ready():
+                print "Jobs left: %d out of %d"%(ret_temp._number_left, len(tasks))
+                time.sleep(10)
     if options.skimFriends and not (options.pretend or options.justcount):
         skimFTrees = os.path.expandvars("$CMSSW_BASE/src/CMGTools/TTHAnalysis/python/plotter/skimFTreesNew.py")
         if not os.path.isfile(skimFTrees): raise RuntimeError("missing skimFTreesNew")

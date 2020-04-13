@@ -19,12 +19,14 @@ parser.add_option("--categorize", dest="categ", type="string", nargs=3, default=
 parser.add_option("--regularize", dest="regularize", action="store_true", default=False, help="Regularize templates")
 parser.add_option("--scanregex", dest="scanregex", type="string", default="ct_(?P<kt>.*)_cv_(?P<kv>.*)", help="Regex expression to parse parameters of the scan")
 parser.add_option("--params", dest="params", type="string", default="kt,kv", help="List of parameters in the regex, separated by commas")
+parser.add_option("--namedict", dest="namedict", type="string", default=None, help="File with dictionary for name of processes in cards")
 (options, args) = parser.parse_args()
 options.weight = True
 options.final  = True
 
 if "/functions_cc.so" not in ROOT.gSystem.GetLibraries(): 
     ROOT.gROOT.ProcessLine(".L %s/src/CMGTools/TTHAnalysis/python/plotter/functions.cc+" % os.environ['CMSSW_BASE']);
+    
 
 mca  = MCAnalysis(args[0],options)
 cuts = CutsFile(args[1],options)
@@ -33,6 +35,13 @@ binname = os.path.basename(args[1]).replace(".txt","") if options.binname == 'de
 if binname[0] in "1234567890": raise RuntimeError("Bins should start with a letter.")
 outdir  = options.outdir+"/" if options.outdir else ""
 if not os.path.exists(outdir): os.mkdir(outdir)
+
+namedict = {} 
+if options.namedict: 
+    namedict=eval(open(options.namedict).read())
+for p in mca.listSignals()+mca.listBackgrounds():
+    if p not in namedict:
+        namedict[p]=p
 
 scanpoints = []
 pattern = re.compile( options.scanregex ) 
@@ -103,7 +112,6 @@ for scanpoint in scanpoints:
         if scanpoint != [match.group(p) for p in options.params.split(',')]: continue
         listSignals.append(psig)
     
-    
     for binname, report in allreports.iteritems():
         if options.bbb:
             if options.autoMCStats: raise RuntimeError("Can't use --bbb together with --amc/--autoMCStats")
@@ -128,7 +136,8 @@ for scanpoint in scanpoints:
             procs.append(s); iproc[s] = i-len(listSignals)+1
         for i,b in enumerate(mca.listBackgrounds()):
             if b not in allyields: continue
-            if allyields[b] == 0: continue
+            if allyields[b] == 0: 
+                continue
             procs.append(b); iproc[b] = i+1
             #for p in procs: print "%-10s %10.4f" % (p, allyields[p])
             
@@ -165,10 +174,11 @@ for scanpoint in scanpoints:
                             elif k < 0.2 or k > 5:
                                 print "Warning: big shift in template for %s %s %s %s: kappa = %g " % (binname, p, name, d, k)
                         effshape[p] = variants
-                    
             if name.endswith("gmN"): 
-                print report[gammaP].GetBinContent(1), effshape[gammaP][1].GetBinContent(1)
-                systs[name + '_' + binname] = ("gmN %d"%effshape[gammaP][1].GetBinContent(1), dict((p,"%4.3f"%(float(report[gammaP].GetBinContent(1))/effshape[gammaP][1].GetBinContent(1)) if p==gammaP else "-") for p in procs), effshape)
+                if gammaP not in effshape:
+                    systs[name + '_' + binname] = ("gmN 0", dict((p,"1.9" if p==gammaP else "-") for p in procs), effshape)
+                else: 
+                    systs[name + '_' + binname] = ("gmN %d"%effshape[gammaP][1].GetBinContent(1), dict((p,"%4.3f"%(float(report[gammaP].GetBinContent(1))/effshape[gammaP][1].GetBinContent(1)) if p==gammaP else "-") for p in procs), effshape)
             elif isShape:
                 if options.regularize: 
                     for p in procs:
@@ -207,7 +217,7 @@ for scanpoint in scanpoints:
         npatt = "%%-%ds " % max([len('process')]+map(len,nuisances))
         datacard.write('##----------------------------------\n')
         datacard.write((npatt % 'bin    ')+(" "*6)+(" ".join([kpatt % binname  for p in procs]))+"\n")
-        datacard.write((npatt % 'process')+(" "*6)+(" ".join([kpatt % p        for p in procs]))+"\n")
+        datacard.write((npatt % 'process')+(" "*6)+(" ".join([kpatt % namedict[p] for p in procs]))+"\n")
         datacard.write((npatt % 'process')+(" "*6)+(" ".join([kpatt % iproc[p] for p in procs]))+"\n")
         datacard.write((npatt % 'rate   ')+(" "*6)+(" ".join([fpatt % allyields[p] for p in procs]))+"\n")
         datacard.write('##----------------------------------\n')
@@ -216,14 +226,17 @@ for scanpoint in scanpoints:
             (kind,effmap,effshape) = systs[name]
             datacard.write(('%s %5s' % (npatt % name,kind)) + " ".join([kpatt % effmap[p]  for p in procs]) +"\n")
             for p,(hup,hdn) in effshape.iteritems():
-                towrite.append(hup.Clone("x_%s_%sUp"   % (p,name)))
-                towrite.append(hdn.Clone("x_%s_%sDown" % (p,name)))
+                towrite.append(hup.Clone("x_%s_%sUp"   % (namedict[p],name)))
+                towrite.append(hdn.Clone("x_%s_%sDown" % (namedict[p],name)))
         if options.autoMCStats: 
             datacard.write('* autoMCStats %d\n' % options.autoMCStatsValue)
     
         workspace = ROOT.TFile.Open(outdir+binname+'_'+pointname+".input.root", "RECREATE")
         for h in towrite:
-            workspace.WriteTObject(h,h.GetName())
+            name = h.GetName()
+            for p in namedict:
+                name = name.replace(p, namedict[p])
+            workspace.WriteTObject(h,name)
         workspace.Close()
     
         print "Wrote to {0}.card.txt and {0}.input.root ".format(outdir+binname+'_'+pointname)

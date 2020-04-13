@@ -1,4 +1,4 @@
-+include_cuts : susy-edge/dilep.txt
++include_cuts : susy-edge/regions/dilep.txt
 2j : nJetSel_Edge == 2
 MET_100_150 : MET_pt_Edge > 100 && MET_pt_Edge < 150
 mll_70_110 : lepsMll_Edge > 110. || lepsMll_Edge < 70

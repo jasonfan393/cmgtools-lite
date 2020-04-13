@@ -6,9 +6,9 @@
 #####################################################
 #FORMAT: input root histo-name line-color area-color  
 #####################################################
-HISTOGRAM config/SUS20001/slepton.root xsec
-EXPECTED config/SUS20001/slepton.root expected_nom expected_nom expected_nom kRed kOrange
-OBSERVED config/SUS20001/slepton.root expected_nom expected_nom expected_nom kRed kOrange
+HISTOGRAM config/SUS20001/slepton_results.root ul_histo
+EXPECTED config/SUS20001/slepton_results.root ex_exp_smoothed_graph ex_exp_p1s_smoothed_graph ex_exp_m1s_smoothed_graph kRed kOrange
+OBSERVED config/SUS20001/slepton_results.root ex_obs_smoothed_graph ex_obs_p1s_smoothed_graph ex_obs_m1s_smoothed_graph kBlack kBlack
 # Preliminary Simulation or leave empty
 PRELIMINARY Preliminary
 # Lumi in fb 

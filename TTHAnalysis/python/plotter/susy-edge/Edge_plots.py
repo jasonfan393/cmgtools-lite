@@ -3,8 +3,8 @@ import sys
 import re
 import os
 
-dowhat="plots"
-#dowhat="yields"
+#dowhat="plots"
+dowhat="yields"
 
 
 ODIR=sys.argv[1]
@@ -20,7 +20,7 @@ lumis = {
 
 submit = '{command}' 
 nCores = 32
-TREES = " -P /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_171119_merge/ --Fs {P}/1_trigger --FMCs {P}/2_btags --FMCs {P}/4_kfactor --Fs {P}/5_massvars  --obj Events --genWeightName genWeight_Edge " 
+TREES = " -P /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_190120/ --Fs {P}/1_trigger --FMCs {P}/2_btags --FMCs {P}/4_kfactor --Fs {P}/5_massvars  --obj Events --genWeightName genWeight_Edge " 
 
 command=""
 
@@ -56,6 +56,13 @@ if TODO.startswith('tchiwz_boosted'):
     command += " susy-edge/regions/tchiwz_boosted.txt "
     if dowhat == "plots": 
         command += " susy-edge/plots.txt --showIndivSigs --noStackSig --sP met_wzboosted "
+
+if TODO.startswith('tchiwz_resolved'):
+    command += " susy-edge/mca-{year}-dd-data.txt ".format(year = YEAR if YEAR != "all" else "{year}")
+    command += " susy-edge/regions/tchiwz_resolved.txt "
+    command += " --ap template_SRWZ_resolved"
+    if dowhat == "plots": 
+        command += " susy-edge/plots.txt --showIndivSigs --noStackSig --sP met_wzresolved "
 
 if TODO.startswith('strong_onz'):
     command += " susy-edge/mca-{year}-dd-data.txt ".format(year = YEAR if YEAR != "all" else "{year}")

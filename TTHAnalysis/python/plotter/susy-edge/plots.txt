@@ -5,6 +5,7 @@ era: hashBasedRunPeriod2017($DATA{1}$MC{0},run_Edge,lumi_Edge,evt_Edge,year) : [
 met_wzboosted : MET_pt_Edge : [50,100,200,300,400,500,600]; XTitle="MET (GeV)", Logy
 met_wzresolved : MET_pt_Edge : [50,100,150,250,350,400]; XTitle="MET (GeV)", Logy
 met_slepton : MET_pt_Edge : [100,150,225,300,350]; XTitle="MET (GeV)", Logy
+#met_slepton : MET_pt_Edge : [100,110,120,130,140,150]; XTitle="MET (GeV)", Logy
 met_strong_SRA_btag  : MET_pt_Edge : [50,100,150,230,300,350]; XTitle="MET (GeV)", Logy
 met_strong_SRA_bveto : MET_pt_Edge : [50,100,150,230,300,350]; XTitle="MET (GeV)", Logy
 met_strong_SRB_btag  : MET_pt_Edge : [50,100,150,230,300,350]; XTitle="MET (GeV)", Logy
@@ -16,7 +17,8 @@ met_strong_SRC_bveto : MET_pt_Edge : [50,100,150,250,300]; XTitle="MET (GeV)", L
 njet25 : nJet25_Edge : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5]; XTitle="N jet (25 GeV)"
 njet35 : nJet35_Edge : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5]; XTitle="N jet (35 GeV)"
 met_cr4l : met_4l(  MET_pt_Edge, MET_phi_Edge, ptZ1_loose_Edge, phiZ1_loose_Edge) : 40,0,200; XTitle="Emulated MET (GeV)", Logy
-mll : lepsMll_Edge : 40,20,200; XTitle="m_{ll} (GeV)"
+#mll : lepsMll_Edge : 40,20,400; XTitle="m_{ll} (GeV)"
+mll : lepsMll_Edge : [0,40,70,110,150,200,250,300,400,500]; XTitle="m_{ll} (GeV)"
 mt2 : mt2_Edge : 40,80,200; XTitle="m_{T2} (GeV)"
 mt2_from0 : mt2_Edge : 40,0,200; XTitle="m_{T2} (GeV)"
 dphi_jet1_met :  deltaPhi(JetSel_Edge_phi[0], MET_phi_Edge) : 40,-3.14,3.14; XTitle="#Delta#phi(MET\, leading jet)"
@@ -25,4 +27,9 @@ mz1 : mZ1_tight_4l : 40,75,110; XTitle="m_{ll} of the best Z candidate (GeV)"
 mz2 : mZ2_tight_4l : 40,75,110; XTitle="m_{ll} of the other Z candidate (GeV)"
 mz1_3l : mZ1_tight_3l : 40,75,110; XTitle="m_{ll} of the best Z candidate (GeV)"
 year : year-2016 : [-0.5,0.5,1.5,2.5]; XTitle="Year", xBinLabels="2016\,2017\,2018"
-ht35: htJet35j_Edge : 100,0,1000; Xtitle="H_{T} (GeV)"
+ht35: htJet35j_Edge : 15,0,500; Xtitle="H_{T} (GeV)"
+
+dphi_lep1_lep2 :  abs(deltaPhi(Lep1_phi_Edge, Lep2_phi_Edge)) : 10,0,3.14; XTitle="#Delta#phi(l\, l)"
+mlb            :  sum_mlb_Edge  : 12,0,600; XTitle="#Sum mlb"
+pt_2           :  lepsZPt_Edge : 12,0,300; XTitle="Pt (l1\, l2)"
+leppt_over_jetpt  : Lep2_pt_Edge/JetSel_Edge_pt[0] : 30,0,3; XTitle="lep_pt / jet_pt"

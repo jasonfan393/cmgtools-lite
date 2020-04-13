@@ -1,9 +1,9 @@
-DY : DYJetsToLL_M10to50_2017 : xsec;  FillColor=ROOT.kYellow-9
-DY : DYJetsToLL_M50_2017_part1+DYJetsToLL_M50_2017_part2+DYJetsToLL_M50_ext_2017_part1+DYJetsToLL_M50_ext_2017_part2+DYJetsToLL_M50_ext_2017_part3+DYJetsToLL_M50_ext_2017_part4+DYJetsToLL_M50_ext_2017_part5+DYJetsToLL_M50_ext_2017_part6+DYJetsToLL_M50_ext_2017_part7+DYJetsToLL_M50_ext_2017_part8+DYJetsToLL_M50_ext_2017_part9 : xsec;  FillColor=ROOT.kYellow-9
+#DY : DYJetsToLL_M10to50_2017+DYJetsToLL_M10to50_ext_2017 : 22635.09;  FillColor=ROOT.kYellow-9
+DY : DYJetsToLL_M50_2017+DYJetsToLL_M50_ext_2017_part1+DYJetsToLL_M50_ext_2017_part2 : xsec;  FillColor=ROOT.kYellow-9
 TT : TTTo2L2Nu_2017 : xsec ;  FillColor=ROOT.kRed-9
 TT : TTToSemiLeptonic_2017+TTToSemiLeptonic_PSweights_2017 : xsec ;  FillColor=ROOT.kRed-9
 TTV : TTWToLNu_2017 : xsec ; FillColor=ROOT.kBlue-7
-TTV : TTZToLLNuNu_2017_part1+TTZToLLNuNu_2017_part2 : xsec ; FillColor=ROOT.kBlue-7
+TTV : TTZToLLNuNu_2017 : xsec ; FillColor=ROOT.kBlue-7
 TTV : TTZToLLNuNu_m1to10_2017 : xsec ; FillColor=ROOT.kBlue-7
 SingleTop : TW_2017 : xsec ; FillColor=ROOT.kRed-7
 SingleTop : TbarW_2017 : xsec ; FillColor=ROOT.kRed-7
@@ -17,7 +17,6 @@ Rare : WJetsToLNu_2017  : xsec ; FillColor=ROOT.kGreen-5
 Rare : WWW_2017  : xsec ; FillColor=ROOT.kGreen-5 
 Rare : WWZ_2017  : xsec ; FillColor=ROOT.kGreen-5 
 Rare : WZZ_2017  : xsec ; FillColor=ROOT.kGreen-5 
-Rare : ZZZ_2017  : xsec ; FillColor=ROOT.kGreen-5
 ZZ : ZZTo4L_2017+ZZTo4L_ext1_2017 : xsec*kfactor_pt_4l ; FillColor=ROOT.kViolet-3
 ZZ : GluGluToContinToZZTo2e2mu_2017+GluGluToContinToZZTo2e2mu_ext1_2017 : xsec ; FillColor=ROOT.kViolet-3
 ZZ : GluGluToContinToZZTo2e2nu_2017+GluGluToContinToZZTo2e2nu_ext1_2017 : xsec ; FillColor=ROOT.kViolet-3
@@ -27,4 +26,5 @@ ZZ : GluGluToContinToZZTo2mu2tau_2017+GluGluToContinToZZTo2mu2tau_ext1_2017 : xs
 ZZ : GluGluToContinToZZTo4e_2017+GluGluToContinToZZTo4e_ext1_2017 : xsec ; FillColor=ROOT.kViolet-3
 ZZ : GluGluToContinToZZTo4mu_2017+GluGluToContinToZZTo4mu_ext1_2017 : xsec ; FillColor=ROOT.kViolet-3
 ZZ : GluGluToContinToZZTo4tau_2017 : xsec ; FillColor=ROOT.kViolet-3
-ZZ : ZZTo2L2Nu_2017 : xsec*kfactor_pt_2l ; FillColor=ROOT.kViolet-3
+ZZ : VVTo2L2Nu_M1toInf_2017 : xsec : kfactor_pt_2l  ; FillColor=ROOT.kViolet-3
+ZZ_sub : VVTo2L2Nu_M1toInf_2017 : xsec : kfactor_pt_2l  ; AddWeight="-1", FakeRate="susy-edge/fakeRate-flavsym-mc.txt", FillColor=ROOT.kViolet-3

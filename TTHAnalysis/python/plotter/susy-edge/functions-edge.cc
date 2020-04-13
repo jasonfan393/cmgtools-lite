@@ -220,8 +220,9 @@ int hashBasedRunPeriod2017(int isData, int run, int lumi, int event, int year){
 
 bool init=false;
 std::map<std::string,float> rmue_map2016,rmue_map2017,rmue_map2018;
+std::map<std::string,float> rmue_map2016_mc,rmue_map2017_mc,rmue_map2018_mc;
 
-float rmuecorrection(float pt1,float pt2,float eta1,float eta2,float pdgId1,float pdgId2, int year, int var=0)
+float rmuecorrection(float pt1,float pt2,float eta1,float eta2,float pdgId1,float pdgId2, int year, int var=0, int isMC=0)
 {
 
   // var code 
@@ -242,10 +243,15 @@ float rmuecorrection(float pt1,float pt2,float eta1,float eta2,float pdgId1,floa
   if (!init){
     init=true;
     boost::property_tree::ptree jsonTree2016, jsonTree2017, jsonTree2018;
+    boost::property_tree::ptree jsonTree2016_mc, jsonTree2017_mc, jsonTree2018_mc;
 
     boost::property_tree::read_json("../../data/rmue/rMuE_correctionParameters_ZPeakControl_Run2016_36fb.json",jsonTree2016);
     boost::property_tree::read_json("../../data/rmue/rMuE_correctionParameters_ZPeakControl_Run2017_42fb.json",jsonTree2017);
     boost::property_tree::read_json("../../data/rmue/rMuE_correctionParameters_ZPeakControl_Run2018_60fb.json",jsonTree2018);
+
+    boost::property_tree::read_json("../../data/rmue/rMuE_correctionParameters_ZPeakControl_Run2016_36fb_MC.json",jsonTree2016_mc);
+    boost::property_tree::read_json("../../data/rmue/rMuE_correctionParameters_ZPeakControl_Run2017_42fb_MC.json",jsonTree2017_mc);
+    boost::property_tree::read_json("../../data/rmue/rMuE_correctionParameters_ZPeakControl_Run2018_60fb_MC.json",jsonTree2018_mc);
 
     for (boost::property_tree::ptree::const_iterator it = jsonTree2016.begin(); it!=jsonTree2016.end(); ++it) {
       std::string field = boost::lexical_cast<std::string>( it->first);
@@ -262,9 +268,26 @@ float rmuecorrection(float pt1,float pt2,float eta1,float eta2,float pdgId1,floa
       double value = boost::lexical_cast<double>( it->second.data() );
       rmue_map2018[field] = value;
     }
-  }
 
-  std::map<std::string,float> rmue_map = (year == 2016) ? rmue_map2016 : (( year == 2017 ) ? rmue_map2017 : rmue_map2018);
+    for (boost::property_tree::ptree::const_iterator it = jsonTree2016_mc.begin(); it!=jsonTree2016_mc.end(); ++it) {
+      std::string field = boost::lexical_cast<std::string>( it->first);
+      double value = boost::lexical_cast<double>( it->second.data() );
+      rmue_map2016_mc[field] = value;
+    }
+    for (boost::property_tree::ptree::const_iterator it = jsonTree2017_mc.begin(); it!=jsonTree2017_mc.end(); ++it) {
+      std::string field = boost::lexical_cast<std::string>( it->first);
+      double value = boost::lexical_cast<double>( it->second.data() );
+      rmue_map2017_mc[field] = value;
+    }
+    for (boost::property_tree::ptree::const_iterator it = jsonTree2018_mc.begin(); it!=jsonTree2018_mc.end(); ++it) {
+      std::string field = boost::lexical_cast<std::string>( it->first);
+      double value = boost::lexical_cast<double>( it->second.data() );
+      rmue_map2018_mc[field] = value;
+    }
+
+  }
+  
+  std::map<std::string,float> rmue_map = (isMC==0) ?  ((year == 2016) ? rmue_map2016 : (( year == 2017 ) ? rmue_map2017 : rmue_map2018)) : ((year == 2016) ? rmue_map2016_mc : (( year == 2017 ) ? rmue_map2017_mc : rmue_map2018_mc))  ;
 
   float rmue1 = rmue_map["norm"]*(rmue_map["ptOffset"] + rmue_map["ptFalling"]/pt1)*(rmue_map["etaParabolaBase"] + (eta1<-1.6)*rmue_map["etaParabolaMinus"]*pow(eta1+1.6, 2)+(eta1>1.6)*rmue_map["etaParabolaPlus"]*pow(eta1-1.6,2));
   float rmue2 = rmue_map["norm"]*(rmue_map["ptOffset"] + rmue_map["ptFalling"]/pt2)*(rmue_map["etaParabolaBase"] + (eta2<-1.6)*rmue_map["etaParabolaMinus"]*pow(eta2+1.6, 2)+(eta2>1.6)*rmue_map["etaParabolaPlus"]*pow(eta2-1.6,2));
@@ -301,7 +324,7 @@ float rmuecorrection(float pt1,float pt2,float eta1,float eta2,float pdgId1,floa
   else if (year == 2017)
     rt = 1.037;
   else
-    rt = 1.066;
+    rt = 1.029;
   
   
   if (abs(pdgId1) == 11){

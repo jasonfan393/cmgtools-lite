@@ -1,6 +1,7 @@
 ### Alias definitions. Careful to avoid trailing '.*' to avoid matching _promptsub
 $alias : MCall : TTZ|WZ|VVV|ZZ|DY|TSlepslep_.*
 $alias : MCfastsim : TSlepslep_.*
+$alias : $DY_slep : DY_onZ_nojet|DY_offZ_nojet|DY_onZ_withjet|DY_offZ_withjet|DY_onZ_cr|DY_offZ_cr
 
 flav_sym : data_flavsym : .* : gmN
 
@@ -32,4 +33,13 @@ lumi_corr		: $MCall : .* : normSymm : 1.013; year="2017"
 lumi_corr		: $MCall : .* : normSymm : 1.021; year="2018"
 
 wz_normalization        : WZ : .* : normSymm : 1.08
-zz_normalization        : ZZ : .* : normSymm : 1.07
+zz_normalization        : ZZ : .* : normSymm : 1.20
+zz_normalization        : ZZ_sub : .* : normSymm : 1.20
+dy_offz : DY_offZ_cr : slepton_.* : altFileSym; suffix='_error'
+dy_offz : DY_offZ_nojet : slepton_.* : altFileSym; suffix='_error'
+dy_offz : DY_offZ_withjet : slepton_.* : altFileSym; suffix='_error'
+dy_offz : DY_onZ_withjet : slepton_.* : altFileSym; suffix='_error'
+dy_offz : DY_offZ_nojet : slepton_.* : altFileSym; suffix='_error'
+
+isr_rw :  $MCfastsim : .* : templateAsymm; AddWeights=['genWeight_isrWeight'\,'1/genWeight_isrWeight']
+wz_met : WZ : .* : templateSymm ; AddWeight='1+MET_pt_Edge*0.00180689'

@@ -1,3 +1,2 @@
-#DY : DYJetsToLL_M10to50_LO_2016 : xsec  ; FillColor=ROOT.kYellow-9
-#DY : DYJetsToLL_M50_2016_part1+DYJetsToLL_M50_2016_part2+DYJetsToLL_M50_2016_part3+DYJetsToLL_M50_2016_part4+DYJetsToLL_M50_2016_part5+DYJetsToLL_M50_2016_part6 : xsec  ; FillColor=ROOT.kYellow-9
+DY : DYJetsToLL_M10to50_2016+DYJetsToLL_M10to50_ext_2016 : 22635.09  ; FillColor=ROOT.kYellow-9
 DY : DYJetsToLL_M50_2016 : xsec  ; FillColor=ROOT.kYellow-9

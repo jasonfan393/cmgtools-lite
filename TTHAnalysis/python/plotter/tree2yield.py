@@ -156,6 +156,7 @@ class TreeToYield:
         self._maintty = None
         self._variations = []
         self._ttyVariations = None
+        self._suffix = ""
         self.isFromFile = isFromFile
         loadMCCorrections(options)            ## make sure this is loaded
         self._mcCorrSourceList = []
@@ -229,7 +230,10 @@ class TreeToYield:
                     if not found: 
                         raise RuntimeError, "Variation %s%s for %s %s would want to remove a FR %s which is not found" % (var.name,direction,self._name,self._cname,var.getFRToRemove())
                     tty2._makeMCCAndScaleFactor()
-                tty2.applyFR(var.getFR(direction))
+                if var.unc_type not in ['altFileSym','altFileASym']:
+                    tty2.applyFR(var.getFR(direction))
+                else: 
+                    tty2.applySuffix( var.getFR(direction) )
                 tty2._maintty = self
                 ttyVariations[(var,direction)] = tty2
         self._ttyVariations = ttyVariations
@@ -248,6 +252,10 @@ class TreeToYield:
         self._mcCorrs = self._mcCorrs[:] + FR.cutMods()  + FR.mods()
         self._weight = True
         if self._options.forceunweight: self._weight = False
+    def applySuffix(self, FR): 
+        if FR==None: return 
+        self._suffix = FR
+
     def setScaleFactor(self,scaleFactor,mcCorrs=True):
         if (not self._options.forceunweight) and scaleFactor != 1: 
             self._weight = True
@@ -498,7 +506,8 @@ class TreeToYield:
                 if var.name not in variations: variations[var.name] = [var,None,None]
                 isign = (1 if sign == "up" else 2)
                 if not var.isTrivial(sign) and not var.isGamma():
-                    tty2._isInit = True; tty2._tree = self.getTree()
+                    if not tty2.isFromFile: 
+                        tty2._isInit = True; tty2._tree = self.getTree()
                     variations[var.name][isign] = tty2.getPlot(plotspec,cut,fsplit=fsplit,closeTreeAfter=False,noUncertainties=True)
                     tty2._isInit = False; tty2._tree = None
             for (var,up,down) in variations.itervalues():
@@ -515,7 +524,7 @@ class TreeToYield:
             if closeTreeAfter and _wasclosed: self._close()
             return ret
         if self.isFromFile:
-            ret = self.getPlotRawFromFile( self._cname, plotspec.bins, plotspec)
+            ret = self.getPlotRawFromFile( self._cname, plotspec.bins, plotspec, plotspec.expr)
         else:
             ret = self.getPlotRaw(plotspec.name, plotspec.expr, plotspec.bins, cut, plotspec, fsplit=fsplit, closeTreeAfter=closeTreeAfter)
         # fold overflow
@@ -561,20 +570,37 @@ class TreeToYield:
             cut = "(%s)*(%s)" % (self._weightStringAll, cut)
         return cut
 
-    def getPlotRawFromFile(self, name, bins, plotspec):
+    def getPlotRawFromFile(self, name, bins, plotspec, expr):
         if not self._isInit: self._init()
-        histo = makeHistFromBinsAndSpec("dummy","1",bins,plotspec)
+        histo = makeHistFromBinsAndSpec("dummy",expr,bins,plotspec)
         tf = ROOT.TFile.Open(self._fname)
-        inhisto = tf.Get(name)
+        inhisto = tf.Get(name+self._suffix)
         # now check that bins make sense and filling them
         if not inhisto:
             raise RuntimeError("No histogram %s:%s has been found"%(self._fname, name))
-        if histo.GetNbinsX() != inhisto.GetNbinsX(): 
-            raise RuntimeError("Trying to add histo with %d bins, while plot should have %d"%(histo.GetNbinsX(),inhisto.GetNbinsX()))
-        for bin in range(1,histo.GetNbinsX()+1):
-            if histo.GetBinLowEdge(bin) != inhisto.GetBinLowEdge(bin): 
-                raise RuntimeError("Bin %d has different low bin edge in input (%f,%f)"%(bin, histo.GetBinLowEdge(bin), inhisto.GetBinLowEdge(bin)))
-            histo.SetBinContent(bin, inhisto.GetBinContent(bin))
+        if histo.ClassName() == "TH1D":
+            if histo.GetNbinsX() != inhisto.GetNbinsX(): 
+                raise RuntimeError("Trying to add histo with %d bins, while plot should have %d"%(histo.GetNbinsX(),inhisto.GetNbinsX()))
+            for bin in range(1,histo.GetNbinsX()+1):
+                if histo.GetBinLowEdge(bin) != inhisto.GetBinLowEdge(bin): 
+                    raise RuntimeError("Bin %d has different low bin edge in input (%f,%f)"%(bin, histo.GetBinLowEdge(bin), inhisto.GetBinLowEdge(bin)))
+                histo.SetBinContent(bin, inhisto.GetBinContent(bin))
+        elif histo.ClassName() == "TH2D":
+            if histo.GetXaxis().GetNbins() != inhisto.GetXaxis().GetNbins(): 
+                raise RuntimeError("Trying to add histo with %d bins, while plot should have %d"%(histo.GetXaxis().GetNbins(), inhisto.GetXaxis().GetNbins())) 
+            if histo.GetYaxis().GetNbins() != inhisto.GetYaxis().GetNbins(): 
+                raise RuntimeError("Trying to add histo with %d bins, while plot should have %d"%(histo.GetYaxis().GetNbins(), inhisto.GetYaxis().GetNbins()))
+            for binx in range(1,histo.GetXaxis().GetNbins()+1):
+                if histo.GetXaxis().GetBinLowEdge(binx) != inhisto.GetXaxis().GetBinLowEdge(binx): 
+                    raise RuntimeError("Bin %d has different low bin edge in input (%f,%f)"%(binx, histo.GetXaxis().GetBinLowEdge(binx), inhisto.GetXaxis().GetBinLowEdge(binx)))
+                for biny in range(1,histo.GetYaxis().GetNbins()+1):
+                    if histo.GetYaxis().GetBinLowEdge(biny) != inhisto.GetYaxis().GetBinLowEdge(biny): 
+                        raise RuntimeError("Bin %d has different low bin edge in input (%f,%f)"%(bin, histo.GetYaxis().GetBinLowEdge(biny), inhisto.GetYaxis().GetBinLowEdge(biny)))
+                    bin = histo.GetBin(binx,biny)
+                    histo.SetBinContent(bin, inhisto.GetBinContent(bin))
+        else:
+            raise RuntimeError("Histos of class %s are unsupported"%histo.ClassName())
+
         self.negativeCheck( histo ) 
         histo = histo.Clone( name ) 
         histo.SetDirectory(None)

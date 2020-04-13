@@ -4,6 +4,7 @@ from CMGTools.TTHAnalysis.plotter.tree2yield import *
 from CMGTools.TTHAnalysis.plotter.projections import *
 from CMGTools.TTHAnalysis.plotter.figuresOfMerit import FOM_BY_NAME
 from CMGTools.TTHAnalysis.plotter.histoWithNuisances import *
+from CMGTools.TTHAnalysis.plotter.histoWithNuisances import _cloneNoDir
 import pickle, re, random, time
 from copy import copy, deepcopy
 from collections import defaultdict
@@ -301,6 +302,10 @@ class MCAnalysis:
                         if os.path.exists(treepath+"/"+extra['FromFile']):
                             basepath = treepath
                             break
+                        else: 
+                            if os.path.exists(treepath.replace('/pool/ciencias/','/pool/cienciasrw/')+"/"+extra['FromFile']):
+                                basepath = treepath.replace('/pool/ciencias/','/pool/cienciasrw/')
+                                break
                     if not basepath:
                         raise RuntimeError("%s -- ERROR: %s process not found in paths (%s)" % (__name__, cname, repr(options.path)))
 
@@ -521,6 +526,18 @@ class MCAnalysis:
         return formatted_report
     def getPlotsRaw(self,name,expr,bins,cut,process=None,nodata=False,makeSummary=False,closeTreeAfter=False):
         return self.getPlots(PlotSpec(name,expr,bins,{}),cut,process=process,nodata=nodata,makeSummary=makeSummary,closeTreeAfter=closeTreeAfter)
+    def getPostFitPlots(self, filename, spec):
+        ret = {} 
+        tf = ROOT.TFile.Open(filename)
+        processes = [k for k in self._allData.iteritems()] +[('total',[None]),('background',[None])]
+        for proc,ttys in processes: 
+            hist = readHistoWithNuisances( tf, proc, [],mayBeMissing=True)
+            if hist: 
+                ret[proc] = _cloneNoDir( hist )
+                if ttys[-1]:
+                    ttys[-1]._stylePlot( ret[proc], spec)
+        return ret
+        
     def getPlots(self,plotspec,cut,process=None,nodata=False,makeSummary=False,closeTreeAfter=False):
         if self._groupsToNormalize: self._normalizeGroups()
         allSig = []; allBg = []
@@ -662,6 +679,7 @@ class MCAnalysis:
                 for (v,d,vtty) in tty.getTTYVariations():
                     vtty.clearCut()
     def prettyPrint(self,reports,makeSummary=True):
+        print 'im pretty printing'
         allSig = []; allBg = []
         for key in reports:
             if key != 'data':
@@ -695,6 +713,11 @@ class MCAnalysis:
                 nfmtS+=u" &plusmn;%.2f"
                 nfmtX+=u" &plusmn;%.4f"
                 nfmtL+=u" &plusmn;%.2f"
+            elif self._options.txtfmt == "tex":
+                print 'im here'
+                nfmtS+=u" $\pm$ %.2f"
+                nfmtX+=u" $\pm$ %.4f"
+                nfmtL+=u" $\pm$ %.2f"
             else:
                 nfmtS+=u" %7.2f"
                 nfmtX+=u" %7.4f"
@@ -738,8 +761,8 @@ class MCAnalysis:
                 print cfmt % cut,
                 print " ".join(row),
                 print ""
-        elif self._options.txtfmt in ("tsv","csv","dsv","ssv","md","jupyter"):
-            sep = { 'tsv':"\t", 'csv':",", 'dsv':';', 'ssv':' ', 'md':' | ', 'jupyter':' | ' }[self._options.txtfmt]
+        elif self._options.txtfmt in ("tsv","csv","dsv","ssv","md","jupyter","tex"):
+            sep = { 'tsv':"\t", 'csv':",", 'dsv':';', 'ssv':' ', 'md':' | ', 'jupyter':' | ','tex' : '&' }[self._options.txtfmt]
             ret = []
             procEscape = {}
             for k,r in table:
@@ -769,7 +792,10 @@ class MCAnalysis:
             if self._options.txtfmt in ("md","jupyter"):
                 ret.insert(0,headers)
                 ret.insert(1,(("---:" if i else "---") for i in xrange(len(headers))))
-            ret = "\n".join(sep.join(c) for c in ret) 
+            if self._options.txtfmt == 'tex':
+                ret = "\\ \n".join(sep.join(c) for c in ret) 
+            else:
+                ret = "\n".join(sep.join(c) for c in ret) 
             if self._options.txtfmt == "jupyter":
                 import IPython.display
                 IPython.display.display(IPython.display.Markdown(ret))
@@ -845,6 +871,7 @@ class MCAnalysis:
             from multiprocessing import Pool, cpu_count
             retlist = []
             for i in xrange(0,len(tasks),chunkTasks):
+                print 'we have', cpu_count(), 'cpus'
                 pool = Pool(min(self._options.jobs,cpu_count()))
                 ret_temp = pool.map_async(func, tasks[i:(i+chunkTasks)], 1)
                 while not ret_temp.ready():
@@ -946,7 +973,7 @@ def addMCAnalysisOptions(parser,addTreeToYieldOnesToo=True):
     parser.add_option("--aefrl", "--alt-external-fitResult-labels", dest="altExternalFitResultLabels", type="string", default=[], nargs=1, action="append", help="External fitResult")
     parser.add_option("--check-friends-first", dest="checkFriendsFirst", action="store_true", default=False, help="At start, check that all friends are available, and raise an error otherwise.");
     parser.add_option("--genWeightName", dest="genWeightName", action="store", type="string", default=None, help="Name of the gen weight");
-    
+    parser.add_option("--externalPostfitPlot", dest="externalPostfitPlot", action="store", type="string", default=None, help="File to external postfit results");    
 if __name__ == "__main__":
     from optparse import OptionParser
     parser = OptionParser(usage="%prog [options] tree.root cuts.txt")

@@ -1,8 +1,8 @@
-DY : DYJetsToLL_M10to50_LO_2016 : xsec  ; FillColor=ROOT.kYellow-9
-DY : DYJetsToLL_M50_2016_part1+DYJetsToLL_M50_2016_part2+DYJetsToLL_M50_2016_part3+DYJetsToLL_M50_2016_part4+DYJetsToLL_M50_2016_part5+DYJetsToLL_M50_2016_part6 : xsec  ; FillColor=ROOT.kYellow-9
+DY : DYJetsToLL_M10to50_2016+DYJetsToLL_M10to50_ext_2016 : xsec  ; FillColor=ROOT.kYellow-9
+DY : DYJetsToLL_M50_2016 : xsec  ; FillColor=ROOT.kYellow-9
 TT : TTJets_SingleLeptonFromTbar_2016+TTJets_SingleLeptonFromTbar_ext1_2016 : xsec ; FillColor=ROOT.kRed-9
 TT : TTJets_SingleLeptonFromT_2016+TTJets_SingleLeptonFromT_ext1_2016 : xsec ; FillColor=ROOT.kRed-9
-TT : TTTo2L2Nu_2016_part1+TTTo2L2Nu_2016_part2+TTTo2L2Nu_2016_part3+TTTo2L2Nu_2016_part4+TTTo2L2Nu_2016_part5+TTTo2L2Nu_2016_part6+TTTo2L2Nu_2016_part7 : xsec ; FillColor=ROOT.kRed-9
+TT : TTTo2L2Nu_2016_part1+TTTo2L2Nu_2016_part2 : xsec ; FillColor=ROOT.kRed-9
 TTV : TTWToLNu_2016 : xsec ; FillColor=ROOT.kBlue-7
 TTV : TTZToLLNuNu_ext3_2016+TTZToLLNuNu_ext_2016 : xsec ; FillColor=ROOT.kBlue-7
 TTV : TTZToLLNuNu_m1to10_2016 : xsec ; FillColor=ROOT.kBlue-7
@@ -15,7 +15,6 @@ Diboson : WZTo3LNu_2016 : xsec ; FillColor=ROOT.kCyan+3
 Rare : WWW_2016 : xsec ; FillColor=ROOT.kGreen-5
 Rare : WWZ_2016 : xsec ; FillColor=ROOT.kGreen-5
 Rare : WZZ_2016 : xsec ; FillColor=ROOT.kGreen-5
-Rare : ZZZ_2016 : xsec ; FillColor=ROOT.kGreen-5
 Rare : WJetsToLNu_LO_2016+WJetsToLNu_LO_ext1_2016 : xsec ; FillColor=ROOT.kGreen-5
 ZZ : ZZTo4L_2016 : xsec*kfactor_pt_4l ; FillColor=ROOT.kViolet-3
 ZZ : GluGluToContinToZZTo2e2mu_2016 : xsec ; FillColor=ROOT.kViolet-3
@@ -26,4 +25,6 @@ ZZ : GluGluToContinToZZTo2mu2tau_2016 : xsec ; FillColor=ROOT.kViolet-3
 ZZ : GluGluToContinToZZTo4e_2016 : xsec ; FillColor=ROOT.kViolet-3
 ZZ : GluGluToContinToZZTo4mu_2016 : xsec ; FillColor=ROOT.kViolet-3
 ZZ : GluGluToContinToZZTo4tau_2016 : xsec ; FillColor=ROOT.kViolet-3
-ZZ : ZZTo2L2Nu_2016+ZZTo2L2Nu_ext_2016 : xsec*kfactor_pt_2l  ; FillColor=ROOT.kViolet-3
+ZZ : VVTo2L2Nu_M1toInf_2016 : xsec : kfactor_pt_2l  ; FillColor=ROOT.kViolet-3
+ZZ_sub : VVTo2L2Nu_M1toInf_2016 : xsec : kfactor_pt_2l  ; AddWeight="-1", FakeRate="susy-edge/fakeRate-flavsym-mc.txt", FillColor=ROOT.kViolet-3
+ZG : ZGTo2NuG_2016 : xsec : 1 ; FillColor=ROOT.kBlack

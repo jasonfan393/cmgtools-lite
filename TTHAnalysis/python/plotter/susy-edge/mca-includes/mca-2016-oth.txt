@@ -1,9 +1,10 @@
-TTZ : TTZToLLNuNu_ext3_2016+TTZToLLNuNu_ext_2016 : xsec ; FillColor=ROOT.kBlue-7
-TTZ : TTZToLLNuNu_m1to10_2016 : xsec ; FillColor=ROOT.kBlue-7
-WZ : WZTo3LNu_2016 : xsec ; FillColor=ROOT.kCyan+3
-VVV : WWZ_2016 : xsec ; FillColor=ROOT.kGreen-5
-VVV : WZZ_2016 : xsec ; FillColor=ROOT.kGreen-5
-#VVV : ZZZ_2016 : xsec ; FillColor=ROOT.kGreen-5
-ZZ : GluGluToContinToZZTo2e2nu_2016 : xsec ; FillColor=ROOT.kViolet-3
-ZZ : GluGluToContinToZZTo2mu2nu_2016 : xsec ; FillColor=ROOT.kViolet-3
-ZZ : ZZTo2L2Nu_2016+ZZTo2L2Nu_ext_2016 : xsec*kfactor_pt_2l  ; FillColor=ROOT.kViolet-3
+TTZ : TTZToLLNuNu_ext3_2016+TTZToLLNuNu_ext_2016 : xsec : !isFlavSym ; FillColor=ROOT.kBlue-7
+TTZ : TTZToLLNuNu_m1to10_2016 : xsec : !isFlavSym ; FillColor=ROOT.kBlue-7
+WZ : WZTo3LNu_2016 : xsec : !isFlavSym ; FillColor=ROOT.kCyan+3
+VVV : WWZ_2016 : xsec : !isFlavSym ; FillColor=ROOT.kGreen-5
+VVV : WZZ_2016 : xsec : !isFlavSym ; FillColor=ROOT.kGreen-5
+#VVV : ZZZ_2016 : xsec : !isFlavSym ; FillColor=ROOT.kGreen-5
+ZZ : GluGluToContinToZZTo2e2nu_2016 : xsec : !isFlavSym ; FillColor=ROOT.kViolet-3
+ZZ : GluGluToContinToZZTo2mu2nu_2016 : xsec : !isFlavSym ; FillColor=ROOT.kViolet-3
+ZZ : VVTo2L2Nu_M1toInf_2016 : xsec : kfactor_pt_2l  ; FillColor=ROOT.kViolet-3
+ZZ_sub : VVTo2L2Nu_M1toInf_2016 : xsec : kfactor_pt_2l  ; AddWeight="-1", FakeRate="susy-edge/fakeRate-flavsym-mc.txt", FillColor=ROOT.kViolet-3

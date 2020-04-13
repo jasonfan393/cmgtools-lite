@@ -73,7 +73,7 @@ class BtagSFs( Module ):
 
 
             istag=False 
-            if jet.pt < 20 or abs(jet.eta) > 2.4: continue
+            if jet.pt < 35 or abs(jet.eta) > 2.4: continue
             mcFlavor = jet.hadronFlavour
             eff = self.getBtagEffFromFile(jet.pt, jet.eta, jet.hadronFlavour, event.year)
             
@@ -100,7 +100,6 @@ class BtagSFs( Module ):
                 mcNoTag = mcNoTag * (1 - eff)
                 dataNoTag = dataNoTag * (1 - eff*SF)
                 if mcFlavor==5 or mcFlavor==4:
-                    print 'here'
                     dataNoTag_Hup   = dataNoTag_Hup * (1 - eff*SF_up)
                     dataNoTag_Hdown = dataNoTag_Hdown * (1 - eff*SF_dn)
                     dataNoTag_Lup   = dataNoTag_Lup * (1 - eff*SF)
@@ -110,7 +109,6 @@ class BtagSFs( Module ):
                     dataNoTag_Hdown = dataNoTag_Hdown * (1 - eff*SF)
                     dataNoTag_Lup   = dataNoTag_Lup * (1 - eff*SF_up)
                     dataNoTag_Ldown = dataNoTag_Ldown * (1 - eff*SF_dn)
-
 
             wtbtag           = (dataNoTag * dataTag ) / ( mcNoTag * mcTag )
             wtbtagUp_heavy   = (dataNoTag_Hup * dataTag_Hup ) / ( mcNoTag * mcTag )

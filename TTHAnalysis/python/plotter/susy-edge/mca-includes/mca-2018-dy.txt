@@ -1,3 +1,2 @@
-DY : DYJetsToLL_M10to50_2018 : xsec; FillColor=ROOT.kYellow-9	
-#DY : DYJetsToLL_M50_amc_2018+DYJetsToLL_M50_amc_ext_2018_part1+DYJetsToLL_M50_amc_ext_2018_part2+DYJetsToLL_M50_amc_ext_2018_part3+DYJetsToLL_M50_amc_ext_2018_part4+DYJetsToLL_M50_amc_ext_2018_part5+DYJetsToLL_M50_amc_ext_2018_part6+DYJetsToLL_M50_amc_ext_2018_part7+DYJetsToLL_M50_amc_ext_2018_part8 : xsec; FillColor=ROOT.kYellow-9
+DY : DYJetsToLL_M10to50_2018 : 22635.09; FillColor=ROOT.kYellow-9	
 DY : DYJetsToLL_M50_amc_2018+DYJetsToLL_M50_amc_ext_2018_part1+DYJetsToLL_M50_amc_ext_2018_part2 : xsec; FillColor=ROOT.kYellow-9

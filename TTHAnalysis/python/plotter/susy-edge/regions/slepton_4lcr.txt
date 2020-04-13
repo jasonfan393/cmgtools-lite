@@ -4,7 +4,3 @@ l4: nLepTight_Edge>3
 mZ1: mZ1_loose_Edge<106 && mZ1_loose_Edge>76
 mZ2: mZ2_loose_Edge<130 && mZ2_loose_Edge>50
 jetveto: nJet25_Edge == 0
-
-eeee : abs(Lep1_pdgId_Edge)+abs(Lep2_pdgId_Edge)+abs(Lep3_pdgId_Edge)+abs(Lep4_pdgId_Edge)==44
-eemm : abs(Lep1_pdgId_Edge)+abs(Lep2_pdgId_Edge)+abs(Lep3_pdgId_Edge)+abs(Lep4_pdgId_Edge)==48
-mmmm : abs(Lep1_pdgId_Edge)+abs(Lep2_pdgId_Edge)+abs(Lep3_pdgId_Edge)+abs(Lep4_pdgId_Edge)==52

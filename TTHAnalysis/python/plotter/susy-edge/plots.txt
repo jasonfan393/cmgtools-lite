@@ -2,23 +2,38 @@
 # * ; LegendCutoff=1e-5
 tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", Legend='TR', MoreY=2.0
 era: hashBasedRunPeriod2017($DATA{1}$MC{0},run_Edge,lumi_Edge,evt_Edge,year) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5]; XTitle = "Data taking era", Legend='TR', MoreY=2.0,  xBinLabels="2016B\,2016C\,2016D\,2016E\,2016F\,2016G\,2016H\,2017B\,2017C\,2017D\,2017E\,2017F\,2018A\,2018B\,2018C\,2018D"
+met  : MET_pt_Edge : 200,0,500; XTitle="MET (GeV)"
 met_wzboosted : MET_pt_Edge : [50,100,200,300,400,500,600]; XTitle="MET (GeV)", Logy
 met_wzresolved : MET_pt_Edge : [50,100,150,250,350,400]; XTitle="MET (GeV)", Logy
 met_slepton : MET_pt_Edge : [100,150,225,300,350]; XTitle="MET (GeV)", Logy
+<<<<<<< HEAD
 #met_slepton : MET_pt_Edge : [100,110,120,130,140,150]; XTitle="MET (GeV)", Logy
+=======
+met_slepton_cr : MET_pt_Edge : [50,100]; XTitle="MET (GeV)"
+met_slepton_2 : MET_pt_Edge : [0,50,100,150,225,300,350]; XTitle="MET (GeV)", Logy
+>>>>>>> d3fdfd80bc12b8dc5b877634305da84edad6d711
 met_strong_SRA_btag  : MET_pt_Edge : [50,100,150,230,300,350]; XTitle="MET (GeV)", Logy
 met_strong_SRA_bveto : MET_pt_Edge : [50,100,150,230,300,350]; XTitle="MET (GeV)", Logy
 met_strong_SRB_btag  : MET_pt_Edge : [50,100,150,230,300,350]; XTitle="MET (GeV)", Logy
 met_strong_SRB_bveto : MET_pt_Edge : [50,100,150,230,300,350]; XTitle="MET (GeV)", Logy
-met_strong_SRC_btag  : MET_pt_Edge : [50,100,150,250,300]; XTitle="MET (GeV)", Logy
-met_strong_SRC_bveto : MET_pt_Edge : [50,100,150,250,300]; XTitle="MET (GeV)", Logy
-
+met_strong_SRC_btag  : MET_pt_Edge : [50,100,150,250,300]    ; XTitle="MET (GeV)", Logy
+met_strong_SRC_bveto : MET_pt_Edge : [50,100,150,250,300]    ; XTitle="MET (GeV)", Logy
+lepsDR : lepsDR_Edge : 20,0,5; XTitle="#Delta R(lep1\,lep2)"
+lepsDR_log : lepsDR_Edge : 20,0,5; XTitle="#Delta R(lep1\,lep2)", Logy
+lepsdPhi: deltaPhi(Lep1_phi_Edge,Lep2_phi_Edge) : 20,-3.14,3.14; XTitle="#Delta #phi(lep1\,lep2)"
+lepsdEta: Lep1_eta_Edge-Lep2_eta_Edge : 20,-4.8,4.8; XTitle="#Delta #eta(lep1\,lep2)"
+dPhi_met_lep1: deltaPhi(Lep1_phi_Edge, MET_phi_Edge): 20,-3.14,3.14; XTitle="#Delta #phi(lep1\,MET)"
 
 njet25 : nJet25_Edge : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5]; XTitle="N jet (25 GeV)"
+njet25_2bins : nJet25_Edge : [-0.5,0.5,1.5]; XTitle="N jet (25 GeV)"
 njet35 : nJet35_Edge : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5]; XTitle="N jet (35 GeV)"
+njet35_2bins : nJet35_Edge : [-0.5,0.5,1.5]; XTitle="N jet (35 GeV)"
 met_cr4l : met_4l(  MET_pt_Edge, MET_phi_Edge, ptZ1_loose_Edge, phiZ1_loose_Edge) : 40,0,200; XTitle="Emulated MET (GeV)", Logy
-#mll : lepsMll_Edge : 40,20,400; XTitle="m_{ll} (GeV)"
-mll : lepsMll_Edge : [0,40,70,110,150,200,250,300,400,500]; XTitle="m_{ll} (GeV)"
+mll : lepsMll_Edge : 50,20,200; XTitle="m_{ll} (GeV)", Logy=True, YMax=1e9, YMin=1e2
+mll_inout : if3(lepsMll_Edge<65 || lepsMll_Edge>120, 0,1) : [-0.5,0.5,1.5]; xLabel="off-Z\,on-Z"
+mll_low : lepsMll_Edge : 20,20,60; XTitle="m_{ll} (GeV)"
+mll_Edge : lepsMll_Edge : [20,60,86,96,150,200,300,400,500]; XTitle="m_{ll} (GeV)"
+mll_coarse : lepsMll_Edge : [20,40,65,120,140,160,180,200]; XTitle="m_{ll} (GeV)"
 mt2 : mt2_Edge : 40,80,200; XTitle="m_{T2} (GeV)"
 mt2_from0 : mt2_Edge : 40,0,200; XTitle="m_{T2} (GeV)"
 dphi_jet1_met :  deltaPhi(JetSel_Edge_phi[0], MET_phi_Edge) : 40,-3.14,3.14; XTitle="#Delta#phi(MET\, leading jet)"
@@ -27,9 +42,13 @@ mz1 : mZ1_tight_4l : 40,75,110; XTitle="m_{ll} of the best Z candidate (GeV)"
 mz2 : mZ2_tight_4l : 40,75,110; XTitle="m_{ll} of the other Z candidate (GeV)"
 mz1_3l : mZ1_tight_3l : 40,75,110; XTitle="m_{ll} of the best Z candidate (GeV)"
 year : year-2016 : [-0.5,0.5,1.5,2.5]; XTitle="Year", xBinLabels="2016\,2017\,2018"
-ht35: htJet35j_Edge : 15,0,500; Xtitle="H_{T} (GeV)"
 
-dphi_lep1_lep2 :  abs(deltaPhi(Lep1_phi_Edge, Lep2_phi_Edge)) : 10,0,3.14; XTitle="#Delta#phi(l\, l)"
-mlb            :  sum_mlb_Edge  : 12,0,600; XTitle="#Sum mlb"
-pt_2           :  lepsZPt_Edge : 12,0,300; XTitle="Pt (l1\, l2)"
-leppt_over_jetpt  : Lep2_pt_Edge/JetSel_Edge_pt[0] : 30,0,3; XTitle="lep_pt / jet_pt"
+ht35: htJet35j_Edge : 100,0,1000; Xtitle="H_{T} (GeV)"
+flav_4l : (abs(Lep1_pdgId_Edge)+abs(Lep2_pdgId_Edge)+abs(Lep3_pdgId_Edge)+abs(Lep4_pdgId_Edge)-44)/4 : [-0.5,0.5,1.5,2.5]; xBinLabels="eeee\,ee#mu#mu\,#mu#mu#mu#mu"
+lep2_over_jet1 : Lep2_pt_Edge/JetSel_Edge_pt[0] : 40,0,2; XTitle="p_{T}(sub-leading lepton) / p_{T}(leading jet)"
+lep2_over_jet1_onebin : Lep2_pt_Edge/JetSel_Edge_pt[0] : [0,1.2,3]; XTitle="p_{T}(sub-leading lepton) / p_{T}(leading jet)"
+
+
+lep1_pt : Lep1_pt_Edge : 40,25,200; XTitle="Leading lepton p_{T} (GeV)"
+lep2_pt : Lep2_pt_Edge : 40,20,200; XTitle="Sub-leading lepton p_{T} (GeV)"
+

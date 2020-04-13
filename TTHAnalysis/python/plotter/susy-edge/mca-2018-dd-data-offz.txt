@@ -1,7 +1,6 @@
 incl_data : + ; IncludeMca="susy-edge/mca-includes/mca-2018-data.txt"
 incl_dataflavsym : + ; IncludeMca="susy-edge/mca-includes/mca-2018-data.txt", FakeRate="susy-edge/fakeRate-flavsym.txt", Label="Flavor symmetric", FillColor=ROOT.kOrange+10, PostFix="_flavsym"
-incl_dy : + ; IncludeMca="susy-edge/mca-includes/mca-2018-dy.txt"
 incl_oth : + ; IncludeMca="susy-edge/mca-includes/mca-2018-oth.txt"
-incl_sig : + ; IncludeMca="susy-edge/mca-includes/mca-sig-TSlepslep2-2018.txt", FakeRate="susy-edge/fakeRate-fastsym.txt"
+incl_sig : + ; IncludeMca="susy-edge/mca-includes/mca-sig-TSlepslep-2018.txt", FakeRate="susy-edge/fakeRate-fastsym.txt"
 
 

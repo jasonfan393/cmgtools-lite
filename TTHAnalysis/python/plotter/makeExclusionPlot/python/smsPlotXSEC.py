@@ -63,6 +63,7 @@ class smsPlotXSEC(smsPlotABS):
         self.emptyHisto.GetYaxis().SetRangeUser(self.model.Ymin, self.model.Ymax)
         self.emptyHisto.Draw()
         self.histo.Draw("COLZSAME")
+        print self.histo.GetBinContent(self.histo.FindBin(600,5))
         if self.model.diagOn:
             self.DrawDiagonal()
         self.DrawLines()

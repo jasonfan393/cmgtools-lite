@@ -394,13 +394,14 @@ if options.queue:
     runner = ""
     super = ""
     theoutput = args[1]
+    print 'here'
     if options.env == "psi":
         super  = "qsub -q {queue} -N friender".format(queue = options.queue)
         runner = "psibatch_runner.sh"
     elif options.env == "oviedo":
-        if options.queue != "":
-            options.queue = "batch" 
-        super  = "qsub -q batch -N happyTreeFriend".format(queue = options.queue)
+#        if options.queue != "":
+#            options.queue = "batch" 
+        super  = "qsub -q {queue} -N happyTreeFriend".format(queue = options.queue)
         runner = "lxbatch_runner.sh"
         theoutput = theoutput.replace('/pool/ciencias/','/pool/cienciasrw/')
     else: # Use lxbatch by default

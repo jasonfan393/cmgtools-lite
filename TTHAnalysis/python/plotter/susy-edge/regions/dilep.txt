@@ -17,3 +17,4 @@ SF: abs(Lep1_pdgId_Edge)==abs(Lep2_pdgId_Edge); Disable=True
 OF: abs(Lep1_pdgId_Edge)!=abs(Lep2_pdgId_Edge); Disable=True
 nj2: nJet35_Edge>1; Disable=True
 nb1: nBJetMedium35_Edge>0; Disable=True
+nj1: nJet35_Edge>0; Disable=True

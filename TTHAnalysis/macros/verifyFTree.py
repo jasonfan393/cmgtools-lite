@@ -8,7 +8,8 @@ import os, sys
 
 dsets = sys.argv[3:]
 if len(sys.argv)<4:
-    dsets = [d.replace('_Friend','').replace('.root','') for d in os.listdir(sys.argv[2]) if ('_Friend' in d and 'chunk' not in d)]
+    #dsets = [d.replace('_Friend','').replace('.root','') for d in os.listdir(sys.argv[2]) if ('_Friend' in d and 'chunk' not in d)]
+    dsets = [d.replace('_Friend','').replace('.root','') for d in os.listdir(sys.argv[1]) ]
 
 def openRootOrUrl(myfile):
     _f_t = None
@@ -31,11 +32,19 @@ for dset in dsets:
     if '.url' in dset: continue
 #    print "running " + dset
     f_t = openRootOrUrl(sys.argv[1]+'/'+dset+'/nanoAODskim/Events.root')
+    if not f_t: continue
     t_t = f_t.Get("Events")
     n_t = t_t.GetEntries()
     f_t.Close()
     f_f = openRootOrUrl(sys.argv[2]+'/'+dset+'_Friend.root')
+    print f_f
+    if not f_f: 
+        print 'ERROR: Not here', dset
+        continue
     t_f = f_f.Get("Friends")
+    if not t_f: 
+        print 'ERRO: Not here', dset
+        continue
     n_f = t_f.GetEntries()
     f_f.Close()
     print '%s: %d - %d : %s'%(dset,n_t,n_f,'OK' if n_t==n_f else 'ERROR '*15+' !!!')

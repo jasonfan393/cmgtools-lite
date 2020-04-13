@@ -181,11 +181,11 @@ class sms():
         self.label2= "BR( #tilde{l} #rightarrow  l "+lsp_s +" ) = 1";
         # plot boundary. The top 1/4 of the y axis is taken by the legend
         self.Xmin = 75.
-        self.Xmax = 800.
+        self.Xmax = 1000.
         self.Ymin = 1.
-        self.Ymax = 600.
-        self.Zmin = 0.001
-        self.Zmax = 2.
+        self.Ymax = 800.
+        self.Zmin = 1e-5
+        self.Zmax = 1
         # produce sparticle
         self.sParticle = "m#kern[0.1]{_{#lower[-0.12]{#tilde{l}}}} [GeV]"
         # LSP

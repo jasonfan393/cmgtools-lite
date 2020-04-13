@@ -195,28 +195,22 @@ def doDataNorm(pspec,pmap):
     return sig
 
 def doStackSignalNorm(pspec,pmap,individuals,extrascale=1.0,norm=True):
-    print 'WE ARE HERE!'
     total = sum([v.Integral() for k,v in pmap.iteritems() if k != 'data' and not hasattr(v,'summary')])
     if options.noStackSig:
         total = sum([v.Integral() for k,v in pmap.iteritems() if not hasattr(v,'summary') and mca.isBackground(k) ])
     if individuals:
-        print 'is individuals', mca.listSignals()
         sigs = []
-        for x in mca.listSignals():
-            print x, pmap.has_key(x), pmap[x].Integral()
         for sig in [pmap[x] for x in mca.listSignals() if pmap.has_key(x) and pmap[x].Integral() > 0]:
             sig = sig.Clone(sig.GetName()+"_norm")
             sig.SetFillStyle(0)
             sig.SetLineColor(sig.GetFillColor())
             sig.SetLineWidth(4)
             if norm: sig.Scale(total*extrascale/sig.Integral())
-            print 'drawing here sig', sig
 
             sig.Draw("HIST SAME")
             sigs.append(sig)
         return sigs
     else:
-        print 'is not individual'
         sig = None
         if "signal" in pmap: sig = pmap["signal"].Clone(pspec.name+"_signal_norm")
         else: 
@@ -227,7 +221,6 @@ def doStackSignalNorm(pspec,pmap,individuals,extrascale=1.0,norm=True):
         sig.SetLineWidth(4)
         if norm and sig.Integral() > 0:
             sig.Scale(total*extrascale/sig.Integral())
-        print 'drawing here sig, 2', sig
         sig.Draw("HIST SAME")
         return [sig]
 
@@ -693,7 +686,10 @@ class PlotMaker:
                 pspecs = matchspec + [ p for p in pspecs if p.name != self._options.preFitData ]
             for pspec in pspecs:
                 print "    plot: ",pspec.name
-                pmap = mca.getPlots(pspec,cut,makeSummary=True,closeTreeAfter=True)
+                if self._options.externalPostfitPlot != None: 
+                    pmap = mca.getPostFitPlots(self._options.externalPostfitPlot,pspec)
+                else:
+                    pmap = mca.getPlots(pspec,cut,makeSummary=True,closeTreeAfter=True)
                 #
                 # blinding policy
                 blind = pspec.getOption('Blinded','None') if 'data' in pmap else 'None'
@@ -769,7 +765,8 @@ class PlotMaker:
                                   xblind=xblind,
                                   makeCanvas=makeCanvas,
                                   outputDir=dir,
-                                  printDir=self._options.printDir+(("/"+subname) if subname else ""))
+                                  printDir=self._options.printDir+(("/"+subname) if subname else ""),
+                                  mytotal=pmap['total'] if self._options.externalPostfitPlot else None)
                 if getattr(mca,'_altPostFits',None):
                     roofit = roofitizeReport(pmap)
                     if self._options.processesToPeg == []:
@@ -968,7 +965,7 @@ class PlotMaker:
                         pmap['data'].poissonGraph = pdata ## attach it so it doesn't get deleted
                     else:
                         pmap['data'].Draw("E SAME")
-                    reMax(total,pmap['data'],islog,doWide=doWide)
+                    reMax(total,pmap['data'],islog,doWide=doWide,factorLog=5)
                     if xblind[0] < xblind[1]:
                         blindbox = ROOT.TBox(xblind[0],total.GetYaxis().GetXmin(),xblind[1],total.GetMaximum())
                         blindbox.SetFillColor(ROOT.kBlue+3)
@@ -1044,10 +1041,8 @@ class PlotMaker:
                                 break
                 if makeCanvas and outputDir: outputDir.WriteTObject(c1)
                 rdata,rnorm,rnorm2,rline = (None,None,None,None)
-                print 'we are here' , doRatio
                 if doRatio:
                     p2.cd(); 
-                    print 'we are gonna make ratio'
                     rdata,rnorm,rnorm2,rline = doRatioHists(pspec,pmap,total, maxRange=options.maxRatioRange, fixRange=options.fixRatioRange,
                                                             fitRatio=options.fitRatio, errorsOnRef=options.errorBandOnRatio, 
                                                             ratioNums=options.ratioNums, ratioDen=options.ratioDen, ylabel=options.ratioYLabel, yndiv=options.ratioYNDiv, doWide=doWide, showStatTotLegend=options.showStatTotLegend, textSize=options.legendFontSize, ratioDensNums=options.ratioDensNums)
@@ -1064,9 +1059,14 @@ class PlotMaker:
                             step = (plot.GetXaxis().GetXmax()-plot.GetXaxis().GetXmin())/plot.GetNbinsX()
                             bins = [plot.GetXaxis().GetXmin()+i*step for i in range(plot.GetNbinsX())]
                             fmh    = "%%-%ds" % (maxlen+1)
-                            fmt    = "%9.2f +/- %9.2f (stat)"
-                            dump.write(fmh % pspec.expr + " " + " ".join("%d" % (i) for i in bins) + "\n")
-                            dump.write(("-"*(maxlen+45))+"\n");
+                            if self._options.txtfmt == 'tex':
+                                fmt    = "%9.2f $\pm$ %9.2f (stat)"
+                                dump.write(fmh % pspec.expr + " " + " & ".join("%d" % (i) for i in bins) + "\\\\ \n")
+                                dump.write("\hline\hline\n");
+                            else: 
+                                fmt    = "%9.2f +/- %9.2f (stat)"
+                                dump.write(fmh % pspec.expr + " " + " ".join("%d" % (i) for i in bins) + "\n")
+                                dump.write(("-"*(maxlen+45))+"\n");
                             bkgsyst = [0 for i in range(pmap["background"].GetNbinsX())]; sigsyst = bkgsyst
                             for p in mca.listSignals(allProcs=True) + mca.listBackgrounds(allProcs=True) + ["signal", "background"]:
                                 if p not in pmap: continue
@@ -1083,11 +1083,15 @@ class PlotMaker:
                                     if p in mca.listSignals(allProcs=True)    : sigsyst[b-1] += syst*syst
                                     line = fmt % (plot.GetBinContent(b), plot.GetBinError(b))
                                     #if syst: line += " +/- %9.2f (syst)"  % syst
-                                    if   p == "signal"     and sigsyst[b-1]: line += " +/- %9.2f (syst)" % math.sqrt(sigsyst[b-1])
-                                    elif p == "background" and bkgsyst[b-1]: line += " +/- %9.2f (syst)" % math.sqrt(bkgsyst[b-1])
-                                    else: line += " +/- %9.2f (syst)"  % syst
+                                    pmsign = '$\\pm$' if 'tex' in self._options.txtfmt else '+/-' 
+                                    if   p == "signal"     and sigsyst[b-1]: line += " %s %9.2f (syst)" % (pmsign,math.sqrt(sigsyst[b-1]))
+                                    elif p == "background" and bkgsyst[b-1]: line += " %s %9.2f (syst)" % (pmsign,math.sqrt(bkgsyst[b-1]))
+                                    else: line += " %s %9.2f (syst)"  % (pmsign, syst)
                                     bins.append(line)
-                                dump.write(" ".join(bins) + "\n")
+                                if self._options.txtfmt == 'tex':
+                                    dump.write(" & ".join(bins) + '\\\\ \n' )
+                                else:
+                                    dump.write(" ".join(bins) + '\n')
                             if 'data' in pmap: 
                                 dump.write(("-"*(maxlen+45))+"\n");
                                 dump.write("%%%ds " % (maxlen+1) % ('DATA'))
@@ -1141,6 +1145,9 @@ class PlotMaker:
                                         plot.GetZaxis().SetRangeUser(pspec.getOption('ZMin',1.0), pspec.getOption('ZMax',1.0))
                                     plot.SetMarkerStyle(mca.getProcessOption(p,'MarkerStyle',1,noThrow=True))
                                     plot.SetMarkerColor(mca.getProcessOption(p,'FillColor',ROOT.kBlack,noThrow=True))
+                                    if mca.getProcessOption(p,'ExtraFillColor',False,noThrow=True):
+                                        print 'setting extra fill color'
+                                        plot.SetMarkerColor(mca.getProcessOption(p,'ExtraFillColor'))
                                     plot.Draw(pspec.getOption("PlotMode","COLZ TEXT45"))
                                     c1.Print("%s/%s_%s.%s" % (fdir, outputName, p, ext))
                                 if "data" in pmap and "TGraph" in pmap["data"].ClassName():

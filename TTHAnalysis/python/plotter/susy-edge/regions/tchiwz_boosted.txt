@@ -1,12 +1,12 @@
 +include_cuts : susy-edge/regions/dilep.txt
 
 goodFatJet : nFatJetSel_Edge_isGood > 0
-dphijet_met : abs(deltaPhi( FatJetSel_Edge_phi[iFatJetSel_Edge_isGood[0]],MET_phi_Edge)) > 0.4
+dphijet_met : abs(deltaPhi( FatJetSel_Edge_phi[iFatJetSel_Edge_isGood[0]],MET_phi_Edge)) > 0.8
 bveto : nBJetMedium25_Edge==0
 onz : lepsMll_Edge > 86 && lepsMll_Edge < 96
 SF: abs(Lep1_pdgId_Edge)==abs(Lep2_pdgId_Edge)
 isotrackveto : nLepSelLoose_Edge<3 && nPFHad10==0 && nPFLep5<3
-not_resolved : !( nJet35_Edge >= 2 && nBJetMedium25_Edge==0 && dphiMjj_Edge<110 && mt2_Edge>80)
+not_resolved : !( nJet35_Edge >= 2 && nBJetLoose25_Edge==0 && dphiMjj_Edge<110 && mt2_Edge>80 && (abs(deltaPhi(JetSel_Edge_phi[0], MET_phi_Edge)) > 0.4 && abs(deltaPhi(JetSel_Edge_phi[1], MET_phi_Edge)) > 0.4))
 
 ee: abs(Lep1_pdgId_Edge * Lep2_pdgId_Edge) == 121; Disable=True
 mm: abs(Lep1_pdgId_Edge * Lep2_pdgId_Edge) == 169; Disable=True

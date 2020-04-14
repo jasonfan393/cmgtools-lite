@@ -1371,7 +1371,7 @@ for k in runs_2016.GetListOfBranches():
     elif scan == "TChiZZ": 
         xsec = "0.033658*0.033658*0.25*{xsec:4.3e}".format(xsec=xsec/1000.)
     elif scan == "T5ZZ": 
-        xsec = "0.25*{xsec:4.3e}".format(xsec=xsec)
+        xsec = "{xsec:4.3e}".format(xsec=xsec)
     elif scan == "T6bb": 
         xsec = "{xsec:4.3e}".format(xsec=xsec)
     else: 

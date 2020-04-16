@@ -46,3 +46,4 @@ lep2_over_jet1_onebin : Lep2_pt_Edge/JetSel_Edge_pt[0] : [0,1.2,3]; XTitle="p_{T
 
 lep1_pt : Lep1_pt_Edge : 40,25,200; XTitle="Leading lepton p_{T} (GeV)"
 lep2_pt : Lep2_pt_Edge : 40,20,200; XTitle="Sub-leading lepton p_{T} (GeV)"
+lepp_pt : if3(Lep1_pdgId_Edge < 0, Lep1_pt_Edge,Lep2_pt_Edge) : [20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,110,120,130,140,150,160,180,200] ; XTitle="Positive lepton p_{T} (GeV)"

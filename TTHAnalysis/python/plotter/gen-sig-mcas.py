@@ -1326,7 +1326,7 @@ dnames = {
     'T6bb_7'      :  "T6bbslep",
     'T6bb_8'      :  "T6bbslep",
 }
-skimFileAsWell = True
+skimFileAsWell = False
 runs_2016 = events[scan].Get("Runs_SUSY")
 runs_2017 = events_2017[scan].Get("Runs_SUSY")
 runs_2018 = events_2018[scan].Get("Runs_SUSY")

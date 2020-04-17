@@ -1238,7 +1238,7 @@ T6bb = {#pb
 }
 
 
-scan = 'TChiWZ'
+scan = 'TChiHZ'
 
 
 events = {
@@ -1250,14 +1250,14 @@ events = {
     'TChiWZ_4' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2016_Edge/nanoAODskim/Events.root"),
     'TChiHZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiHZ_2016/nanoAODskim/Events.root"),
     'TChiZZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiZZ_2016/nanoAODskim/Events.root"), 
-    'T5ZZ' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T5ZZ_2016/nanoAODskim/Events.root"),
-    'T5ZZ_2' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T5ZZ_2_2016/nanoAODskim/Events.root"),
-    'T5ZZ_3' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T5ZZ_1850to2400_2016/nanoAODskim/Events.root"),
-    'T6bb' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bbslep_1400To1800_2016_part1/nanoAODskim/Events.root"),
-    'T6bb_2' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bbslep_1400To1800_2016_part2/nanoAODskim/Events.root"),
-    'T6bb_3' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bbslep_400To775_2016/nanoAODskim/Events.root"),
-    'T6bb_4' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bbslep_800To1357_2016_part1/nanoAODskim/Events.root"),
-    'T6bb_5' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bbslep_800To1357_2016_part2/nanoAODskim/Events.root"),
+    'T5ZZ' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2016/nanoAODskim/Events.root"),
+    'T5ZZ_2' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2_2016/nanoAODskim/Events.root"),
+    'T5ZZ_3' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_1850to2400_2016/nanoAODskim/Events.root"),
+    'T6bb' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2016_part1/nanoAODskim/Events.root"),
+    'T6bb_2' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2016_part2/nanoAODskim/Events.root"),
+    'T6bb_3' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_400To775_2016/nanoAODskim/Events.root"),
+    'T6bb_4' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2016_part1/nanoAODskim/Events.root"),
+    'T6bb_5' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2016_part2/nanoAODskim/Events.root"),
 }
 events_2017 = {
     'TSlepslep' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TSlepSlep_2017/nanoAODskim/Events.root"),
@@ -1270,14 +1270,14 @@ events_2017 = {
     'TChiWZ_6' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2017_Edge_part2/nanoAODskim/Events.root"),
     'TChiHZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiHZ_2017/nanoAODskim/Events.root"), 
     'TChiZZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiZZ_2017/nanoAODskim/Events.root"),
-    'T5ZZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2017/nanoAODskim/Events.root"),
+    'T5ZZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_1_2017/nanoAODskim/Events.root"),
     'T5ZZ_2' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2_2017/nanoAODskim/Events.root"),
-    'T6bb' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bb_1_2017_part1/nanoAODskim/Events.root"),
-    'T6bb_2' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bb_1_2017_part2/nanoAODskim/Events.root"),
-    'T6bb_3' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bb_2_2017_part1/nanoAODskim/Events.root"),
-    'T6bb_4' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bb_2_2017_part2/nanoAODskim/Events.root"),
-    'T6bb_5' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bb_3_2017_part1/nanoAODskim/Events.root"),
-    'T6bb_6' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bb_3_2017_part2/nanoAODskim/Events.root")
+    'T6bb' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_1_2017_part1/nanoAODskim/Events.root"),
+    'T6bb_2' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_1_2017_part2/nanoAODskim/Events.root"),
+    'T6bb_3' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_2_2017_part1/nanoAODskim/Events.root"),
+    'T6bb_4' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_2_2017_part2/nanoAODskim/Events.root"),
+    'T6bb_5' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_3_2017_part1/nanoAODskim/Events.root"),
+    'T6bb_6' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_3_2017_part2/nanoAODskim/Events.root")
 }
 
 
@@ -1295,14 +1295,14 @@ events_2018 = {
     'T5ZZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_1850to2400_2018/nanoAODskim/Events.root"),
     'T5ZZ_2' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2018/nanoAODskim/Events.root"),
     'T5ZZ_3' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2_2018/nanoAODskim/Events.root"),
-    'T6bb' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bbslep_1400To1800_2018_part1/nanoAODskim/Events.root"),
-    'T6bb_2' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bbslep_1400To1800_2018_part2/nanoAODskim/Events.root"),
-    'T6bb_3' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bbslep_1400To1800_2018_part3/nanoAODskim/Events.root"),
-    'T6bb_4' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bbslep_400To775_2018_part1/nanoAODskim/Events.root"),
-    'T6bb_5' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bbslep_400To775_2018_part2/nanoAODskim/Events.root"),
-    'T6bb_6' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bbslep_800To1357_2018_part1/nanoAODskim/Events.root"),
-    'T6bb_7' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bbslep_800To1357_2018_part2/nanoAODskim/Events.root"),
-    'T6bb_8' : r.TFile.Open("/pool/phedex/userstorage/sscruz/NanoAOD/Edge_260120_signals/T6bbslep_800To1357_2018_part3/nanoAODskim/Events.root"),
+    'T6bb' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2018_part1/nanoAODskim/Events.root"),
+    'T6bb_2' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2018_part2/nanoAODskim/Events.root"),
+    'T6bb_3' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2018_part3/nanoAODskim/Events.root"),
+    'T6bb_4' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_400To775_2018_part1/nanoAODskim/Events.root"),
+    'T6bb_5' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_400To775_2018_part2/nanoAODskim/Events.root"),
+    'T6bb_6' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2018_part1/nanoAODskim/Events.root"),
+    'T6bb_7' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2018_part2/nanoAODskim/Events.root"),
+    'T6bb_8' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2018_part3/nanoAODskim/Events.root"),
 }
 dnames = { 
     'TSlepslep' : "TSlepslep",
@@ -1326,7 +1326,7 @@ dnames = {
     'T6bb_7'      :  "T6bbslep",
     'T6bb_8'      :  "T6bbslep",
 }
-skimFileAsWell = False
+skimFileAsWell = True
 runs_2016 = events[scan].Get("Runs_SUSY")
 runs_2017 = events_2017[scan].Get("Runs_SUSY")
 runs_2018 = events_2018[scan].Get("Runs_SUSY")

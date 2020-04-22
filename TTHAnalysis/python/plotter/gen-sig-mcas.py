@@ -1238,72 +1238,89 @@ T6bb = {#pb
 }
 
 
-scan = 'TChiHZ'
+scan = 'TChiWZ'
 
 
 events = {
-    'TSlepslep' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TSlepSlep_2016/nanoAODskim/Events.root"),
-    'TSlepslep2': r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TSlepSlep_500To1300_2016/nanoAODskim/Events.root"),
-    'TChiWZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_2016/nanoAODskim/Events.root"),
-    'TChiWZ_2' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_2016_Edge/nanoAODskim/Events.root"),
-    'TChiWZ_3' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2016/nanoAODskim/Events.root"),
-    'TChiWZ_4' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2016_Edge/nanoAODskim/Events.root"),
-    'TChiHZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiHZ_2016/nanoAODskim/Events.root"),
-    'TChiZZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiZZ_2016/nanoAODskim/Events.root"), 
-    'T5ZZ' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2016/nanoAODskim/Events.root"),
-    'T5ZZ_2' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2_2016/nanoAODskim/Events.root"),
-    'T5ZZ_3' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_1850to2400_2016/nanoAODskim/Events.root"),
-    'T6bb' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2016_part1/nanoAODskim/Events.root"),
-    'T6bb_2' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2016_part2/nanoAODskim/Events.root"),
-    'T6bb_3' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_400To775_2016/nanoAODskim/Events.root"),
-    'T6bb_4' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2016_part1/nanoAODskim/Events.root"),
-    'T6bb_5' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2016_part2/nanoAODskim/Events.root"),
+    'TSlepslep' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TSlepSlep_2016/nanoAODskim/Events.root",
+    'TSlepslep2': "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TSlepSlep_500To1300_2016/nanoAODskim/Events.root",
+    'TChiWZ' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_2016/nanoAODskim/Events.root",
+    'TChiWZ_2' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_2016_Edge/nanoAODskim/Events.root",
+    'TChiWZ_3' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2016/nanoAODskim/Events.root",
+    'TChiWZ_4' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2016_Edge/nanoAODskim/Events.root",
+    'TChiHZ' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiHZ_2016/nanoAODskim/Events.root",
+    'TChiZZ' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiZZ_2016/nanoAODskim/Events.root", 
+    'T5ZZ' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2016/nanoAODskim/Events.root",
+    'T5ZZ_2' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2_2016/nanoAODskim/Events.root",
+    'T5ZZ_3' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_1850to2400_2016/nanoAODskim/Events.root",
+    'T6bb' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2016_part1/nanoAODskim/Events.root",
+    'T6bb_2' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2016_part2/nanoAODskim/Events.root",
+    'T6bb_3' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_400To775_2016/nanoAODskim/Events.root",
+    'T6bb_4' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2016_part1/nanoAODskim/Events.root",
+    'T6bb_5' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2016_part2/nanoAODskim/Events.root",
 }
 events_2017 = {
-    'TSlepslep' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TSlepSlep_2017/nanoAODskim/Events.root"),
-    'TSlepslep2': r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TSlepSlep_500To1300_2017/nanoAODskim/Events.root"),
-    'TChiWZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_2017/nanoAODskim/Events.root"),
-    'TChiWZ_2' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_2017_Edge/nanoAODskim/Events.root"),
-    'TChiWZ_3' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2017_part1/nanoAODskim/Events.root"),
-    'TChiWZ_4' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2017_part2/nanoAODskim/Events.root"),
-    'TChiWZ_5' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2017_Edge_part1/nanoAODskim/Events.root"),
-    'TChiWZ_6' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2017_Edge_part2/nanoAODskim/Events.root"),
-    'TChiHZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiHZ_2017/nanoAODskim/Events.root"), 
-    'TChiZZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiZZ_2017/nanoAODskim/Events.root"),
-    'T5ZZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_1_2017/nanoAODskim/Events.root"),
-    'T5ZZ_2' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2_2017/nanoAODskim/Events.root"),
-    'T6bb' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_1_2017_part1/nanoAODskim/Events.root"),
-    'T6bb_2' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_1_2017_part2/nanoAODskim/Events.root"),
-    'T6bb_3' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_2_2017_part1/nanoAODskim/Events.root"),
-    'T6bb_4' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_2_2017_part2/nanoAODskim/Events.root"),
-    'T6bb_5' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_3_2017_part1/nanoAODskim/Events.root"),
-    'T6bb_6' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_3_2017_part2/nanoAODskim/Events.root")
+    'TSlepslep' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TSlepSlep_2017/nanoAODskim/Events.root",
+    'TSlepslep2': "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TSlepSlep_500To1300_2017/nanoAODskim/Events.root",
+    'TChiWZ' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_2017/nanoAODskim/Events.root",
+    'TChiWZ_2' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_2017_Edge/nanoAODskim/Events.root",
+    'TChiWZ_3' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2017_part1/nanoAODskim/Events.root",
+    'TChiWZ_4' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2017_part2/nanoAODskim/Events.root",
+    'TChiWZ_5' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2017_Edge_part1/nanoAODskim/Events.root",
+    'TChiWZ_6' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2017_Edge_part2/nanoAODskim/Events.root",
+    'TChiHZ' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiHZ_2017/nanoAODskim/Events.root", 
+    'TChiZZ' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiZZ_2017/nanoAODskim/Events.root",
+    'T5ZZ' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_1_2017/nanoAODskim/Events.root",
+    'T5ZZ_2' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2_2017/nanoAODskim/Events.root",
+    'T6bb' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_1_2017_part1/nanoAODskim/Events.root",
+    'T6bb_2' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_1_2017_part2/nanoAODskim/Events.root",
+    'T6bb_3' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_2_2017_part1/nanoAODskim/Events.root",
+    'T6bb_4' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_2_2017_part2/nanoAODskim/Events.root",
+    'T6bb_5' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_3_2017_part1/nanoAODskim/Events.root",
+    'T6bb_6' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bb_3_2017_part2/nanoAODskim/Events.root"
 }
 
 
 events_2018 = {
-    'TSlepslep' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TSlepSlep_2018/nanoAODskim/Events.root"),
-    'TSlepslep2': r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TSlepSlep_500To1300_2018/nanoAODskim/Events.root"),
-    'TChiWZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_2018/nanoAODskim/Events.root"),
-    'TChiWZ_2' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_2018_Edge/nanoAODskim/Events.root"),
-    'TChiWZ_3' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2018_part1/nanoAODskim/Events.root"),
-    'TChiWZ_4' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2018_part2/nanoAODskim/Events.root"),
-    'TChiWZ_5' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2018_Edge_part1/nanoAODskim/Events.root"),
-    'TChiWZ_6' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2018_Edge_part2/nanoAODskim/Events.root"),
-    'TChiHZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiHZ_2018/nanoAODskim/Events.root"),
-    'TChiZZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiZZ_2018/nanoAODskim/Events.root"),
-    'T5ZZ' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_1850to2400_2018/nanoAODskim/Events.root"),
-    'T5ZZ_2' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2018/nanoAODskim/Events.root"),
-    'T5ZZ_3' : r.TFile.Open("/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2_2018/nanoAODskim/Events.root"),
-    'T6bb' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2018_part1/nanoAODskim/Events.root"),
-    'T6bb_2' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2018_part2/nanoAODskim/Events.root"),
-    'T6bb_3' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2018_part3/nanoAODskim/Events.root"),
-    'T6bb_4' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_400To775_2018_part1/nanoAODskim/Events.root"),
-    'T6bb_5' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_400To775_2018_part2/nanoAODskim/Events.root"),
-    'T6bb_6' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2018_part1/nanoAODskim/Events.root"),
-    'T6bb_7' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2018_part2/nanoAODskim/Events.root"),
-    'T6bb_8' : r.TFile.Open(" /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2018_part3/nanoAODskim/Events.root"),
+    'TSlepslep' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TSlepSlep_2018/nanoAODskim/Events.root",
+    'TSlepslep2': "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TSlepSlep_500To1300_2018/nanoAODskim/Events.root",
+    'TChiWZ' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_2018/nanoAODskim/Events.root",
+    'TChiWZ_2' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_2018_Edge/nanoAODskim/Events.root",
+    'TChiWZ_3' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2018_part1/nanoAODskim/Events.root",
+    'TChiWZ_4' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2018_part2/nanoAODskim/Events.root",
+    'TChiWZ_5' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2018_Edge_part1/nanoAODskim/Events.root",
+    'TChiWZ_6' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiWZ_325to1000_2018_Edge_part2/nanoAODskim/Events.root",
+    'TChiHZ' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiHZ_2018/nanoAODskim/Events.root",
+    'TChiZZ' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/TChiZZ_2018/nanoAODskim/Events.root",
+    'T5ZZ' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_1850to2400_2018/nanoAODskim/Events.root",
+    'T5ZZ_2' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2018/nanoAODskim/Events.root",
+    'T5ZZ_3' : "/pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T5ZZ_2_2018/nanoAODskim/Events.root",
+    'T6bb' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2018_part1/nanoAODskim/Events.root",
+    'T6bb_2' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2018_part2/nanoAODskim/Events.root",
+    'T6bb_3' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_1400To1800_2018_part3/nanoAODskim/Events.root",
+    'T6bb_4' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_400To775_2018_part1/nanoAODskim/Events.root",
+    'T6bb_5' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_400To775_2018_part2/nanoAODskim/Events.root",
+    'T6bb_6' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2018_part1/nanoAODskim/Events.root",
+    'T6bb_7' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2018_part2/nanoAODskim/Events.root",
+    'T6bb_8' : " /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120_signals/T6bbslep_800To1375_2018_part3/nanoAODskim/Events.root",
 }
+
+
+R_events = {
+    "T5ZZ_2016" : r.TFile.Open("/pool/cienciasrw/HeppyTrees/EdgeZ/Edge/Edge_260120/Runs_signals/T5ZZ_2016/nanoAODskim/T5ZZ_2016_merged.root "),
+    "T5ZZ_2017" : r.TFile.Open("/pool/cienciasrw/HeppyTrees/EdgeZ/Edge/Edge_260120/Runs_signals/T5ZZ_2017/nanoAODskim/T5ZZ_2017_merged.root "),
+    "T5ZZ_2018" : r.TFile.Open("/pool/cienciasrw/HeppyTrees/EdgeZ/Edge/Edge_260120/Runs_signals/T5ZZ_2018/nanoAODskim/T5ZZ_2018_merged.root "),
+    #"T6bb_2016" : r.TFile.Open("/pool/cienciasrw/HeppyTrees/EdgeZ/Edge/Edge_260120/Runs_signals/T6bb_2016/nanoAODskim/T6bb_2016_merged.root "), #commented until we have the new samples
+    #"T6bb_2017" : r.TFile.Open("/pool/cienciasrw/HeppyTrees/EdgeZ/Edge/Edge_260120/Runs_signals/T6bb_2017/nanoAODskim/T6bb_2017_merged.root "),
+    #"T6bb_2018" : r.TFile.Open("/pool/cienciasrw/HeppyTrees/EdgeZ/Edge/Edge_260120/Runs_signals/T6bb_2018/nanoAODskim/T6bb_2018_merged.root "),
+    "TChiWZ_2016" : r.TFile.Open("/pool/cienciasrw/HeppyTrees/EdgeZ/Edge/Edge_260120/Runs_signals/TChiWZ_2016/nanoAODskim/TChiWZ_2016_merged.root "),
+    "TChiWZ_2017" : r.TFile.Open("/pool/cienciasrw/HeppyTrees/EdgeZ/Edge/Edge_260120/Runs_signals/TChiWZ_2017/nanoAODskim/TChiWZ_2017_merged.root "),
+    "TChiWZ_2018" : r.TFile.Open("/pool/cienciasrw/HeppyTrees/EdgeZ/Edge/Edge_260120/Runs_signals/TChiWZ_2018/nanoAODskim/TChiWZ_2018_merged.root "),
+
+}
+
+
+
 dnames = { 
     'TSlepslep' : "TSlepslep",
     'TSlepslep2' : "TSlepslep",
@@ -1314,6 +1331,7 @@ dnames = {
     'TChiWZ_5'    : "TChiWZ_325to1000",
     'TChiWZ_6'    : "TChiWZ_325to1000",
     'TChiHZ'    : "TChiHZ",
+    'TChiZZ'    : "TChiZZ",
     'T5ZZ'      : "T5ZZ",
     'T5ZZ_2'      : "T5ZZ",
     'T5ZZ_3'      : "T5ZZ",
@@ -1327,13 +1345,28 @@ dnames = {
     'T6bb_8'      :  "T6bbslep",
 }
 skimFileAsWell = False
-runs_2016 = events[scan].Get("Runs_SUSY")
-runs_2017 = events_2017[scan].Get("Runs_SUSY")
-runs_2018 = events_2018[scan].Get("Runs_SUSY")
 
-Events_2016 = events[scan].Get("Events")
-Events_2017 = events_2017[scan].Get("Events")
-Events_2018 = events_2018[scan].Get("Events")
+runs_2016 = R_events[scan+'_2016'].Get("Runs_SUSY")
+runs_2017 = R_events[scan+'_2017'].Get("Runs_SUSY")
+runs_2018 = R_events[scan+'_2018'].Get("Runs_SUSY")
+
+
+Events_2016 = r.TChain("Events")
+for key in events.keys():
+    if scan in key:
+       Events_2016.Add(events[key])
+
+
+Events_2017 = r.TChain("Events")
+for key in events_2017.keys():
+    if scan in key: 
+       Events_2017.Add(events_2017[key])
+
+
+Events_2018 = r.TChain("Events")
+for key in events_2018.keys():
+    if scan in key: 
+       Events_2018.Add(events_2018[key])
 
 pattern = re.compile("sumWeights_(?P<m1>[0-9]+)_(?P<m2>[0-9]+)")
 mcas = { '2016' : '',
@@ -1341,17 +1374,21 @@ mcas = { '2016' : '',
          '2018' : ''
 }
 xsec_dict = slepton if "TSlepslep" in scan else tchiwz if "TChiWZ" in scan else tchiVV if  "TChiHZ" or "TChiZZ" in scan else T5ZZ if "T5ZZ" in scan else T6bb if "T6bb" in scan  else None
+
 for k in runs_2016.GetListOfBranches(): 
+    #print('k',k)
     match = pattern.search( k.GetName())
     if not match: 
         continue
+
     if not runs_2017.GetBranch(k.GetName()): print 'Branch %s is not in 2017'%k.GetName()
     if not runs_2018.GetBranch(k.GetName()): print 'Branch %s is not in 2018'%k.GetName()
+      
     m1,m2 = int(match.group( 'm1')), int(match.group('m2'))
     if m1 in xsec_dict:
         xsec = xsec_dict[m1]
     else: 
-        if m1 > 1000: continue
+        if m1 > float(xsec_dic.keys()[-1]): continue
         # interpolate
         m1p = m1; m1m = m1
         while m1p not in xsec_dict: 
@@ -1383,7 +1420,8 @@ for k in runs_2016.GetListOfBranches():
             if os.path.isdir("/pool/cienciasrw/HeppyTrees/EdgeZ/Edge/Edge_260120/{scan}_points/{dname}_{m1}_{m2}_{year}/nanoAODskim/".format(scan=scan,year=year,m1=m1,m2=m2,dname=dnames[scan])):
                 print 'attempting to override {dname}_{m1}_{m2}_{year}. will skip'.format(scan=scan,year=year,m1=m1,m2=m2,dname=dnames[scan])
             os.system("mkdir -p /pool/cienciasrw/HeppyTrees/EdgeZ/Edge/Edge_260120/{scan}_points/{dname}_{m1}_{m2}_{year}/nanoAODskim/".format(scan=scan,year=year,m1=m1,m2=m2,dname=dnames[scan]))
-            outf = r.TFile.Open("/pool/cienciasrw/HeppyTrees/EdgeZ/Edge/Edge_260120/{scan}_points//{dname}_{m1}_{m2}_{year}/nanoAODskim/Events.root".format(scan=scan,year=year,m1=m1,m2=m2,dname=dnames[scan]),'recreate')
+            outf = r.TFile.Open("/pool/cienciasrw/HeppyTrees/EdgeZ/Edge/Edge_260120/{scan}_points/{dname}_{m1}_{m2}_{year}/nanoAODskim/Events.root".format(scan=scan,year=year,m1=m1,m2=m2,dname=dnames[scan]),'recreate')
+            
             cpevents = eval("Events_%s"%year).CopyTree('GenSusyMScan1_mass=={m1}&&GenSusyMScan2_mass=={m2}'.format(m1=m1,m2=m2))
             cpevents.Write()
             eval("runs_%s"%year).CloneTree().Write()

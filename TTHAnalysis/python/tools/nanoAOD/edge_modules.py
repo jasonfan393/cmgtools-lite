@@ -30,14 +30,17 @@ btagSF2018_fs = [btags2018, btagSum, btags2018_fs, btagSum_fs]
 # python prepareEventVariablesFriendTree.py -t NanoAOD /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120/ /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120//2_btags  -I CMGTools.TTHAnalysis.tools.nanoAOD.edge_modules btagSF{year}_fs --dm TSlep.*  -N 1000
 
 from CMGTools.TTHAnalysis.tools.objTagger import ObjTagger
-goodFatJets = lambda : ObjTagger("isGood","FatJetSel_Edge",[lambda x : (x.msoftdrop > 60 and x.msoftdrop  < 100 and x.tau2/x.tau1 < 0.6 and x.pt > 200) ], makelinks=True)
+
+goodFatJets2016 = lambda : ObjTagger("isGood","FatJetSel_Edge",[lambda x : (x.msoftdrop > 65 and x.msoftdrop  < 105 and x.tau2/x.tau1 < 0.4 and x.pt > 200) ], makelinks=True)
+goodFatJets2017 = lambda : ObjTagger("isGood","FatJetSel_Edge",[lambda x : (x.msoftdrop > 65 and x.msoftdrop  < 105 and x.tau2/x.tau1 < 0.45 and x.pt > 200) ], makelinks=True)
+goodFatJets2018 = lambda : ObjTagger("isGood","FatJetSel_Edge",[lambda x : (x.msoftdrop > 65 and x.msoftdrop  < 105 and x.tau2/x.tau1 < 0.45 and x.pt > 200) ], makelinks=True)
 
 # python prepareEventVariablesFriendTree.py -t NanoAOD /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120/ /pool/ciencias/HeppyTrees/EdgeZ/Edge/Edge_260120//3_fatjetcounter  -I CMGTools.TTHAnalysis.tools.nanoAOD.edge_modules goodFatJets -d ZZZ_2016 -c 0 -N 1000
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.Edge_ZZkfactor import ZZkfactor
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.Edge_massVariables import massVariables
-from CMGTools.TTHAnalysis.tools.nanoAOD.edge_isr_reweight import Edge_isr_reweight
-from CMGTools.TTHAnalysis.tools.nanoAOD.helperVariables import helperVariables
+#from CMGTools.TTHAnalysis.tools.nanoAOD.edge_isr_reweight import Edge_isr_reweight
+#from CMGTools.TTHAnalysis.tools.nanoAOD.helperVariables import helperVariables
 
-from CMGTools.TTHAnalysis.tools.nanoAOD.flavSym import FlavSym
+#from CMGTools.TTHAnalysis.tools.nanoAOD.flavSym import FlavSym

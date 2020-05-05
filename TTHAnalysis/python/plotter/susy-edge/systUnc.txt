@@ -3,7 +3,7 @@ $alias : MCall : TTZ|WZ|VVV|ZZ|DY|TSlepslep_.*|TChiHZ.*|TChiWZ.*|TChiZZ.*
 $alias : MCfastsim : TSlepslep_.*|TChiHZ.*|TChiWZ.*|TChiZZ.*
 $alias : $DY_slep : DY_onZ_nojet|DY_offZ_nojet|DY_onZ_withjet|DY_offZ_withjet|DY_onZ_cr|DY_offZ_cr
 
-#flav_sym : data_flavsym : .* : gmN
+flav_sym : data_flavsym : .* : gmN
 
 flav_sym_rmue_norm : data_flavsym : .* : templateAsymm ; AddWeights=['rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,1)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'\,'rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,-1)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'], DoesNotChangeEventSelection=True
 flav_sym_rmue_pt_2016_2017 : data_flavsym : .* : templateAsymm ; AddWeights=['rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,2)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'\,'rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,-2)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'], DoesNotChangeEventSelection=True, year="2016\,2017"

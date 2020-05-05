@@ -20,6 +20,8 @@ parser.add_option("--regularize", dest="regularize", action="store_true", defaul
 parser.add_option("--scanregex", dest="scanregex", type="string", default="ct_(?P<kt>.*)_cv_(?P<kv>.*)", help="Regex expression to parse parameters of the scan")
 parser.add_option("--params", dest="params", type="string", default="kt,kv", help="List of parameters in the regex, separated by commas")
 parser.add_option("--namedict", dest="namedict", type="string", default=None, help="File with dictionary for name of processes in cards")
+parser.add_option("--gammaProcesses", dest="gammaProcesses", action='append', default=[], help="Processes with a gmN stat uncertainty")
+
 (options, args) = parser.parse_args()
 options.weight = True
 options.final  = True
@@ -116,7 +118,7 @@ for scanpoint in scanpoints:
         if options.bbb:
             if options.autoMCStats: raise RuntimeError("Can't use --bbb together with --amc/--autoMCStats")
             for p,h in report.iteritems(): 
-                if p not in ("data", "data_obs"):
+                if p not in ["data", "data_obs"] + options.gammaProcesses:
                     hasGamma = False 
                     for nuis in sorted(listAllNuisances(report)):
                         if h.hasVariation(nuis) and nuis.endswith("gmN"): 
@@ -202,6 +204,16 @@ for scanpoint in scanpoints:
                         systs[name] = ("lnU", effyield, {})
                     else:
                         systs[name] = ("lnN", effyield, {})
+        
+        for gammaP in options.gammaProcesses:
+            for subbin in range(1,report['data'].GetNbinsX()+1):
+                if gammaP not in report:
+                    print gammaP, report, report[gammaP]
+                    systs[name + '_' + binname + '_bin%d'%subbin] = ("gmN 0", dict((p,"1.0" if p==gammaP else "-") for p in procs), {})
+                else: 
+                    n_val = int(0.5 + (( report[gammaP].GetBinContent(subbin) ** 2 ) / (report[gammaP].GetBinError(subbin) ** 2)))
+                    systs[name + '_' + binname + '_bin%d'%subbin] = ("gmN %d"%n_val, dict((p,"%4.3f"%(report[gammaP].GetBinContent(subbin)/float(n_val)) if p==gammaP else "-") for p in procs), {})
+
         # make a new list with only the ones that have an effect
         nuisances = sorted(systs.keys())
         datacard = open(outdir+binname+'_'+pointname+".card.txt", "w"); 

@@ -212,7 +212,7 @@ for scanpoint in scanpoints:
                 if gammaP not in report:
                     print gammaP, report, report[gammaP]
                     systs[name + '_' + binname + '_bin%d'%subbin] = ("gmN 0", dict((p,"1.0" if p==gammaP else "-") for p in procs), {})
-                elif gammaP in report and report[gammaP].GetBinError(subbin)<1e-8 :
+                elif gammaP in report and not report[gammaP].GetBinContent(subbin) :
                     print gammaP, report, report[gammaP]
                     systs[name + '_' + binname + '_bin%d'%subbin] = ("gmN 0", dict((p,"1.0" if p==gammaP else "-") for p in procs), {})
                 else:

@@ -1,6 +1,6 @@
 ### Alias definitions. Careful to avoid trailing '.*' to avoid matching _promptsub
-$alias : MCall : TTZ|WZ|VVV|ZZ|DY|TSlepslep_.*
-$alias : MCfastsim : TSlepslep_.*
+$alias : MCall : TTZ|WZ|VVV|ZZ|DY|TSlepslep_.*|TChiHZ.*|TChiWZ.*|TChiZZ.*
+$alias : MCfastsim : TSlepslep_.*|TChiHZ.*|TChiWZ.*|TChiZZ.*
 $alias : $DY_slep : DY_onZ_nojet|DY_offZ_nojet|DY_onZ_withjet|DY_offZ_withjet|DY_onZ_cr|DY_offZ_cr
 
 
@@ -35,10 +35,35 @@ wz_normalization        : WZ : .* : normSymm : 1.08
 zz_normalization        : ZZ : .* : normSymm : 1.20
 zz_normalization        : ZZ_sub : .* : normSymm : 1.20
 dy_offz : DY_offZ_cr : slepton_.* : altFileSym; suffix='_error'
+dy_offz : DY_onZ_cr : slepton_.* : altFileSym; suffix='_error'
 dy_offz : DY_offZ_nojet : slepton_.* : altFileSym; suffix='_error'
 dy_offz : DY_offZ_withjet : slepton_.* : altFileSym; suffix='_error'
 dy_offz : DY_onZ_withjet : slepton_.* : altFileSym; suffix='_error'
-dy_offz : DY_offZ_nojet : slepton_.* : altFileSym; suffix='_error'
+dy_offz : DY_onZ_nojet : slepton_.* : altFileSym; suffix='_error'
+
+SRWZBoosted_stat_error : template_SRVZBoosted : wz_boosted : altFileSym; suffix='_stat_error'
+SRZZBoosted_stat_error : template_SRVZBoosted : zz_boosted : altFileSym; suffix='_stat_error'
+SRWZBoosted_ewk_error : template_SRVZBoosted : wz_boosted : altFileSym; suffix='_ewk_error'
+SRZZBoosted_ewk_error : template_SRVZBoosted : zz_boosted : altFileSym; suffix='_ewk_error'
+SRWZBoosted_closure_error : template_SRVZBoosted : wz_boosted : altFileSym; suffix='_closure_error'
+SRZZBoosted_closure_error : template_SRVZBoosted : zz_boosted : altFileSym; suffix='_closure_error'
+SRWZBoosted_norm_error : template_SRVZBoosted : wz_boosted : altFileSym; suffix='_norm_error'
+SRZZBoosted_norm_error : template_SRVZBoosted : zz_boosted : altFileSym; suffix='_norm_error'
+
+SRWZResolved_stat_error : template_SRVZResolved : wz_resolved : altFileSym; suffix='_stat_error'
+SRZZResolved_stat_error : template_SRVZResolved : zz_resolved : altFileSym; suffix='_stat_error'
+SRWZResolved_ewk_error : template_SRVZResolved : wz_resolved : altFileSym; suffix='_ewk_error'
+SRZZResolved_ewk_error : template_SRVZResolved : zz_resolved : altFileSym; suffix='_ewk_error'
+SRWZResolved_closure_error : template_SRVZResolved : wz_resolved : altFileSym; suffix='_closure_error'
+SRZZResolved_closure_error : template_SRVZResolved : zz_resolved : altFileSym; suffix='_closure_error'
+SRWZResolved_norm_error : template_SRVZResolved : wz_resolved : altFileSym; suffix='_norm_error'
+SRZZResolved_norm_error : template_SRVZResolved : zz_resolved : altFileSym; suffix='_norm_error'
+
+SRHZ_stat_error : template_SRHZ : hz.* : altFileSym; suffix='_stat_error'
+SRHZ_ewk_error : template_SRHZ : hz.* : altFileSym; suffix='_ewk_error'
+SRHZ_closure_error : template_SRHZ : hz.* : altFileSym; suffix='_closure_error'
+SRHZ_norm_error : template_SRHZ : hz.* : altFileSym; suffix='_norm_error'
+
 
 isr_rw :  $MCfastsim : .* : templateAsymm; AddWeights=['genWeight_isrWeight'\,'1/genWeight_isrWeight']
 wz_met : WZ : .* : templateSymm ; AddWeight='1+MET_pt_Edge*0.00180689'

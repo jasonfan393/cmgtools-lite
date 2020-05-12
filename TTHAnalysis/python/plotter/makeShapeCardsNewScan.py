@@ -55,8 +55,10 @@ for psig in mca.listSignals(True):
     point[1] = re.sub("_h[a-z]+", '',point[1])
     if point not in scanpoints and 'promptsub' not in point[1]: scanpoints.append(  point ) 
 report={}
+
 if options.infile:
     infile = ROOT.TFile(outdir+binname+".bare.root","read")
+    
     for p in mca.listSignals(True)+mca.listBackgrounds(True)+['data']:
         variations = mca.getProcessNuisances(p) if p != "data" else []
         h = readHistoWithNuisances(infile, "x_"+p, variations, mayBeMissing=True)
@@ -210,7 +212,10 @@ for scanpoint in scanpoints:
                 if gammaP not in report:
                     print gammaP, report, report[gammaP]
                     systs[name + '_' + binname + '_bin%d'%subbin] = ("gmN 0", dict((p,"1.0" if p==gammaP else "-") for p in procs), {})
-                else: 
+                elif gammaP in report and not report[gammaP].GetBinContent(subbin) :
+                    print gammaP, report, report[gammaP]
+                    systs[name + '_' + binname + '_bin%d'%subbin] = ("gmN 0", dict((p,"1.0" if p==gammaP else "-") for p in procs), {})
+                else:
                     n_val = int(0.5 + (( report[gammaP].GetBinContent(subbin) ** 2 ) / (report[gammaP].GetBinError(subbin) ** 2)))
                     systs[name + '_' + binname + '_bin%d'%subbin] = ("gmN %d"%n_val, dict((p,"%4.3f"%(report[gammaP].GetBinContent(subbin)/float(n_val)) if p==gammaP else "-") for p in procs), {})
 

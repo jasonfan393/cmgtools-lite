@@ -29,18 +29,23 @@ outHists = []
 for sr in srs: 
     bins = []
     uncrst = []
+    uncrst_2 = []
     k = open('input/template_%s.json'%sr)
     dictthingy = json.loads(k.read())
     for bin in dictthingy: 
         binNum = bin[-1]
         var    = bin[:-1]
+        var_2 = bin
         if binNum not in bins: bins.append( int(binNum) )
         if var    not in uncrst: uncrst.append( var ) 
+        if var_2    not in uncrst_2: uncrst_2.append( var_2 ) 
     for var in uncrst:
-        h = r.TH1F('%s_%s'%(sr,var),'',len(binnings[sr])-1,binnings[sr])
+        h_name='%s_%s'%(sr,var[:-4])
+        h = r.TH1F(h_name.replace('_prediction',''),'',len(binnings[sr])-1,binnings[sr])
         for bin in bins:
             h.SetBinContent( bin+1, dictthingy[var+'%d'%bin])
         outHists.append(h)
+       
 tf = r.TFile.Open("Templates.root","recreate")
 for h in outHists:
     h.Write()

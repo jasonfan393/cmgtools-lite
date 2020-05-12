@@ -45,27 +45,7 @@ for sr in srs:
         for bin in bins:
             h.SetBinContent( bin+1, dictthingy[var+'%d'%bin])
         outHists.append(h)
-    for var in uncrst_2:
-        if 'prediction' in var: continue
-        h_name='%s_%s'%(sr,var+'_perBin')
-        h = r.TH1F(h_name,'',len(binnings[sr])-1,binnings[sr])
-        error = var+'_perBin'
-        list_of_process = []
-        if 'VZ' in sr: 
-            list_of_process.append('TChiWZ')
-            list_of_process.append('TChiZZ')
-        for process in list_of_process:
-            if 'WZ' in process: b = 'WZ'
-            elif 'HZ' in process: b = 'HZ'
-            elif 'ZZ' in process: b = 'ZZ'
-            nuisance=h_name.replace('_perBin','').replace('VZ',b)
-            print("{nuisance} : template_{sr} : {process}.* : altFileSym; suffix='_{error}'".format(nuisance=nuisance,sr=sr.replace('VZ',b),process=process,error=error))
-        for bin in bins:
-            if bin == int(var[-1]):
-               h.SetBinContent( bin+1, dictthingy[var])
-            else:
-               h.SetBinContent(bin+1, dictthingy['prediction_bin'+'%d'%bin])
-        outHists.append(h)
+       
 tf = r.TFile.Open("Templates.root","recreate")
 for h in outHists:
     h.Write()

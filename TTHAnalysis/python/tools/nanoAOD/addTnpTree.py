@@ -198,3 +198,13 @@ class addTnpTree(Module):
         return False
 
 # define modules using the syntax 'name = lambda : constructor' to avoid having them loaded when not needed
+
+Muon_2016= lambda : addTnpTree(2016,'Muon')
+Muon_2017= lambda : addTnpTree(2017,'Muon')
+Muon_2018= lambda : addTnpTree(2018,'Muon')
+
+
+Electron_2016= lambda : addTnpTree(2016,'Electron')
+Electron_2017= lambda : addTnpTree(2017,'Electron')
+Electron_2018= lambda : addTnpTree(2018,'Electron')
+

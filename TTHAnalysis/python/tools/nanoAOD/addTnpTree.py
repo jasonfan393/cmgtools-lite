@@ -52,10 +52,10 @@ class addTnpTree(Module):
 
         _brlist_out = wrappedOutputTree._tree.GetListOfBranches()
         branches_out = set(
-            [_brlist_out.At(i) for i in range(_brlist_out.GetEntries())])
+            [(_brlist_out.At(i).GetName(), _brlist_out.At(i).FindLeaf( _brlist_out.At(i).GetName()).GetTypeName()) for i in range(_brlist_out.GetEntries())])
         branches_out = [
             x for x in branches_out
-            if wrappedOutputTree._tree.GetBranchStatus(x.GetName())
+            if wrappedOutputTree._tree.GetBranchStatus(x[0])
         ]
         branches=branches_in+branches_out
         

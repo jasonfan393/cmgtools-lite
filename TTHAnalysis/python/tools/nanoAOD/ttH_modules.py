@@ -427,3 +427,5 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.ttH_gen_reco import ttH_gen_reco
 #
 #from CMGTools.TTHAnalysis.tools.topRecoSemiLept import TopRecoSemiLept
 #topRecoModule = lambda : TopRecoSemiLept(constraints=['kWHadMass','kWLepMass','kTopLepMass','kTopHadMass'])
+
+from CMGTools.TTHAnalysis.tools.nanoAOD.LepMVAULFriend import lepMVA_2016, lepMVA_2016_APV, lepMVA_2017, lepMVA_2018

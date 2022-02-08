@@ -8,18 +8,32 @@ class lepJetBTagAdder( Module ):
         self._dummyValue = dummyValue
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         self.out = wrappedOutputTree
-        self.out.branch("LepGood_" + self._lepBTagLabel, "F", lenVar="nLepGood")
+        self.out.branch("Muon_" + self._lepBTagLabel, "F", lenVar="nMuon")
+        self.out.branch("Electron_" + self._lepBTagLabel, "F", lenVar="nElectron")
     def analyze(self, event):
-        leps = Collection(event, 'LepGood')
+        elec = Collection(event, 'Electron')
+        muos = Collection(event, 'Muon')
+
         jets = Collection(event, 'Jet')
         nJets = len(jets)
+
         values = []
-        for lep in leps:
+        for lep in elec:
             if lep.jetIdx >= 0 and lep.jetIdx < nJets:
                 values.append(getattr(jets[lep.jetIdx], self._jetBTagLabel))
             else:
                 values.append(self._dummyValue)
-        self.out.fillBranch("LepGood_" + self._lepBTagLabel, values)
+        self.out.fillBranch("Electron_" + self._lepBTagLabel, values)
+
+        values = []
+        for lep in muos:
+            if lep.jetIdx >= 0 and lep.jetIdx < nJets:
+                values.append(getattr(jets[lep.jetIdx], self._jetBTagLabel))
+            else:
+                values.append(self._dummyValue)
+        self.out.fillBranch("Muon_" + self._lepBTagLabel, values)
+
+
         return True
 
 lepJetBTagCSV = lambda : lepJetBTagAdder("btagCSVV2", "jetBTagCSV")

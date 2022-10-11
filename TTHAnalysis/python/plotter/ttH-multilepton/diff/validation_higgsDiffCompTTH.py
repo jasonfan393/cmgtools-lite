@@ -7,11 +7,11 @@ class Validation_HiggsDiffCompTTH():
         gROOT.SetBatch()
         self.f = TFile.Open(fname, 'read')
         if not self.f:
-            print('Cannot open file %s. Exiting'%fname)
+            print(('Cannot open file %s. Exiting'%fname))
             return
         self.t = self.f.Get(tname)
         if not self.t:
-            print('Cannot open tree %s for file %s. Exiting'%(tname,fname))
+            print(('Cannot open tree %s for file %s. Exiting'%(tname,fname)))
             return
         self.altf = TFile.Open(altfname, 'read') if altfname else None
         #self.altt = self.altf.Get(tname) if self.altf else None
@@ -30,7 +30,7 @@ class Validation_HiggsDiffCompTTH():
 
     def printPlotList(self):
         for plot in self.p:
-            print('Plotting:', plot)
+            print(('Plotting:', plot))
 
     def plotList(self):
         for plot in self.p:
@@ -118,7 +118,7 @@ class Validation_HiggsDiffCompTTH():
         # Independent on JES
         
         # Somehow dependent on JES
-        for jesLabel in self.systsJEC.values():
+        for jesLabel in list(self.systsJEC.values()):
             self.p.append(['%spTVisCrossCheck%s'%(self.label,jesLabel)                      , 200, -100., 100.])
             self.p.append(['%spTVisPlusNu%s'%(self.label,jesLabel)                          , 200, -100., 100.])
             self.p.append(['%spTVis_jets_match%s'%(self.label,jesLabel)                     , 200, -100., 100.])
@@ -161,7 +161,7 @@ class Validation_HiggsDiffCompTTH():
         
 
 for year in [2016, 2017, 2018]:
-    print('With windows, year %s'%year)
+    print(('With windows, year %s'%year))
     validator = None
     #if year == 2016:
     validator = Validation_HiggsDiffCompTTH('/nfs/user/pvischia/tth/v6/NanoTrees_TTH_091019_v6pre_skim2lss_tight/%s/6_higgsDiffCompTTH/TTHnobb_fxfx_Friend.root'%year, outdir='validationPlots_higgsDiffCompTTH/%s'%year, altfname='/nfs/user/pvischia/tth/v6/NanoTrees_TTH_091019_v6pre_skim2lss_tight/%s/6_higgsDiffCompTTH_noWmassConstraint/TTHnobb_fxfx_Friend.root'%year)

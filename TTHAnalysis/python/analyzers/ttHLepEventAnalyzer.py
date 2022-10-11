@@ -27,7 +27,7 @@ class ttHLepEventAnalyzer( Analyzer ):
         event.bestMTopHad   = 0
         event.bestMTopHadPt = 0
         for i1,j1 in enumerate(event.lightJets):
-            for i2 in xrange(i1+1,len(event.lightJets)):
+            for i2 in range(i1+1,len(event.lightJets)):
                 j2 = event.lightJets[i2]
                 jjp4 = j1.p4() + j2.p4()
                 mjj  = jjp4.M()

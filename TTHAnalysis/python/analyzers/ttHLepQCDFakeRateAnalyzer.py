@@ -28,8 +28,8 @@ class ttHLepQCDFakeRateAnalyzer( Analyzer ):
     def process(self, event):
         npairs = 0;
         self.counters.counter('events').inc('all events')
-        leps = filter(self.leptonSel, event.selectedLeptons)
-        jets = filter(self.jetSel, getattr(event, self.jetColl))
+        leps = list(filter(self.leptonSel, event.selectedLeptons))
+        jets = list(filter(self.jetSel, getattr(event, self.jetColl)))
         jets.sort(key = self.jetSort, reverse=True)
         if len(leps): self.counters.counter('events').inc('with leptons')
         if len(jets): self.counters.counter('events').inc('with jets')

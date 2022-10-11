@@ -4,7 +4,7 @@ from array import array
 from math import log, exp
 
 from CMGTools.TTHAnalysis.treeReAnalyzer import ROOT, EventLoop, Module, Collection
-from BTagCSVFullShape import BTagCSVFullShape
+from .BTagCSVFullShape import BTagCSVFullShape
 
 class BTagEventWeightFriend:
     def __init__(self,
@@ -54,9 +54,9 @@ class BTagEventWeightFriend:
         for _var in self.systsJEC:
             jets = [j for j in Collection(event,"JetSel"+self.recllabel,"nJetSel"+self.recllabel)]
             jetptcut = 25
-            if (_var==0): jets = filter(lambda x : x.pt>jetptcut, jets)
-            elif (_var==1): jets = filter(lambda x : x.pt*x.corr_JECUp/x.corr>jetptcut, jets)
-            elif (_var==-1): jets = filter(lambda x : x.pt*x.corr_JECDown/x.corr>jetptcut, jets)
+            if (_var==0): jets = [x for x in jets if x.pt>jetptcut]
+            elif (_var==1): jets = [x for x in jets if x.pt*x.corr_JECUp/x.corr>jetptcut]
+            elif (_var==-1): jets = [x for x in jets if x.pt*x.corr_JECDown/x.corr>jetptcut]
             if (_var==0): jetcorr = [1 for x in jets]
             elif (_var==1): jetcorr = [x.corr_JECUp/x.corr for x in jets]
             elif (_var==-1): jetcorr = [x.corr_JECDown/x.corr for x in jets]

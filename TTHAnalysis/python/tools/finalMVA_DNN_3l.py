@@ -92,7 +92,7 @@ class finalMVA_DNN_3l(Module):
 
 
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
-        print self.outVars
+        print(self.outVars)
         declareOutput(self, wrappedOutputTree, self.outVars)
         
     def analyze(self,event):
@@ -101,7 +101,7 @@ class finalMVA_DNN_3l(Module):
         for worker in self._MVAs:
             name = worker.name
             if not hasattr(event,"nJet25_jerUp_Recl") and ('_jes' in name or  '_jer' in name or '_uncl' in name): continue # using jer bc components wont change
-            ret.extend( [(x,y) for x,y in worker(event).iteritems()])
+            ret.extend( [(x,y) for x,y in worker(event).items()])
             
 
             

@@ -26,7 +26,7 @@ class AnaliticAnomalousCouplingEFTNegative(PhysicsModel):
 
         self.numOperators = len(self.Operators)
 
-        print " Operators = ", self.Operators
+        print(" Operators = ", self.Operators)
 
         # regular expressions for process names:
         self.sm_re    = re.compile('(?P<proc>.*)_SM')
@@ -40,7 +40,7 @@ class AnaliticAnomalousCouplingEFTNegative(PhysicsModel):
 
             if po.startswith("eftOperators="):
                 self.Operators = po.replace("eftOperators=","").split(",")
-                print " Operators = ", self.Operators
+                print(" Operators = ", self.Operators)
                 self.numOperators = len(self.Operators)
 
             if po.startswith("eftAlternative"):
@@ -248,8 +248,8 @@ class AnaliticAnomalousCouplingEFTNegative(PhysicsModel):
 
 
 
-        print " parameters of interest = ", self.poiNames
-        print " self.numOperators = ", self.numOperators
+        print(" parameters of interest = ", self.poiNames)
+        print(" self.numOperators = ", self.numOperators)
         
         self.modelBuilder.doSet("POI",self.poiNames)
 
@@ -287,7 +287,7 @@ class AnaliticAnomalousCouplingEFTNegative(PhysicsModel):
                 raise RuntimeError("Undefined process %s"%process)
 
         else:
-            print 'Process %s not a signal'%process
+            print('Process %s not a signal'%process)
             return 1
         
 

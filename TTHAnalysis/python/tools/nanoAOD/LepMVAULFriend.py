@@ -30,7 +30,7 @@ elVars = [
 
 class LeptonMVA:
     def __init__(self,elpath):
-        print "Booking %s" % (elpath)
+        print("Booking %s" % (elpath))
 
         self.el = MVATool("BDTG", elpath,elVars)
 
@@ -66,7 +66,7 @@ class LepMVAFriend(Module):
             elif event.year==2018:
                 themva=self.mva['18']
             else: 
-                print event.year, event.suberaId
+                print(event.year, event.suberaId)
                 raise RuntimeError("Unknown year")
         else:
             themva=self.mva

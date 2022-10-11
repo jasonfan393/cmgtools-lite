@@ -44,7 +44,7 @@ class HjDummyCalc(Module):
         all_leps = [l for l in Collection(event,"LepGood")]
         nFO = getattr(event,"nLepFO"+self.inputlabel)
         chosen = getattr(event,"iLepFO"+self.inputlabel)
-        leps = [all_leps[chosen[i]] for i in xrange(nFO)]
+        leps = [all_leps[chosen[i]] for i in range(nFO)]
         if len(leps) < 2: return True
         ret = {} 
         for var in self.systsJEC:
@@ -54,7 +54,7 @@ class HjDummyCalc(Module):
                 _var = 0; 
             jets = [j for j in Collection(event,"JetSel"+self.inputlabel)]
             jetptcut = 25
-            jets = filter(lambda x : getattr(x,'pt%s'%self.systsJEC[_var]) > jetptcut, jets)
+            jets = [x for x in jets if getattr(x,'pt%s'%self.systsJEC[_var]) > jetptcut]
 
 
             allVars = [] 

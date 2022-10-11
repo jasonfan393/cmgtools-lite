@@ -80,7 +80,7 @@ for proc, fil, color in inputs:
     leg1.AddEntry(hist, proc, 'l')
     tokeep.append(hist)
     tokeep.append(graph)
-print tokeep
+print(tokeep)
 doSpam('#bf{CMS} #it{Preliminary}', .09, .92, .6, .92, align=12, textSize=0.05)
 doSpam('137 fb^{-1} (13 TeV)', .56, .92, .75, .92, align=12, textSize=0.05)
 leg1.Draw("same")

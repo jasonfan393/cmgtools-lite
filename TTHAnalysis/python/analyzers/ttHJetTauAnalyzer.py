@@ -14,7 +14,7 @@ class ttHJetTauAnalyzer( Analyzer ):
 
     def findNonTauJets(self, jets):
         iJetNoTau =  []
-        for ij in xrange(len(jets)):
+        for ij in range(len(jets)):
             if not jets[ij].taus:
                 iJetNoTau.append(ij)
                 

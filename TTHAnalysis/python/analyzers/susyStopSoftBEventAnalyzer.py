@@ -63,7 +63,7 @@ class susyStopSoftBEventAnalyzer( Analyzer ):
         event.mtB1 = mT(event.cleanJets[event.iBs[0]], event.met) if len(event.iBs) >= 1 else -99.0
         event.mtB2 = mT(event.cleanJets[event.iBs[1]], event.met) if len(event.iBs) >= 2 else -99.0
 
-        for i in xrange(6):
+        for i in range(6):
             setattr(event, 'dphiJet%dMet' % (i+1), abs(deltaPhi(event.cleanJets[i].phi(), event.met.phi())) if len(event.cleanJets) > i else -99)
 
         self.counters.counter('events').inc('accepted events')

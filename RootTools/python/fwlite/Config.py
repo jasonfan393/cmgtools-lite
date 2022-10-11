@@ -13,19 +13,19 @@ def printComps(comps, details=False):
     for c in comps:
         if not hasattr(c, 'splitFactor'):
             c.splitFactor = 1
-        print 
-        print c.name, c.splitFactor, len(c.files)
+        print() 
+        print(c.name, c.splitFactor, len(c.files))
         if len(c.files)==0:
             continue
         else:
             if details:
-                print c.files[0]
+                print(c.files[0])
             nJobs += c.splitFactor
             nCompsWithFiles += 1
             
-    print '-'*70
-    print '# components with files = ', nCompsWithFiles
-    print '# jobs                  = ', nJobs
+    print('-'*70)
+    print('# components with files = ', nCompsWithFiles)
+    print('# jobs                  = ', nJobs)
 
 
 class CFG(object):
@@ -39,7 +39,7 @@ class CFG(object):
         header = '{type}: {name}'.format( type=self.__class__.__name__,
                                           name=self.name)
         varlines = ['\t{var:<15}:   {value}'.format(var=var, value=value) \
-                    for var,value in sorted(vars(self).iteritems()) \
+                    for var,value in sorted(vars(self).items()) \
                     if var is not 'name']
         all = [ header ]
         all.extend(varlines)
@@ -96,7 +96,7 @@ class Component( CFG ):
     DataComponent, MCComponent, EmbedComponent
     for more information.'''
     def __init__(self, name, files, triggers=None, **kwargs):
-        if isinstance(triggers, basestring):
+        if isinstance(triggers, str):
             triggers = [triggers]
         if type(files) == str:
             files = sorted(glob.glob(files))
@@ -195,20 +195,20 @@ if __name__ == '__main__':
                     protch = ['blah'])
 
     sequence = Sequence( [ana1, ana2] )
-    print sequence
+    print(sequence)
 
     comp1 = Component( 'DYJets',
                        files='*.root',
                        triggers='HLT_stuff')
-    print 
-    print comp1
+    print() 
+    print(comp1)
 
     ecomp = EmbedComponent('Embed',
                            files='*.root',
                            triggers='HLT_stuff')
 
-    print 
-    print ecomp
+    print() 
+    print(ecomp)
     
 
     DYJets = MCComponent(
@@ -220,6 +220,6 @@ if __name__ == '__main__':
         vertexWeight = 1.,
         effCorrFactor = 1 )
 
-    print
-    print DYJets
+    print()
+    print(DYJets)
 

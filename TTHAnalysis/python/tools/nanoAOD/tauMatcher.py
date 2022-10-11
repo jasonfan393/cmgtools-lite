@@ -17,7 +17,7 @@ def matchObjectCollection( objects, matchCollection, deltaRMax = 0.3, filter = l
     objectCoords = [ (o.eta,o.phi,o) for o in objects ]
     matchdCoords = [ (o.eta,o.phi,o) for o in matchCollection ]
 
-    allPairs = sorted([(deltaR (oeta, ophi, meta, mphi), (object, match)) for (oeta,ophi,object) in objectCoords for (meta,mphi,match) in matchdCoords if abs(oeta-meta)<=deltaRMax and filter(object,match) ])
+    allPairs = sorted([(deltaR (oeta, ophi, meta, mphi), (object, match)) for (oeta,ophi,object) in objectCoords for (meta,mphi,match) in matchdCoords if abs(oeta-meta)<=deltaRMax and list(filter(object,match)) ])
 
     for object in objects:
         object.matched = False

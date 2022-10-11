@@ -116,7 +116,7 @@ def prepareReport(tasks):
             messages[name]="ERROR : unable to retrieve the jobs for the task "+name+" ("+ext+"), manual check needed\n"
             continue
 
-        if name+"_"+ext not in cnts.keys():
+        if name+"_"+ext not in list(cnts.keys()):
             cnts[name+"_"+ext] = [0, "run" ]
 
         if (jobInfos["done"]/jobInfos["total"]>0.95 and not isData) or (jobInfos["done"]==jobInfos["total"] and isData):
@@ -150,14 +150,14 @@ def prepareReport(tasks):
     curTime=(time.strftime("%H:%M:%S"))
     curDate=(time.strftime("%d/%m/%Y"))
     report="Production report : "+curDate+" ("+curTime+")\n\n"
-    for task in messages.keys():
+    for task in list(messages.keys()):
         report+=messages[task]
 
     report+="\n\n\n\t\t Summary Table\n"
     report+="--------------------------------------------------------------------------------------------------------------------------------\n"
     report+="dataset                                                               (ext)     | nWait | nRun  | nTran | nFail | nDone | nTot  \n"
     report+="--------------------------------------------------------------------------------------------------------------------------------\n"
-    for task in summary.keys():
+    for task in list(summary.keys()):
         report+=summary[task]
         
     return report
@@ -197,13 +197,13 @@ def crabAutoTool(reset=False, regTasks="crab_*/*"):
     #print report
 
     outCnt = open(cmsswBase+'/src/CMGTools/TTHAnalysis/cfg/crab/.counterCrab','w')
-    for task in cnts.keys():
+    for task in list(cnts.keys()):
         outCnt.write(task+'\t'+str(cnts[task][0])+'\t'+cnts[task][1]+"\n") # python will convert \n to os.linesep
     outCnt.close()
     
     #ending cron job if all datasets are processed
     nDone=len(cnts)
-    for i in cnts.keys():
+    for i in list(cnts.keys()):
         if cnts[i][1]=="done": nDone-=1
     if nDone==0:
         os.system("acrontab -r")

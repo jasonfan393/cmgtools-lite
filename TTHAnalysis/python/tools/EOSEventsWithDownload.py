@@ -6,7 +6,7 @@ class EOSEventsWithDownload(object):
     def __init__(self, files, tree_name):
         self.aggressive = getattr(self.__class__, 'aggressive', 0)
         self.long_cache = getattr(self.__class__, 'long_cache', False)
-        print "Aggressive prefetching level %d" % self.aggressive
+        print("Aggressive prefetching level %d" % self.aggressive)
         self._files = []
         self._nevents = 0
         try:
@@ -17,10 +17,10 @@ class EOSEventsWithDownload(object):
                 self._files.append( (str(entry['file']), self._nevents, self._nevents+entry['events'] ) ) # str() is needed since the output is a unicode string
                 self._nevents += entry['events']
         except subprocess.CalledProcessError:
-            print "Failed the big query: ",query
+            print("Failed the big query: ",query)
             ## OK, now we go for something more fancy
             for f in files:
-                print "Try file: ",f
+                print("Try file: ",f)
                 OK = False
                 # step 1: try the local query
                 if f[0] == "/":
@@ -38,7 +38,7 @@ class EOSEventsWithDownload(object):
                     except:
                         pass
                 for u in urls:
-                    print "Try url: ",u
+                    print("Try url: ",u)
                     try:
                         query = ["edmFileUtil", "--ls", "-j", u]
                         retjson = subprocess.check_output(query)
@@ -47,20 +47,20 @@ class EOSEventsWithDownload(object):
                             self._files.append( (str(entry['file']), self._nevents, self._nevents+entry['events'] ) ) # str() is needed since the output is a unicode string
                             self._nevents += entry['events']
                         OK = True
-                        print "Successful URL ",u
+                        print("Successful URL ",u)
                         break
                     except:
-                        print "Failed the individual query: ",query
+                        print("Failed the individual query: ",query)
                         pass
                 if not OK:
                     if self.aggressive == 3 and "/store/mc" in f:
-                        print "Will skip file ",f
+                        print("Will skip file ",f)
                         continue
-                    raise RuntimeError, "Failed to file %s in any way. aborting job " % f
+                    raise RuntimeError("Failed to file %s in any way. aborting job " % f)
                 else:
-                    print self._files
+                    print(self._files)
         if self.aggressive == 3 and self._nevents == 0:
-            raise RuntimeError, "Failed to find all files for this component. aborting job "
+            raise RuntimeError("Failed to find all files for this component. aborting job ")
         self._fileindex = -1
         self._localCopy = None
         self.events = None
@@ -72,7 +72,7 @@ class EOSEventsWithDownload(object):
                 wigners = subprocess.check_output(["bmgroup","g_wigner"]).split()
                 if hostname in wigners:
                     self.inMeyrin = False
-                    print "Host %s is in bmgroup g_wigner, so I assume I'm in Wigner and not Meyrin" % hostname
+                    print("Host %s is in bmgroup g_wigner, so I assume I'm in Wigner and not Meyrin" % hostname)
             except:
                 pass
         ## How aggressive should I be?
@@ -99,7 +99,7 @@ class EOSEventsWithDownload(object):
                     replicas = True
                 elif replicas and ".cern.ch" in line:
                     geotag = int(line.split()[-1])
-                    print "Found a replica with geotag %d" % geotag
+                    print("Found a replica with geotag %d" % geotag)
                     if self.inMeyrin:
                         if geotag > 9000: return False # far replica: bad (EOS sometimes gives the far even if there's a near!)
                         else: nears = True # we have found a replica that is far away
@@ -116,7 +116,7 @@ class EOSEventsWithDownload(object):
         if self._fileindex == -1 or not(self._files[self._fileindex][1] <= iEv and iEv < self._files[self._fileindex][2]):
             self.events = None # so it's closed
             if self._localCopy:
-                print "Removing local cache file %s" % self._localCopy
+                print("Removing local cache file %s" % self._localCopy)
                 try:
                     os.remove(self._localCopy)
                 except:
@@ -124,7 +124,7 @@ class EOSEventsWithDownload(object):
                 self._localCopy = None
             for i,(fname,first,last) in enumerate(self._files):
                 if first <= iEv and iEv < last:
-                    print "For event range [ %d, %d ) will use file %r " % (first,last,fname)
+                    print("For event range [ %d, %d ) will use file %r " % (first,last,fname))
                     self._fileindex = i
                     if fname.startswith("root://eoscms") or (self.aggressive >= 2 and fname.startswith("root://")):
                         if not self.isLocal(fname):
@@ -132,20 +132,20 @@ class EOSEventsWithDownload(object):
                             rndchars  = "".join([hex(ord(i))[2:] for i in os.urandom(8)]) if not self.long_cache else "long_cache-id%d-%s" % (os.getuid(), hashlib.sha1(fname).hexdigest());
                             localfile = "%s/%s-%s.root" % (tmpdir, os.path.basename(fname).replace(".root",""), rndchars)
                             if self.long_cache and os.path.exists(localfile):
-                                print "Filename %s is already available in local path %s " % (fname,localfile)
+                                print("Filename %s is already available in local path %s " % (fname,localfile))
                                 fname = localfile
                             else:
                                 try:
-                                    print "Filename %s is remote (geotag >= 9000), will do a copy to local path %s " % (fname,localfile)
+                                    print("Filename %s is remote (geotag >= 9000), will do a copy to local path %s " % (fname,localfile))
                                     start = timeit.default_timer()
                                     subprocess.check_output(["xrdcp","-f","-N",fname,localfile])
-                                    print "Time used for transferring the file locally: %s s" % (timeit.default_timer() - start)
+                                    print("Time used for transferring the file locally: %s s" % (timeit.default_timer() - start))
                                     if not self.long_cache: self._localCopy = localfile 
                                     fname = localfile
                                 except:
-                                    print "Could not save file locally, will run from remote"
+                                    print("Could not save file locally, will run from remote")
                                     if os.path.exists(localfile): os.remove(localfile) # delete in case of incomplete transfer
-                    print "Will run from "+fname
+                    print("Will run from "+fname)
                     self.events = FWLiteEvents([fname])
                     break
         self.events.to(iEv - self._files[self._fileindex][1])
@@ -155,7 +155,7 @@ class EOSEventsWithDownload(object):
             return
         todelete = self.__dict__['_localCopy']
         if todelete:
-            print "Removing local cache file ",todelete
+            print("Removing local cache file ",todelete)
             os.remove(todelete)
     def __del__(self):
         self.endLoop()

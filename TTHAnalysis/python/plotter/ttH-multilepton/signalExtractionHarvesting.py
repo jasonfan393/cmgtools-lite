@@ -7,7 +7,7 @@ from math import log10
 from tabulate import tabulate
 sys.path.append(os.environ['CMSSW_BASE']+ '/CMGTools/python/plotter/ttH-modules/')
 
-from signalExtractionHarvestingConfigs import processes, signals, procswithdecays, processes_name, process_order
+from .signalExtractionHarvestingConfigs import processes, signals, procswithdecays, processes_name, process_order
 
 
 
@@ -67,7 +67,7 @@ def readNominalAndToys(nominalFile, toyexp, fit='fit_s',readFromPickle=False):
 
 
     for toy in range(100):
-        print 'reading toy %d'%toy
+        print('reading toy %d'%toy)
         tftoy=r.TFile.Open(toyexp.format(toy=toy,fit=fit))
         for proc in processes:
             for cat in cats:
@@ -108,7 +108,7 @@ def readNominalAndToys(nominalFile, toyexp, fit='fit_s',readFromPickle=False):
                         results[group][what][cat].Add( results[proc][what][cat] )
 
     pickle.dump( results, open('save_%s.p'%fit,'w'))
-    print data
+    print(data)
     return results, data
 
 
@@ -120,7 +120,7 @@ def stackByMapping(results, data, regionMapping, picklename, readFromPickle=Fals
 
     stacked_data={}; stacked_results={}
     for cat in regionMapping:
-        print 'doing', cat
+        print('doing', cat)
         for proc in [x for x in processes] + ['total_signal','total background']:
             if proc not in stacked_results:
                 stacked_results[proc]={}
@@ -141,7 +141,7 @@ def stackByMapping(results, data, regionMapping, picklename, readFromPickle=Fals
                 stacked_data[cat]=data[year].Clone('data_%s'%cat)
             else:
                 stacked_data[cat].Add(data[year].Clone('data_%s'%cat))
-    print 'writing'
+    print('writing')
     pickle.dump( stacked_results, open('save_%s.p'%picklename,'w') )
     pickle.dump( stacked_data   , open('data_%s.p'%picklename,'w') )
     return results,data
@@ -172,7 +172,7 @@ def getSoverB(results, data, regionMapping, signals):
                         if results[proc][what][cat]:
                             bkg=bkg+results[proc][what][cat].GetBinContent(bin)
                 if bkg>0 and log10(tot_sig/bkg)>0:
-                    print what, cat, bin, bkg, tot_sig
+                    print(what, cat, bin, bkg, tot_sig)
                 points[what].append((cat,bin, data_obs,bkg,sigs))
     return points
 
@@ -185,11 +185,11 @@ def buildRms(results, data, regionMapping):
                 if results[proc][what][cat]:
                     toyvalues.append( results[proc][what][cat] )
             if len(toyvalues) not in [0,100]:
-                print 'number of toys are', len(toyvalues), 'for proc cat', proc, cat
+                print('number of toys are', len(toyvalues), 'for proc cat', proc, cat)
                 raise RuntimeError("Theres something wrong")
             if not len(toyvalues) and results[proc]['nom'][cat]:
                 # theres nominal but not variations...
-                print proc, cat, results[proc]['nom'][cat]
+                print(proc, cat, results[proc]['nom'][cat])
                 raise RuntimeError("Theres something wrong")
             if len(toyvalues)==100:
                 dn = np.percentile(np.array(toyvalues), 16)
@@ -221,4 +221,4 @@ def makeTable(regions, results, data):
     for cat in regions:
         line.append('%d'%data[cat])
     table.append(line)
-    print tabulate(table, tablefmt='latex_raw')
+    print(tabulate(table, tablefmt='latex_raw'))

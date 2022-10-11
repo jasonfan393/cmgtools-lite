@@ -43,7 +43,7 @@ class TTEventReco_2LOS_MC:
                      [ b for b in bquarks if b.pdgId == -5] ) 
         if len(wp_chain) != 3 or len(wm_chain) != 3: 
             return ret0
-            raise RuntimeError, "l(wp) = %d, l(wm) = %d" % (len(wp_chain), len(wm_chain))
+            raise RuntimeError("l(wp) = %d, l(wm) = %d" % (len(wp_chain), len(wm_chain)))
         wp_p4nu = wp_chain[0].p4() - wp_chain[1].p4() - wp_chain[2].p4()
         wm_p4nu = wm_chain[0].p4() - wm_chain[1].p4() - wm_chain[2].p4()
         ret["cosThetaStar_wp"] = cosThetaStar(wp_chain[1].p4(), wp_p4nu, wp_chain[2].p4()) 
@@ -80,7 +80,7 @@ class TTEventReco_2LOS_MC:
                 ret["fit_dptr_nubar"] = (wm_p4nu.Pt()-self.twoMTopFitter.nubar().Pt())/wm_p4nu.Pt()
                 ret["cosThetaStar_wp_fit"] = cosThetaStar(wp_chain[1].match[0].p4(), self.twoMTopFitter.nu(),    wp_chain[2].match[0].p4())
                 ret["cosThetaStar_wm_fit"] = cosThetaStar(wm_chain[1].match[0].p4(), self.twoMTopFitter.nubar(), wm_chain[2].match[0].p4())
-        return dict([("mc_"+name,val) for (name,val) in ret.iteritems()])
+        return dict([("mc_"+name,val) for (name,val) in ret.items()])
 
 if __name__ == '__main0__':
     ROOT.gSystem.Load("libFWCoreFWLite.so");
@@ -98,7 +98,7 @@ if __name__ == '__main0__':
                 for cth in (0., -0.4, 0.4, -0.7, -0.7):
                     for phi in (0., 1., -1., 2., -2.):
                         fitter.nll(cth,phi,0,0)
-                        print "%.0f %+.1f %+.1f  %+.1f %+.1f    %.3f " % (lpt,leta,lphi,cth,phi,fitter.wp().M())
+                        print("%.0f %+.1f %+.1f  %+.1f %+.1f    %.3f " % (lpt,leta,lphi,cth,phi,fitter.wp().M()))
                         #exit(0)
 if __name__ == '__main__':
     from sys import argv
@@ -119,7 +119,7 @@ if __name__ == '__main__':
             if not ret["mc_good_tt_2los_rec"]: return False
             if self.tree:
                 self.tree.htJet25 = ev.htJet25
-                for k,v in ret.iteritems(): setattr(self.tree,k,v)
+                for k,v in ret.items(): setattr(self.tree,k,v)
             self.tree.fill()
             #print "\nrun %6d lumi %4d event %d: leps %d, bjets %d, jets %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood, ev.nBJetMedium25, ev.nJet25)
             #for k in sorted(ret.keys()):

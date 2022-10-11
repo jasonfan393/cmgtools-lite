@@ -15,7 +15,7 @@ class ttHLepMTW:
 
         all_leps = [l for l in Collection(event,"LepGood","nLepGood")]
         chosen = getattr(event,"iLepFO"+self.inputlabel)
-        leps = [all_leps[chosen[i]] for i in xrange(nFO)]
+        leps = [all_leps[chosen[i]] for i in range(nFO)]
 
         l1,l2,l3 = leps[:3]
         bestDM = 9e9

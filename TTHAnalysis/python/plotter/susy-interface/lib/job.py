@@ -1,5 +1,5 @@
 import os
-from functions import *
+from .functions import *
 
 class Job():
 	def __init__(self, master, name, commands, options, forceLocal = False):

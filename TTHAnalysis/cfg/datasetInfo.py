@@ -42,13 +42,13 @@ class DatasetDict(dict):
         dict.__setitem__(self, self.__keytransform__(d.id),   d)
         dict.__setitem__(self, self.__keytransform__(d.name), d)
 
-        print "[DatasetDict] :: Added dataset :"
-        print "         " + d.name
-        print "         id: " + str(d.id) 
-        print "         x-sect: " + str(d.xsection)
-        print "         kfactor: " + str(d.kfactor)
-        print "         filter: " + str(d.filter)
-        print "------------------------------------------------------"
+        print("[DatasetDict] :: Added dataset :")
+        print("         " + d.name)
+        print("         id: " + str(d.id)) 
+        print("         x-sect: " + str(d.xsection))
+        print("         kfactor: " + str(d.kfactor))
+        print("         filter: " + str(d.filter))
+        print("------------------------------------------------------")
 
 
     def addDatasetsFromFile( self, filename ):
@@ -58,7 +58,7 @@ class DatasetDict(dict):
 
       file = open(filename, "r") 
 
-      print "[DatasetDict] :: Adding samples from file: " + filename
+      print("[DatasetDict] :: Adding samples from file: " + filename)
    
       for line in file:
         if line.startswith("#"): continue

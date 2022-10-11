@@ -1,4 +1,4 @@
-from __future__ import division
+
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module 
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput, writeOutput
@@ -31,7 +31,7 @@ class HiggsDiffCompTTH(Module):
         self.out.branch('%srightlepidx'%self.label                                      , 'I')
         self.out.branch('%swronglepidx'%self.label                                      , 'I')
         # Somehow dependent on JES
-        for jesLabel in self.systsJEC.values():
+        for jesLabel in list(self.systsJEC.values()):
             self.out.branch('%spTVisCrossCheck%s'%(self.label,jesLabel)                      , 'F')
             self.out.branch('%spTVisPlusNu%s'%(self.label,jesLabel)                          , 'F')
             self.out.branch('%snmatchedpartons%s'%(self.label,jesLabel)                      , 'I')
@@ -116,7 +116,7 @@ class HiggsDiffCompTTH(Module):
         allLeps     = Collection(event,"LepGood","nLepGood")
         nFO      = getattr(event,"nLepFO_Recl")
         selLeps    = getattr(event,"iLepFO_Recl")
-        leps   = [allLeps[selLeps[i]] for i in xrange(nFO)]
+        leps   = [allLeps[selLeps[i]] for i in range(nFO)]
         thejets     = [x for x in Collection(event,"JetSel_Recl","nJetSel_Recl")]
         thejetsNoB     = [j for j in thejets if j.btagDeepB<btagvetoval]
         thejetsmore = [x for x in Collection(event,"Jet")]
@@ -140,7 +140,7 @@ class HiggsDiffCompTTH(Module):
             mHrightlep = (leps[rightlep].p4()+QFromWFromH[0]+QFromWFromH[1]).M()
             mHwronglep = (leps[wronglep].p4()+QFromWFromH[0]+QFromWFromH[1]).M()
         
-        for jesLabel in self.systsJEC.values():
+        for jesLabel in list(self.systsJEC.values()):
             # We need to have saved three entire collections, because the triplet selection might select different objects when JEC changes
             leptonFromHiggs = [ x.p4() for x in Collection(event,'%sleptonsFromHiggs%s'%(self.label,jesLabel),'%snLeptonsFromHiggs%s'%(self.label,jesLabel))]
             jetsFromHiggs   = [ x.p4() for x in Collection(event,'%sjetsFromHiggs%s'%(self.label,jesLabel), '%snJetsFromHiggs%s'%(self.label,jesLabel)) ]

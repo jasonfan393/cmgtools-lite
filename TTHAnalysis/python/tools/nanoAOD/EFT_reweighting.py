@@ -81,9 +81,9 @@ class EFTreweighting( Module ):
                 sys.path[-1] =self.tmpdirs[-1]
                 self.mods[-1].append(imp.load_module('allmatrix2py',*imp.find_module('allmatrix2py')))
                 del sys.modules['allmatrix2py']
-                print 'initializing', card
+                print('initializing', card)
                 self.mods[-1][-1].initialise(card)
-            print len(self.pdgOrderSorted)
+            print(len(self.pdgOrderSorted))
             self.pdgOrderSorted.append( [SortPDGs(x.tolist()) for x in self.mods[-1][-1].get_pdg_order()] )
             self.pdgOrder.append( [x.tolist() for x in self.mods[-1][-1].get_pdg_order()])
             self.all_prefix.append( [''.join(j).strip().lower() for j in self.mods[-1][-1].get_prefix()])
@@ -131,9 +131,9 @@ class EFTreweighting( Module ):
             break
 
         if sub_idx < 0:
-            print '>> Event with PDGs %s does not match any known process' % evt_sorted_pdgs
-            print 'Available processes are'
-            print self.pdgOrderSorted
+            print('>> Event with PDGs %s does not match any known process' % evt_sorted_pdgs)
+            print('Available processes are')
+            print(self.pdgOrderSorted)
             
 
         target_pdgs=self.pdgOrder[sub_idx][idx]
@@ -169,15 +169,15 @@ class EFTreweighting( Module ):
         if t_final_hels in hel_dict:
             nhel = hel_dict[t_final_hels]
         else:
-            print "Available helicities are"
-            print hel_dict
-            print "tried", t_final_hels
+            print("Available helicities are")
+            print(hel_dict)
+            print("tried", t_final_hels)
             raise RuntimeError("Helicity configuration not found")
         
         com_final_parts = []
 
 
-        pboost = [final_parts[0][i] + final_parts[1][i] for i in xrange(4)]
+        pboost = [final_parts[0][i] + final_parts[1][i] for i in range(4)]
 
         for part in final_parts:
             com_final_parts.append(zboost(part, pboost))
@@ -191,7 +191,7 @@ class EFTreweighting( Module ):
             weights.append( mod.smatrixhel( final_pdgs, final_parts_i, event.LHE_AlphaS, scale2, nhel) ) 
         for i, card in enumerate(self.param_cards):
             if not weights[0]: 
-                print 'Warning, zero weight!!'
+                print('Warning, zero weight!!')
                 weights[0]=1
                 weights[i]=1
             self.wrappedOutputTree.fillBranch('weight_%s'%(card.split('/')[-1].replace('param_card_','')), weights[i]/weights[0])

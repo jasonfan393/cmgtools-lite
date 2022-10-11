@@ -37,7 +37,7 @@ class ttHFatJetAnalyzer( Analyzer ):
         self.readCollections( event.input )
 
         ## Read jets, if necessary recalibrate and shift MET
-        allJets = map(Jet, self.handles['jets'].product()) 
+        allJets = list(map(Jet, self.handles['jets'].product())) 
 
         ## Apply jet selection
         event.fatJets     = []

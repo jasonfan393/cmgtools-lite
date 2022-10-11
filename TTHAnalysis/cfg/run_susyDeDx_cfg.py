@@ -134,15 +134,15 @@ sequence = cfg.Sequence( [
 #-------- HOW TO RUN -----------
 test = getHeppyOption('test')
 if test == "1":
-    print "The test wil use %s " % selectedComponents[0].name
+    print("The test wil use %s " % selectedComponents[0].name)
     selectedComponents = doTest1(selectedComponents[0], sequence=sequence, cache=True )
-    print "The test wil use file %s " % selectedComponents[0].files[0]
+    print("The test wil use file %s " % selectedComponents[0].files[0])
 elif test == "1S":
     comp = selectedComponents[0]
     comp.name = "Signal"
     comp.files = [ '/afs/cern.ch/work/g/gpetrucc/SusyWithDeDx/CMSSW_9_4_6_patch1/src/MiniAODv2.root' ]
     selectedComponents = doTest1(comp, sequence=sequence, cache=False )
-    print "The test wil use file %s " % comp.files[0]
+    print("The test wil use file %s " % comp.files[0])
     ttHJetMETSkim.jetPtCuts = [ ]  # looser than the analysis, to allow for JEC uncertainties
     ttHJetMETSkim.metCut    =   0.
     fastJetSkim.minJets = 0

@@ -1,7 +1,7 @@
 import os
 from optparse import OptionParser
-from lib import maker
-from lib import functions as func
+from .lib import maker
+from .lib import functions as func
 
 def getXS(xs, mass, factor):
 	themass = [p[0] for p in xs]
@@ -37,7 +37,7 @@ def prepareJob(mm, name, mp, baseSig, binning, bkgpath, outpath, xslist, options
 		line = line.replace("THEWVJEC"     , "["+",".join(["\""+f+"\"" for f in mm.getVariable("wVarsFSJec"  ,"").split(";")])+"]")
 		line = line.replace("THEFRMET"     , "["+",".join(["\""+f+"\"" for f in mm.getVariable("frFilesFSMet","").split(";")])+"]")
 		line = line.replace("THEWVMET"     , "["+",".join(["\""+f+"\"" for f in mm.getVariable("wVarsFSMet"  ,"").split(";")])+"]")
-		line = line.replace("THEWEIGHTVARS", "{"+",".join(["\""+k+"\":[" + ",".join("\""+v+"\"" for v in vals) + "]" for k,vals in mm.getVariable("wVarsFS",{}).iteritems()])+"}")
+		line = line.replace("THEWEIGHTVARS", "{"+",".join(["\""+k+"\":[" + ",".join("\""+v+"\"" for v in vals) + "]" for k,vals in mm.getVariable("wVarsFS",{}).items()])+"}")
 		line = line.replace("THEMCADIR"    , mm.tmppath                                        )
 		line = line.replace("THEBKGDIR"    , bkgpath                                           )
 		line = line.replace("THEOUTDIR"    , outpath                                           )

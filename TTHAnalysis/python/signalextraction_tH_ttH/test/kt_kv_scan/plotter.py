@@ -17,9 +17,9 @@ import matplotlib as mpl
 #sns.set(style="ticks")
 #sns.set_context("poster")
 
-from process_limits import scale_limits
-from plotLimit import readConfig
-from plotLimit import setUpMPL
+from .process_limits import scale_limits
+from .plotLimit import readConfig
+from .plotLimit import setUpMPL
 
 ## type 1
 
@@ -41,13 +41,13 @@ def process(inputfile, xaxis, added=None):
             df['ratio'] = df.cf/df.cv
             df['ratio'] = df[xaxis].round(3)
         except AttributeError:
-            print "Failed to build ratio column in dataframe... check input file"
+            print("Failed to build ratio column in dataframe... check input file")
 
     # Drop duplicates for equal ratios
     df.drop_duplicates(subset='cf', inplace=True)
     df.sort_values(by="cf", inplace=True) # Xanda FIXME
-    df.index = range(1,len(df)+1)
-    print df#["rescalecv",  "rescalect", "dnll"]
+    df.index = list(range(1,len(df)+1))
+    print(df)#["rescalecv",  "rescalect", "dnll"]
     
     # Add interpolating points?
     if added:
@@ -57,7 +57,7 @@ def process(inputfile, xaxis, added=None):
     dnllmin = np.min(df.dnll)
     idxmin = df.dnll.idxmin()
     assert(df.loc[idxmin].dnll == dnllmin), "inconsistent minimum?"
-    print '... shifting dnll values by %5.3f (at %4.2f) for %s' % (np.abs(dnllmin), df.loc[idxmin][xaxis], inputfile)
+    print('... shifting dnll values by %5.3f (at %4.2f) for %s' % (np.abs(dnllmin), df.loc[idxmin][xaxis], inputfile))
     df['dnll'] = df.dnll + np.abs(dnllmin)
 
     return df
@@ -69,7 +69,7 @@ def addInterpolatingPoints(dframe, filename, xaxis,npoints=3):
     FIXME: - Take only ONE file and do it automatically
            - Need to pass a list of predefined ratio values
     """
-    print "Adding interpolating points from", filename
+    print("Adding interpolating points from", filename)
     files  = {v:os.path.basename(f) for v,f in zip(dframe[xaxis], dframe.fname)}
 
     def addvalues(x, y, nvals=1):
@@ -86,7 +86,7 @@ def addInterpolatingPoints(dframe, filename, xaxis,npoints=3):
     df = pd.read_csv(filename)
     df['fname'] = df.fname.apply(os.path.basename)
     df.sort_values(by="rescalect", inplace=True)
-    df.index = range(1,len(df)+1)
+    df.index = list(range(1,len(df)+1))
     df['dnll'] = 2*(df.nllr1 - df.nllr0)
 
     def get_dll(ratio, fname, dframe=df, att='dnll'):
@@ -110,7 +110,7 @@ def addInterpolatingPoints(dframe, filename, xaxis,npoints=3):
 
     dframe = dframe.append(df_added)
     dframe.sort_values(by='ratio', inplace=True)
-    dframe.index = range(1,len(dframe)+1)
+    dframe.index = list(range(1,len(dframe)+1))
 
     return dframe
 
@@ -118,7 +118,7 @@ def addInterpolatingPoints(dframe, filename, xaxis,npoints=3):
 def plotNLLScans(cfg, outdir='plots/', tag='', nosplines=False, smoothing=0.0):
     for entry in cfg['entries']:
         filename = entry['csv_file']
-        print ("reading: ", filename )
+        print(("reading: ", filename ))
         if 'inputdir' in cfg:
             filename = os.path.join(cfg['inputdir'], entry['csv_file'])
         #entry['df'] = process(filename)
@@ -133,7 +133,7 @@ def plotNLLScans(cfg, outdir='plots/', tag='', nosplines=False, smoothing=0.0):
 
     for entry in cfg['entries']:
         df = entry['df']
-        print (df.loc[df[xaxis]<=cfg['xmax']].loc[df[xaxis]>=-cfg['xmax']].dnll)
+        print((df.loc[df[xaxis]<=cfg['xmax']].loc[df[xaxis]>=-cfg['xmax']].dnll))
         if nosplines:
             ax.plot(df.loc[df[xaxis]<=cfg['xmax']].loc[df[xaxis]>=-cfg['xmax']][xaxis],
                     df.loc[df[xaxis]<=cfg['xmax']].loc[df[xaxis]>=-cfg['xmax']].dnll,
@@ -216,7 +216,7 @@ def plotNLLScans(cfg, outdir='plots/', tag='', nosplines=False, smoothing=0.0):
         outfile += '_%s' % tag
     plt.savefig("%s.pdf"%outfile, bbox_inches='tight')
     plt.savefig("%s.png"%outfile, bbox_inches='tight', dpi=300)
-    print "...saved plot in %s.pdf" % outfile
+    print("...saved plot in %s.pdf" % outfile)
 
     return 0
 
@@ -264,9 +264,9 @@ if __name__ == '__main__':
     setUpMPL()
     
     for ifile in args:
-        print ("ifile =", ifile)
+        print(("ifile =", ifile))
         if not os.path.exists(ifile):
-            print "Ignoring %s" % ifile
+            print("Ignoring %s" % ifile)
             continue
 
         plotConfig = readConfig(options.defaultOptions, options=options)

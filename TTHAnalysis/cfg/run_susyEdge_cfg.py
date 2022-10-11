@@ -186,7 +186,7 @@ treeProducer.globalVariables.append(NTupleVariable("met_trkPhi", lambda ev : ev.
 
 if not skipT1METCorr:
     if doMETpreprocessor: 
-        print "WARNING: you're running the MET preprocessor and also Type1 MET corrections. This is probably not intended."
+        print("WARNING: you're running the MET preprocessor and also Type1 MET corrections. This is probably not intended.")
     jetAna.calculateType1METCorrection = True
     metAna.recalibrate = "type1"
     jetAnaScaleUp.calculateType1METCorrection = True
@@ -300,7 +300,7 @@ if runData and not isTest: # For running on data
                 compname = pd+"_"+short+label
                 if ((compSelection and not re.search(compSelection, compname)) or
                     (compVeto      and     re.search(compVeto,      compname))):
-                        print "Will skip %s" % (compname)
+                        print("Will skip %s" % (compname))
                         continue
                 myprocessing = processing
                 comp = kreator.makeDataComponent(compname, 
@@ -310,7 +310,7 @@ if runData and not isTest: # For running on data
                                                  run_range=run_range, 
                                                  triggers=triggers[:], vetoTriggers = vetos[:],
                                                  useAAA=useAAA)
-                print "Will process %s (%d files)" % (comp.name, len(comp.files))
+                print("Will process %s (%d files)" % (comp.name, len(comp.files)))
     #            print "\ttrigger sel %s, veto %s" % (triggers, vetos)
                 comp.splitFactor = len(comp.files)/8
                 comp.fineSplitFactor = 1
@@ -330,7 +330,7 @@ if removeJetReCalibration:
     jetAnaScaleDown.recalibrateJets = False
 
 if forcedSplitFactor>0 or forcedFineSplitFactor>0:
-    if forcedFineSplitFactor>0 and forcedSplitFactor!=1: raise RuntimeError, 'splitFactor must be 1 if setting fineSplitFactor'
+    if forcedFineSplitFactor>0 and forcedSplitFactor!=1: raise RuntimeError('splitFactor must be 1 if setting fineSplitFactor')
     for c in selectedComponents:
         if forcedSplitFactor>0: c.splitFactor = forcedSplitFactor
         if forcedFineSplitFactor>0: c.fineSplitFactor = forcedFineSplitFactor
@@ -386,7 +386,7 @@ elif test == '80X-data':
         comp.files = ['/afs/cern.ch/work/m/mdunser/public/synchFiles/files2016/doubleMuonFile.root']
 
 elif test != None:
-    raise RuntimeError, "Unknown test %r" % test
+    raise RuntimeError("Unknown test %r" % test)
 
 ## FAST mode: pre-skim using reco leptons, don't do accounting of LHE weights (slow)"
 ## Useful for large background samples with low skim efficiency
@@ -416,16 +416,16 @@ if not getHeppyOption("isCrab"):
     from CMGTools.Production.localityChecker import LocalityChecker
     tier2Checker = LocalityChecker("T2_CH_CERN", datasets="/*/*/MINIAOD*")
     for comp in selectedComponents:
-        if len(comp.files) == 0: raise RuntimeError, "Empty component: "+comp.name
+        if len(comp.files) == 0: raise RuntimeError("Empty component: "+comp.name)
         if not hasattr(comp,'dataset'): continue
         if not re.match("/[^/]+/[^/]+/MINIAOD(SIM)?", comp.dataset): continue
         if "/store/" not in comp.files[0]: continue
         if re.search("/store/(group|user|cmst3)/", comp.files[0]): continue
         if not tier2Checker.available(comp.dataset):
-            print "Dataset %s is not available, will use AAA" % comp.dataset
+            print("Dataset %s is not available, will use AAA" % comp.dataset)
             changeComponentAccessMode.convertComponent(comp, "root://cms-xrd-global.cern.ch/%s")
             if 'X509_USER_PROXY' not in os.environ or "/afs/" not in os.environ['X509_USER_PROXY']:
-                raise RuntimeError, "X509_USER_PROXY not defined or not pointing to /afs"
+                raise RuntimeError("X509_USER_PROXY not defined or not pointing to /afs")
 
 ## output histogram
 outputService=[]

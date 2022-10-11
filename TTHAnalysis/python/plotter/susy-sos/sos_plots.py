@@ -38,7 +38,7 @@ def base(selection):
         #GO="%s -L susy-sos/functionsSOS.cc -L susy-sos/lepton_trigger_SF.cc -W 'triggerSF_SOS(met_pt,metmm_pt(LepGood1_pdgId,LepGood1_pt,LepGood1_phi,LepGood2_pdgId,LepGood2_pt,LepGood2_phi,met_pt,met_phi),0)*puw2016_nTrueInt_13fb(nTrueInt)'"%GO 
         if dowhat == "plots": GO+=" susy-sos/2los_plots.txt"        
     else:
-        raise RuntimeError, 'Unknown selection'
+        raise RuntimeError('Unknown selection')
 
     return GO
 
@@ -48,23 +48,23 @@ def sigprocs(GO,mylist):
     return procs(GO,mylist)+' --showIndivSigs --noStackSig'
 def runIt(GO,name,plots=[],noplots=[]):
     if '_74vs76' in name: GO = prep74vs76(GO)
-    if   dowhat == "plots":  print 'python mcPlots.py',"--pdir %s/%s"%(ODIR,name),GO,' '.join(['--sP %s'%p for p in plots]),' '.join(['--xP %s'%p for p in noplots]),' '.join(sys.argv[3:])
-    elif dowhat == "yields": print 'echo %s; python mcAnalysis.py'%name,GO,' '.join(sys.argv[3:])
-    elif dowhat == "dumps":  print 'echo %s; python mcDump.py'%name,GO,' '.join(sys.argv[3:])
+    if   dowhat == "plots":  print('python mcPlots.py',"--pdir %s/%s"%(ODIR,name),GO,' '.join(['--sP %s'%p for p in plots]),' '.join(['--xP %s'%p for p in noplots]),' '.join(sys.argv[3:]))
+    elif dowhat == "yields": print('echo %s; python mcAnalysis.py'%name,GO,' '.join(sys.argv[3:]))
+    elif dowhat == "dumps":  print('echo %s; python mcDump.py'%name,GO,' '.join(sys.argv[3:]))
     elif (dowhat == "limits" and ('_unblind' in name)): 
         # comment: for the moment recycling plots and noplots as a container for histo name and binning when running 'limits' mode (to be improved) 
-        print 'echo %s; python makeShapeCardsSusy.py'%name,PLOTandCUTS,' '.join(['%s'%p for p in plots]),' '.join(['%s'%p for p in noplots]),SYST,' -o %s'%name,' ',GO," --od %s"%(ODIR),' '.join(sys.argv[3:])
+        print('echo %s; python makeShapeCardsSusy.py'%name,PLOTandCUTS,' '.join(['%s'%p for p in plots]),' '.join(['%s'%p for p in noplots]),SYST,' -o %s'%name,' ',GO," --od %s"%(ODIR),' '.join(sys.argv[3:]))
     elif (dowhat == "limits" and ('_unblind' in name)==0 and (('met300' in name)==0 or ('ewk' in name)==0) and ('CR'in name)==0 ):
         # comment: for the moment recycling plots and noplots as a container for histo name and binning when running in 'limits' mode (to be improved) 
-        print 'echo %s; python makeShapeCardsSusy.py'%name,PLOTandCUTS,' '.join(['%s'%p for p in plots]),' '.join(['%s'%p for p in noplots]),SYST,' -o %s'%name,' ',GO," --od %s"%(ODIR),' --asimov ',' '.join(sys.argv[3:]) 
+        print('echo %s; python makeShapeCardsSusy.py'%name,PLOTandCUTS,' '.join(['%s'%p for p in plots]),' '.join(['%s'%p for p in noplots]),SYST,' -o %s'%name,' ',GO," --od %s"%(ODIR),' --asimov ',' '.join(sys.argv[3:])) 
     elif (dowhat == "limits" and ('_unblind' in name)==0 and ('met300' in name) and ('ewk' in name) and ('CR'in name)==0):
         # comment: for the moment recycling plots and noplots as a container for histo name and binning when running in 'limits' mode (to be improved) 
-        print 'echo %s; python makeShapeCardsSusy.py'%name,PLOTandCUTS,' '.join(['%s'%p for p in plots]),' '.join(['%s'%p for p in noplots]),SYST,' -o %s'%name,' ',GO," --od %s"%(ODIR),' --asimov --hardZero',' '.join(sys.argv[3:]) 
+        print('echo %s; python makeShapeCardsSusy.py'%name,PLOTandCUTS,' '.join(['%s'%p for p in plots]),' '.join(['%s'%p for p in noplots]),SYST,' -o %s'%name,' ',GO," --od %s"%(ODIR),' --asimov --hardZero',' '.join(sys.argv[3:])) 
     elif (dowhat == "limits" and 'CR'in name):
         # comment: for the moment recycling plots and noplots as a container for histo name and binning when running in 'limits' mode (to be improved) 
-        print 'echo %s; python makeShapeCardsSusy.py'%name,PLOTandCUTS,' '.join(['%s'%p for p in plots]),' '.join(['%s'%p for p in noplots]),SYST,' -o %s'%name,' ',GO," --od %s"%(ODIR),' '.join(sys.argv[3:])     
+        print('echo %s; python makeShapeCardsSusy.py'%name,PLOTandCUTS,' '.join(['%s'%p for p in plots]),' '.join(['%s'%p for p in noplots]),SYST,' -o %s'%name,' ',GO," --od %s"%(ODIR),' '.join(sys.argv[3:]))     
     else:
-        raise RuntimeError, 'Unknown selection'
+        raise RuntimeError('Unknown selection')
 def add(GO,opt):
     return '%s %s'%(GO,opt)
 def setwide(x):

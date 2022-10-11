@@ -33,10 +33,10 @@ def print_table(funcs, linepat=" %5.4f (%5.4f) "):
                 try:
                     line += linepat % vals
                 except TypeError:
-                    print "Error parsing line: %s" % repr(vals)
+                    print("Error parsing line: %s" % repr(vals))
             else:
                 line += filler*" "
-        print line
+        print(line)
 
 
 def read_dataframe(ct, cv, df=None, att=None):

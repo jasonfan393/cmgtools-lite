@@ -73,14 +73,14 @@ class badMuonAnalyzerMoriond2017( Analyzer ):
 
         out = []
         n = len(muons)
-        for i in xrange(n):
+        for i in range(n):
             if (muons[i].pt() < self.minMuPt or goodMuon[i] != 0): continue;
             bad_muons.append( muons[i] )
             bad = True;
             if (self.selectClones):
                 bad = False; # unless proven otherwise
                 n1 = muons[i].numberOfMatches(ROOT.reco.Muon.SegmentArbitration);
-                for j in xrange(n):
+                for j in range(n):
                     if (j == i or goodMuon[j] <= 0 or not(self.partnerId(muons[j]))): continue
                     n2 = muons[j].numberOfMatches(ROOT.reco.Muon.SegmentArbitration);
                     if (deltaR(muons[i],muons[j]) < 0.4 or (n1 > 0 and n2 > 0 and ROOT.muon.sharedSegments(muons[i],muons[j]) >= 0.5*min(n1,n2))):

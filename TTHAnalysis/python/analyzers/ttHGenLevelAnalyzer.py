@@ -63,7 +63,7 @@ class ttHGenLevelAnalyzer( Analyzer ):
     def fillGenLeptons(self, event, particle, isTau=False, sourceId=25):
         """Get the gen level light leptons (prompt and/or from tau decays)"""
 
-        for i in xrange( particle.numberOfDaughters() ):
+        for i in range( particle.numberOfDaughters() ):
             dau = GenParticle(particle.daughter(i))
             dau.sourceId = sourceId
             dau.isTau = isTau
@@ -87,7 +87,7 @@ class ttHGenLevelAnalyzer( Analyzer ):
         """Descend daughters of 'particle', and add quarks from W,Z to event.genwzquarks
            isWZ is set to True if already processing daughters of W,Z's, to False before it"""
 
-        for i in xrange( particle.numberOfDaughters() ):
+        for i in range( particle.numberOfDaughters() ):
             dau = GenParticle(particle.daughter(i))
             dau.sourceId = sourceId
             id = abs(dau.pdgId())
@@ -104,7 +104,7 @@ class ttHGenLevelAnalyzer( Analyzer ):
         #    print "Not two top quarks? \n%s\n" % event.gentopquarks
 
         for tq in event.gentopquarks:
-            for i in xrange( tq.numberOfDaughters() ):
+            for i in range( tq.numberOfDaughters() ):
                 dau = GenParticle(tq.daughter(i))
                 if abs(dau.pdgId()) == 5:
                     dau.sourceId = 6
@@ -114,21 +114,21 @@ class ttHGenLevelAnalyzer( Analyzer ):
                     self.fillWZQuarks(   event, dau, True, sourceId=6 )
 
     def makeMCInfo(self, event):
-        event.genParticles = map( GenParticle, self.mchandles['genParticles'].product() )
+        event.genParticles = list(map( GenParticle, self.mchandles['genParticles'].product() ))
 
         if False:
             for i,p in enumerate(event.genParticles):
-                print " %5d: pdgId %+5d status %3d  pt %6.1f  " % (i, p.pdgId(),p.status(),p.pt()),
+                print(" %5d: pdgId %+5d status %3d  pt %6.1f  " % (i, p.pdgId(),p.status(),p.pt()), end=' ')
                 if p.numberOfMothers() > 0:
                     imom, mom = p.motherRef().key(), p.mother()
-                    print " | mother %5d pdgId %+5d status %3d  pt %6.1f  " % (imom, mom.pdgId(),mom.status(),mom.pt()),
+                    print(" | mother %5d pdgId %+5d status %3d  pt %6.1f  " % (imom, mom.pdgId(),mom.status(),mom.pt()), end=' ')
                 else:
-                    print " | no mother particle                              ",
+                    print(" | no mother particle                              ", end=' ')
                     
-                for j in xrange(min(3, p.numberOfDaughters())):
+                for j in range(min(3, p.numberOfDaughters())):
                     idau, dau = p.daughterRef(j).key(), p.daughter(j)
-                    print " | dau[%d] %5d pdgId %+5d status %3d  pt %6.1f  " % (j,idau,dau.pdgId(),dau.status(),dau.pt()),
-                print ""
+                    print(" | dau[%d] %5d pdgId %+5d status %3d  pt %6.1f  " % (j,idau,dau.pdgId(),dau.status(),dau.pt()), end=' ')
+                print("")
 
         event.genHiggsBoson = None
         event.genVBosons = []
@@ -152,34 +152,34 @@ class ttHGenLevelAnalyzer( Analyzer ):
 
             ## Then W,Z,gamma from hard scattering and that don't come from a top and don't rescatter
             def hasAncestor(particle, filter):
-                for i in xrange(particle.numberOfMothers()):
+                for i in range(particle.numberOfMothers()):
                     mom = particle.mother(i)
-                    if filter(mom) or hasAncestor(mom, filter): 
+                    if list(filter(mom)) or hasAncestor(mom, filter): 
                         return True
                 return False
             def hasDescendent(particle, filter):
-                for i in xrange(particle.numberOfDaughters()):
+                for i in range(particle.numberOfDaughters()):
                     dau = particle.daughter(i)
-                    if filter(dau) or hasDescendent(dau, filter):
+                    if list(filter(dau)) or hasDescendent(dau, filter):
                         return True
                 return False
 
             bosons = [ gp for gp in event.genParticles if gp.status() > 2 and  abs(gp.pdgId()) in [22,23,24]  ]
 
             if self.cfg_ana.verbose:
-                print "\n =============="
+                print("\n ==============")
                 for i,p in enumerate(bosons):
-                    print " %5d: pdgId %+5d status %3d  pt %6.1f  " % (i, p.pdgId(),p.status(),p.pt()),
+                    print(" %5d: pdgId %+5d status %3d  pt %6.1f  " % (i, p.pdgId(),p.status(),p.pt()), end=' ')
                     if p.numberOfMothers() > 0:
                         imom, mom = p.motherRef().key(), p.mother()
-                        print " | mother %5d pdgId %+5d status %3d  pt %6.1f  " % (imom, mom.pdgId(),mom.status(),mom.pt()),
+                        print(" | mother %5d pdgId %+5d status %3d  pt %6.1f  " % (imom, mom.pdgId(),mom.status(),mom.pt()), end=' ')
                     else:
-                        print " | no mother particle                              ",
+                        print(" | no mother particle                              ", end=' ')
                     
-                    for j in xrange(min(3, p.numberOfDaughters())):
+                    for j in range(min(3, p.numberOfDaughters())):
                         idau, dau = p.daughterRef(j).key(), p.daughter(j)
-                        print " | dau[%d] %5d pdgId %+5d status %3d  pt %6.1f  " % (j,idau,dau.pdgId(),dau.status(),dau.pt()),
-                        print ""
+                        print(" | dau[%d] %5d pdgId %+5d status %3d  pt %6.1f  " % (j,idau,dau.pdgId(),dau.status(),dau.pt()), end=' ')
+                        print("")
 
             for b in bosons:
                 b.sourceId = -1
@@ -192,7 +192,7 @@ class ttHGenLevelAnalyzer( Analyzer ):
 
         else:
             if len(higgsBosons) > 1: 
-                print "More than one higgs? \n%s\n" % higgsBosons
+                print("More than one higgs? \n%s\n" % higgsBosons)
 
             event.genHiggsBoson = GenParticle(higgsBosons[-1])
             event.genHiggsDecayMode = abs( event.genHiggsBoson.daughter(0).pdgId() )
@@ -201,13 +201,13 @@ class ttHGenLevelAnalyzer( Analyzer ):
             self.fillWZQuarks(   event, event.genHiggsBoson )
             self.fillGenLeptons( event, event.genHiggsBoson, sourceId=25 )
             if self.cfg_ana.verbose:
-                print "Higgs boson decay mode: ", event.genHiggsDecayMode
-                print "Generator level prompt nus:\n", "\n".join(["\t%s" % p for p in event.gennus])
-                print "Generator level prompt light leptons:\n", "\n".join(["\t%s" % p for p in event.genleps])
-                print "Generator level light leptons from taus:\n", "\n".join(["\t%s" % p for p in event.gentauleps])
-                print "Generator level prompt tau leptons:\n", "\n".join(["\t%s" % p for p in event.gentaus])
-                print "Generator level b quarks from top:\n", "\n".join(["\t%s" % p for p in event.genbquarks])
-                print "Generator level quarks from W, Z decays:\n", "\n".join(["\t%s" % p for p in event.genwzquarks])
+                print("Higgs boson decay mode: ", event.genHiggsDecayMode)
+                print("Generator level prompt nus:\n", "\n".join(["\t%s" % p for p in event.gennus]))
+                print("Generator level prompt light leptons:\n", "\n".join(["\t%s" % p for p in event.genleps]))
+                print("Generator level light leptons from taus:\n", "\n".join(["\t%s" % p for p in event.gentauleps]))
+                print("Generator level prompt tau leptons:\n", "\n".join(["\t%s" % p for p in event.gentaus]))
+                print("Generator level b quarks from top:\n", "\n".join(["\t%s" % p for p in event.genbquarks]))
+                print("Generator level quarks from W, Z decays:\n", "\n".join(["\t%s" % p for p in event.genwzquarks]))
         # make sure prompt leptons have a non-zero sourceId
         for p in event.genParticles:
             if isPromptLepton(p, True, includeTauDecays=True, includeMotherless=False):

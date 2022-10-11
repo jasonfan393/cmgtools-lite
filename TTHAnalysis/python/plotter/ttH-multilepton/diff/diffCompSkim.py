@@ -6,10 +6,10 @@ odir="./test_compare_skim"
 subdir='v6'
 if not os.path.isdir(odir):
     os.mkdir(odir)
-    print('Output directory %s did not exist. I now created it.'%odir)
+    print(('Output directory %s did not exist. I now created it.'%odir))
 if not os.path.isdir('%s/%s'%(odir,subdir)):
     os.mkdir('%s/%s'%(odir,subdir))
-    print('Output directory %s/%s did not exist. I now created it.'%(odir,subdir))
+    print(('Output directory %s/%s did not exist. I now created it.'%(odir,subdir)))
 
 gROOT.SetBatch(True)
     ## open files 
@@ -53,7 +53,7 @@ currentPlotsDict = {
 
 
 def draw_comparison(args):
-    for var, vals in args.items():
+    for var, vals in list(args.items()):
         cut, fname, nbins, lowbin, highbin = vals
         c   = TCanvas()
         leg = TLegend(0.5,0.6,0.9,0.9)

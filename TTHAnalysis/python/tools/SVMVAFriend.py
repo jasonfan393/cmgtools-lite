@@ -74,7 +74,7 @@ class SVMVA:
 
 class SVMVAFriend:
     def __init__(self,path,fast=True):
-        print path
+        print(path)
         self.mva = SVMVA(path+"/weights/%s_BDTG.weights.xml")
         self.fast = fast
     def listBranches(self):
@@ -111,8 +111,8 @@ if __name__ == '__main__':
             Module.__init__(self,name,None)
             self.sf = SVMVAFriend("/afs/cern.ch/user/b/botta/CMGToolsGit/newRecipe70/CMSSW_7_0_6_patch1/src/CMGTools/TTHAnalysis/python/plotter/object-studies/")
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nSV)
-            print self.sf(ev)
+            print("\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nSV))
+            print(self.sf(ev))
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)
 

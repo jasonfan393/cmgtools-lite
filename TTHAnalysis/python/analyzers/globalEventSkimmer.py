@@ -86,7 +86,7 @@ class globalEventSkimmer( Analyzer ):
         self.selections= cfg_ana.selections if hasattr(cfg_ana, "selections") else []
         self.objectSels=[]
         for selection in self.selections:
-            if not isinstance(selection, basestring):
+            if not isinstance(selection, str):
                 psel=objectSelection()
                 psel.isFctSel=True
                 psel.selFunction=selection
@@ -113,7 +113,7 @@ class globalEventSkimmer( Analyzer ):
         self.counters.counter('events').inc('all events')
         
         collections={}
-        for col in self.collections.keys():
+        for col in list(self.collections.keys()):
             if "met" in col: #self.collections[col]=="met":
                 collections[col]=[getattr(event,self.collections[col])]
             else:
@@ -135,8 +135,8 @@ class globalEventSkimmer( Analyzer ):
                     continue
 
             #string based skim selection
-            nObjTypes=len(sel.keys())
-            for s in sel.keys():
+            nObjTypes=len(list(sel.keys()))
+            for s in list(sel.keys()):
                 objType=sel[s].pid
                 if sel[s].vetoDS:
                     nObjTypes-=1

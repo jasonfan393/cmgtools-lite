@@ -6,8 +6,8 @@ import pandas as pd
 
 from functools import partial
 
-from ctcv_helper import print_table
-from ctcv_helper import read_dataframe
+from .ctcv_helper import print_table
+from .ctcv_helper import read_dataframe
 
 ## type 1
 
@@ -27,31 +27,31 @@ def xs_limit_ratio(ratio, df_xsecs, df_limits, limval='exp', att='tot'):
     try:
         xs_lim = float(xsec) * float(lim)
     except TypeError as e:
-        print ratio
-        print xsec
-        print lim
+        print(ratio)
+        print(xsec)
+        print(lim)
         raise e
 
     return xs_lim
 
 
 def print_limits(df_limits, df_xsecs, att='tot'):
-    print "----------------------------------------------------------------"
-    print "   signal strength limits: "
-    print " alpha  Ct/CV       CV=0.5           CV=1.0           CV=1.5"
-    print "                  exp    (obs)    exp    (obs)    exp    (obs)"
+    print("----------------------------------------------------------------")
+    print("   signal strength limits: ")
+    print(" alpha  Ct/CV       CV=0.5           CV=1.0           CV=1.5")
+    print("                  exp    (obs)    exp    (obs)    exp    (obs)")
     print_table([partial(read_dataframe, df=df_limits, att='exp'),
                  partial(read_dataframe, df=df_limits, att='obs')],
                 linepat=" %6.3f (%6.3f)")
 
-    print "----------------------------------------------------------------"
-    print "   sigma x BR limits: "
-    print " alpha  Ct/CV       CV=0.5           CV=1.0           CV=1.5"
-    print "                  exp    (obs)    exp    (obs)    exp    (obs)"
+    print("----------------------------------------------------------------")
+    print("   sigma x BR limits: ")
+    print(" alpha  Ct/CV       CV=0.5           CV=1.0           CV=1.5")
+    print("                  exp    (obs)    exp    (obs)    exp    (obs)")
     print_table([partial(xs_limit, df_xsecs=df_xsecs, df_limits=df_limits, limval='exp', att=att),
                  partial(xs_limit, df_xsecs=df_xsecs, df_limits=df_limits, limval='obs', att=att)],
                 linepat=" %6.3f (%6.3f)")
-    print "----------------------------------------------------------------"
+    print("----------------------------------------------------------------")
 
 
 def scale_limits(df_xs_limits, df_limits, df_xsecs, att='tot', scale_by_ratio=False):
@@ -85,7 +85,7 @@ def process_limits(file_cv05, file_cv10, file_cv15,
     df_limits = df_limits.append(pd.read_csv(file_cv15, sep=",", index_col=None), ignore_index=True)
 
     # Read the cross sections from csv files
-    print "...reading scalings from %s" % scalings
+    print("...reading scalings from %s" % scalings)
     df_xsecs = pd.read_csv(scalings, sep=",", index_col=None)
 
     if printout:
@@ -103,7 +103,7 @@ def process_limits(file_cv05, file_cv10, file_cv15,
     # Remove the duplicate entries, sort, reset the index, and write to csv
     df_xs_limits.drop_duplicates(subset='ratio', inplace=True)
     df_xs_limits.sort_values(by='ratio', inplace=True)
-    df_xs_limits.index = range(1,len(df_xs_limits)+1)
+    df_xs_limits.index = list(range(1,len(df_xs_limits)+1))
     df_xs_limits.to_csv(os.path.join(outdir, "xs_limits.csv"))
 
 

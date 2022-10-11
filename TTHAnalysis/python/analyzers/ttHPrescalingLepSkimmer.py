@@ -42,7 +42,7 @@ class ttHPrescalingLepSkimmer( Analyzer ):
         toBePrescaled = True
         if self.minLeptons > 0:
             leps = getattr(event, self.leptons)
-            if self.leptonSel: leps = filter(self.leptonSel, leps)
+            if self.leptonSel: leps = list(filter(self.leptonSel, leps))
             if len(leps) >= self.minLeptons:
                 if self.requireSameSignPair:
                     if any([(l1.charge() * l2.charge() > 0) for l1,l2 in itertools.combinations(leps,2)]):
@@ -53,7 +53,7 @@ class ttHPrescalingLepSkimmer( Analyzer ):
                     counters.inc('accepted (unity / leptons)')
         if self.minJets > 0:
             jets = getattr(event, self.jets)
-            if self.jetSel: jets = filter(self.jetSel, jets)
+            if self.jetSel: jets = list(filter(self.jetSel, jets))
             if len(jets) >= self.minJets:
                 toBePrescaled = False
                 counters.inc('accepted (unity / jets)')

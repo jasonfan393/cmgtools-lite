@@ -74,7 +74,7 @@ def base(selection):
         if dowhat == "plots": GO=GO.replace(RATIO,  " --maxRatioRange 0.0  2.99 --ratioYNDiv 505 ")
         GO += " --binname 4l "
     else:
-        raise RuntimeError, 'Unknown selection'
+        raise RuntimeError('Unknown selection')
 
     if '_prescale' in torun:
         GO = doprescale3l(GO,torun)
@@ -92,11 +92,11 @@ def sigprocs(GO,mylist):
 def runIt(GO,name,plots=[],noplots=[]):
     if '_74vs76' in name: GO = prep74vs76(GO)
     if dowhat == "plots":  
-        if not ('forcePlotChoice' in sys.argv[4:]): print submit.format(command=' '.join(['python mcPlots.py',"--pdir %s/%s/%s"%(ODIR,YEAR,name),GO,' '.join(['--sP %r'%p for p in plots]),' '.join(['--xP %r'%p for p in noplots]),' '.join(sys.argv[4:])]))
-        else: print 'python mcPlots.py',"--pdir %s/%s/%s"%(ODIR,YEAR,name),GO,' '.join([x for x in sys.argv[4:] if x!='forcePlotChoice'])
-    elif dowhat == "yields": print 'echo %s; python mcAnalysis.py'%name,GO,' '.join(sys.argv[4:])
-    elif dowhat == "dumps":  print 'echo %s; python mcDump.py'%name,GO,' '.join(sys.argv[4:])
-    elif dowhat == "ntuple": print 'echo %s; python mcNtuple.py'%name,GO,' '.join(sys.argv[4:])
+        if not ('forcePlotChoice' in sys.argv[4:]): print(submit.format(command=' '.join(['python mcPlots.py',"--pdir %s/%s/%s"%(ODIR,YEAR,name),GO,' '.join(['--sP %r'%p for p in plots]),' '.join(['--xP %r'%p for p in noplots]),' '.join(sys.argv[4:])])))
+        else: print('python mcPlots.py',"--pdir %s/%s/%s"%(ODIR,YEAR,name),GO,' '.join([x for x in sys.argv[4:] if x!='forcePlotChoice']))
+    elif dowhat == "yields": print('echo %s; python mcAnalysis.py'%name,GO,' '.join(sys.argv[4:]))
+    elif dowhat == "dumps":  print('echo %s; python mcDump.py'%name,GO,' '.join(sys.argv[4:]))
+    elif dowhat == "ntuple": print('echo %s; python mcNtuple.py'%name,GO,' '.join(sys.argv[4:]))
 def add(GO,opt):
     return '%s %s'%(GO,opt)
 def setwide(x):
@@ -114,7 +114,7 @@ if __name__ == '__main__':
 
     torun = sys.argv[3]
 
-    if (not allow_unblinding) and '_data' in torun and (not any([re.match(x.strip()+'$',torun) for x in ['.*_appl.*','cr_.*','3l.*_Zpeak.*']])): raise RuntimeError, 'You are trying to unblind!'
+    if (not allow_unblinding) and '_data' in torun and (not any([re.match(x.strip()+'$',torun) for x in ['.*_appl.*','cr_.*','3l.*_Zpeak.*']])): raise RuntimeError('You are trying to unblind!')
 
     if '2lss_' in torun:
         x = base('2lss')
@@ -321,7 +321,7 @@ if __name__ == '__main__':
         if '_data' in torun: x = x.replace('mca-4l-mc.txt','mca-4l-mcdata.txt')
         if '_frdata' in torun:
             x = promptsub(x)
-            raise RuntimeError, 'Fakes estimation not implemented for 4l'
+            raise RuntimeError('Fakes estimation not implemented for 4l')
         if '_unc' in torun:
             x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
         runIt(x,'%s'%torun)
@@ -433,7 +433,7 @@ if __name__ == '__main__':
             if not '_data' in torun: raise RuntimeError
             x = x.replace('mca-3l-mcdata.txt','mca-3l-mcdata-frdata.txt')
         else: 
-            print "ERROR: cr_wz with MC backgrounds does not work."
+            print("ERROR: cr_wz with MC backgrounds does not work.")
         if '_unc' in torun:
             x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
             if '_postfit' in torun:
@@ -444,7 +444,7 @@ if __name__ == '__main__':
             x = add(x,"--sP tot_weight --preFitData tot_weight --sp WZ ")
             x = add(x,"--xu CMS_ttHl_ZZ_lnU ") # otherwise here we fit as ZZ
             if '_unc' not in torun:
-                print "Will just float WZ freely"
+                print("Will just float WZ freely")
                 x = add(x,"--flp WZ")
         #plots = ['kinMVA_3l_input_.*','kinMVA_3l_score_.*']
         plots=['kinMVA_3l_input_.*leadFwdJet.*']
@@ -482,7 +482,7 @@ if __name__ == '__main__':
         if '_data' not in torun: x = add(x, "--xp data ")
         if '_frdata' in torun:
             x = promptsub(x)
-            raise RuntimeError, 'Fakes estimation not implemented for 4l'
+            raise RuntimeError('Fakes estimation not implemented for 4l')
         if '_unc' in torun:
             x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
         x = add(x,"-I ^Zveto")
@@ -496,7 +496,7 @@ if __name__ == '__main__':
         if '_data' not in torun: x = add(x, "--xp data ")
         if '_frdata' in torun:
             x = promptsub(x)
-            raise RuntimeError, 'Fakes estimation not implemented for 4l'
+            raise RuntimeError('Fakes estimation not implemented for 4l')
         if '_unc' in torun:
             x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
         if '_fit' in torun:
@@ -504,7 +504,7 @@ if __name__ == '__main__':
             x = add(x,"--sP tot_weight --preFitData tot_weight --sp ZZ ")
             x = add(x,"--xu CMS_ttHl_WZ_lnU ") # otherwise here we fit as WZ
             if '_unc' not in torun:
-                print "Will just float WZ freely"
+                print("Will just float WZ freely")
                 x = add(x,"--flp WZ")
         plots = ['lep4_pt','met','mZ1','4lep_m4l_noRecl','4lep_mZ2_noRecl','minMllAFAS','tot_weight','4lep_nJet25']
         runIt(x,'%s'%torun,plots)
@@ -532,7 +532,7 @@ if __name__ == '__main__':
             x = x.replace('mca-4l-mc.txt','mca-4l-mcdata.txt')
         if '_frdata' in torun:
             x = promptsub(x)
-            raise RuntimeError, 'Fakes estimation not implemented for 4l'
+            raise RuntimeError('Fakes estimation not implemented for 4l')
         if '_unc' in torun:
             x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
             if '_postfit' in torun:

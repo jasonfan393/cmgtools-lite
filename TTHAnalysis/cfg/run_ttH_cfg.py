@@ -152,7 +152,7 @@ treeProducer = cfg.Analyzer(
      collections = ttH_collections,
 )
 if getHeppyOption("reduceMantissa",False) in (True,"True","true","yes","1"):
-    print 'Activating reduceMantissa!'
+    print('Activating reduceMantissa!')
     setLossyFloatCompression(10,16)
 
 ## histo counter
@@ -161,7 +161,7 @@ susyCoreSequence.remove(susyScanAna)
 
 if not skipT1METCorr:
     if doMETpreprocessor: 
-        print "WARNING: you're running the MET preprocessor and also Type1 MET corrections. This is probably not intended."
+        print("WARNING: you're running the MET preprocessor and also Type1 MET corrections. This is probably not intended.")
     jetAna.calculateType1METCorrection = True
     metAna.recalibrate = "type1"
     jetAnaScaleUp.calculateType1METCorrection = True
@@ -242,7 +242,7 @@ if scaleProdToLumi>0: # select only a subset of a sample, corresponding to a giv
         if not c.isMC: continue
         nfiles = int(min(ceil(target_lumi * c.xSection / 30e3), len(c.files)))
         #if nfiles < 50: nfiles = min(4*nfiles, len(c.files))
-        print "For component %s, will want %d/%d files; AAA %s" % (c.name, nfiles, len(c.files), "eoscms" not in c.files[0])
+        print("For component %s, will want %d/%d files; AAA %s" % (c.name, nfiles, len(c.files), "eoscms" not in c.files[0]))
         c.files = c.files[:nfiles]
         c.splitFactor = len(c.files)
         c.fineSplitFactor = 1
@@ -255,7 +255,7 @@ if runData and not isTest: # For running on data
 
     json = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/ReReco/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON.txt' # full 2017 dataset, EOY rereco, 41.4/fb
 
-    for era in 'BCDEF': dataChunks.append((json,filter(lambda dset: 'Run2017'+era in dset.name,dataSamples_31Mar2018),'2017'+era,[],False))
+    for era in 'BCDEF': dataChunks.append((json,[dset for dset in dataSamples_31Mar2018 if 'Run2017'+era in dset.name],'2017'+era,[],False))
 
     DatasetsAndTriggers = []
     selectedComponents = [];
@@ -291,7 +291,7 @@ if runData and not isTest: # For running on data
                 label = ""
                 if run_range!=None:
                     label = "_runs_%d_%d" % run_range if run_range[0] != run_range[1] else "run_%d" % (run_range[0],)
-                _ds = filter(lambda dset : re.match('%s_.*'%pd,dset.name),dsets)
+                _ds = [dset for dset in dsets if re.match('%s_.*'%pd,dset.name)]
                 for idx,_comp in enumerate(_ds):
                     compname = pd+"_"+short+label
                     if (len(_ds)>1): compname += '_ds%d'%(idx+1)
@@ -315,7 +315,7 @@ if runData and not isTest: # For running on data
     if runDataQCD: # for fake rate measurements in data
          configureSplittingFromTime(selectedComponents, 5, 2, maxFiles=8)
     else:
-        configureSplittingFromTime(filter(lambda x: 'Double' in x.name or 'MuonEG' in x.name,selectedComponents),50,3)
+        configureSplittingFromTime([x for x in selectedComponents if 'Double' in x.name or 'MuonEG' in x.name],50,3)
 #        configureSplittingFromTime(filter(lambda x: 'Single' in x.name,selectedComponents),50,3)
         for comp in selectedComponents:
             if 'Single' in comp.name: comp.splitFactor = int(ceil(len(comp.files)/4))
@@ -350,7 +350,7 @@ if runFRMC or runDataQCD:
     ttHLepSkim.minLeptons = 1
     ttHLepSkim.maxLeptons = 1
     if ttHJetMETSkim in susyCoreSequence: susyCoreSequence.remove(ttHJetMETSkim)
-    if getHeppyOption("fast"): raise RuntimeError, 'Already added ttHFastLepSkimmer with 2-lep configuration, this is wrong.'
+    if getHeppyOption("fast"): raise RuntimeError('Already added ttHFastLepSkimmer with 2-lep configuration, this is wrong.')
     FRTrigs = triggers_FR_1mu_noiso + triggers_FR_1mu_noiso_smpd + triggers_FR_1e_noiso + triggers_FR_1e_iso
     for t in FRTrigs:
         tShort = t.replace("HLT_","FR_").replace("_v*","")
@@ -426,7 +426,7 @@ if runFRMC or runDataQCD:
         ttHLepQCDFakeRateAna.jetSel = lambda jet : jet.pt() > 25 and abs(jet.eta()) < 2.4 and jet.matchedTrgObj1Mu
 if sample == "z3l":
     ttHLepSkim.minLeptons = 3
-    if getHeppyOption("fast"): raise RuntimeError, 'Already added ttHFastLepSkimmer with 2-lep configuration, this is wrong.'
+    if getHeppyOption("fast"): raise RuntimeError('Already added ttHFastLepSkimmer with 2-lep configuration, this is wrong.')
     treeProducer.collections = {
         "selectedLeptons" : NTupleCollection("LepGood", leptonTypeSusyExtraLight, 8, help="Leptons after the preselection"),
         "cleanJets"       : NTupleCollection("Jet",     jetTypeSusyExtraLight, 15, help="Cental jets after full selection and cleaning, sorted by pt"),
@@ -494,14 +494,14 @@ if keepLHEweights:
     ]
 
 if forcedSplitFactor>0 or forcedFineSplitFactor>0:
-    if forcedFineSplitFactor>0 and forcedSplitFactor!=1: raise RuntimeError, 'splitFactor must be 1 if setting fineSplitFactor'
+    if forcedFineSplitFactor>0 and forcedSplitFactor!=1: raise RuntimeError('splitFactor must be 1 if setting fineSplitFactor')
     for c in selectedComponents:
         if forcedSplitFactor>0: c.splitFactor = forcedSplitFactor
         if forcedFineSplitFactor>0: c.fineSplitFactor = forcedFineSplitFactor
 
 if selectedEvents!="":
     events=[ int(evt) for evt in selectedEvents.split(",") ]
-    print "selecting only the following events : ", events
+    print("selecting only the following events : ", events)
     eventSelector= cfg.Analyzer(
         EventSelector,'EventSelector',
         toSelect = events
@@ -582,7 +582,7 @@ elif test == '80X-MC':
             os.system("xrdcp root://eoscms//eos/cms%s %s" % (comp.files[0],tmpfil))
         comp.files = [ tmpfil ]
         if not getHeppyOption("single"): comp.fineSplitFactor = 4
-    else: raise RuntimeError, "Unknown MC sample: %s" % what
+    else: raise RuntimeError("Unknown MC sample: %s" % what)
 elif test == '94X-MC':
     what = getHeppyOption("sample","TTLep")
     if what == "TTLep":
@@ -591,7 +591,7 @@ elif test == '94X-MC':
         selectedComponents = [ TTLep_pow ]
     elif what == "TTSemi":
         selectedComponents = [ kreator.makeMCComponent("TTSemi", "/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM", "CMS", ".*root", 831.76*(3*0.108)*(1-3*0.108)*2) ]
-    else: raise RuntimeError, "Unknown MC sample: %s" % what
+    else: raise RuntimeError("Unknown MC sample: %s" % what)
     for comp in selectedComponents:
         comp.triggers = []
         tmpfil = os.path.expandvars("/tmp/$USER/%s" % os.path.basename(comp.files[0]))
@@ -647,7 +647,7 @@ elif test == 'ttH-sync':
     comp.files = [ tmpfil ]
     if not getHeppyOption("single"): comp.fineSplitFactor = 8
 elif test != None:
-    raise RuntimeError, "Unknown test %r" % test
+    raise RuntimeError("Unknown test %r" % test)
 
 ## FAST mode: pre-skim using reco leptons, don't do accounting of LHE weights (slow)"
 ## Useful for large background samples with low skim efficiency

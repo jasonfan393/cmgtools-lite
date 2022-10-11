@@ -36,8 +36,8 @@ class ttHPrescalingLepSkimmer( Module ):
     def analyze(self, event):
         if self.prescaleFactor == 1:
             if self.minLeptons > 0:
-                muons = filter(self.muonSel, Collection(event, 'Muon'))
-                electrons = filter(self.electronSel, Collection(event, 'Electron'))
+                muons = list(filter(self.muonSel, Collection(event, 'Muon')))
+                electrons = list(filter(self.electronSel, Collection(event, 'Electron')))
                 leps = muons + electrons
                 if len(leps) < self.minLeptonsNoPrescale:
                     return False
@@ -46,8 +46,8 @@ class ttHPrescalingLepSkimmer( Module ):
 
         toBePrescaled = True
         if self.minLeptons > 0:
-            muons = filter(self.muonSel, Collection(event, 'Muon'))
-            electrons = filter(self.electronSel, Collection(event, 'Electron'))
+            muons = list(filter(self.muonSel, Collection(event, 'Muon')))
+            electrons = list(filter(self.electronSel, Collection(event, 'Electron')))
             leps = muons + electrons
             if len(leps) < self.minLeptonsNoPrescale:
                 return False
@@ -58,7 +58,7 @@ class ttHPrescalingLepSkimmer( Module ):
                 else:
                     toBePrescaled = False
         if self.minJets > 0:
-            jets = filter(self.jetSel, Collection(event, 'Jet'))
+            jets = list(filter(self.jetSel, Collection(event, 'Jet')))
             if len(jets) >= self.minJets:
                 toBePrescaled = False
         if self.minMET > 0:

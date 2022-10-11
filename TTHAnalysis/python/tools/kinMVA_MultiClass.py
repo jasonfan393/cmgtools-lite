@@ -55,16 +55,16 @@ class KinMVA_MultiClass:
             self._MVAs["kinMVA_3l_MultiClass"+self.systsJEC[var]] = MVATool("3l_MultiClass"+self.systsJEC[var], weights%"3l", getattr(self,"_vars"+self.systsJEC[var]), specs = self._specs, nClasses=3)
 
     def listBranches(self):
-        return [ '%s_%s'%(i,self.catnames[j]) for i in self._MVAs.keys() for j in xrange(3)]
+        return [ '%s_%s'%(i,self.catnames[j]) for i in list(self._MVAs.keys()) for j in range(3)]
     def __call__(self,event):
         out = {}
-        for name, mva in self._MVAs.iteritems():
+        for name, mva in self._MVAs.items():
             _mva = mva
-            for i,j in self.systsJEC.iteritems():
+            for i,j in self.systsJEC.items():
                 if j in name and not hasattr(event,"nJet"+j): _mva = self._MVAs[name.replace(j,"")]
             if '2lss' in name: x = _mva(event) if event.nLepFO_Recl>=2 else [-99]*3
             if '3l' in name: x = _mva(event) if event.nLepFO_Recl>=3 else [-99]*3
-            for i in xrange(3):
+            for i in range(3):
                 out['%s_%s'%(name,self.catnames[i])] = x[i]
         return out
 
@@ -83,8 +83,8 @@ if __name__ == '__main__':
             Module.__init__(self,name,None)
             self.sf = KinMVA_MultiClass(weights = './weights/MultiClassICHEP16_%s_BDTG.weights.xml')
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
-            print self.sf(ev)
+            print("\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood))
+            print(self.sf(ev))
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)
 

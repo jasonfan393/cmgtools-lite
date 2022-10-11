@@ -1,4 +1,4 @@
-import tauUtils
+from . import tauUtils
 import string
 
 """
@@ -60,4 +60,4 @@ elif(action=='tauopt'):
                 command(cmd,pretend)
         
 
-print 'Everything is done now'
+print('Everything is done now')

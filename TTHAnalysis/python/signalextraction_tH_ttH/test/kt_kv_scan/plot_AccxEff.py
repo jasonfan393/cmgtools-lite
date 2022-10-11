@@ -136,9 +136,9 @@ def getXYtoplot(process,sigRates,nodes,reg3l):
            x_2lss_1tau.append(q)
  
        
-   x_2lss_0tau,y_2lss_0tau = zip(*sorted(zip(x_2lss_0tau, y_2lss_0tau)))
-   x_3l_0tau,y_3l_0tau = zip(*sorted(zip(x_3l_0tau, y_3l_0tau)))
-   x_2lss_1tau,y_2lss_1tau = zip(*sorted(zip(x_2lss_1tau, y_2lss_1tau)))
+   x_2lss_0tau,y_2lss_0tau = list(zip(*sorted(zip(x_2lss_0tau, y_2lss_0tau))))
+   x_3l_0tau,y_3l_0tau = list(zip(*sorted(zip(x_3l_0tau, y_3l_0tau))))
+   x_2lss_1tau,y_2lss_1tau = list(zip(*sorted(zip(x_2lss_1tau, y_2lss_1tau))))
    return {'ttH_2l_0tau':{"latex" : r'$2\ell ss +0\tau_{h}$',"x": x_2lss_0tau,"y":y_2lss_0tau},'ttH_3l_0tau':{"latex" : r'$3\ell +0\tau_{h}$',"x":x_3l_0tau,"y":y_3l_0tau},'ttH_2l_1tau':{"latex" : r'$2\ell ss +1\tau_{h}$',"x":x_2lss_1tau,"y":y_2lss_1tau}}      
 
 
@@ -151,9 +151,9 @@ for process in ["tHq","tHW"] :
     colors = [ "springgreen","fuchsia", "r"]
     dic = getXYtoplot(process,sigRates,nodes,reg3l)
     ii=0
-    for key in dic.keys() :
+    for key in list(dic.keys()) :
         
-        print key
+        print(key)
         plt.plot(dic[key]["x"],dic[key]["y"], 'o-', markersize=3, color=colors[ii], linestyle='-', markeredgewidth=0, linewidth=1 ,label=dic[key]["latex"] )
         ii+=1   
     
@@ -175,6 +175,6 @@ for process in ["tHq","tHW"] :
     plt.axvline(x=1.0, color="k", linestyle=':', linewidth=1)
     namefig    = "AccTimeEff_" +year+'_'+ process +".pdf"
     fig.savefig(namefig)
-    print ("saved",namefig)
+    print(("saved",namefig))
 
 

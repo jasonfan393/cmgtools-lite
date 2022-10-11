@@ -21,7 +21,7 @@ class TTHWReco_MC:
         ## prepare output container
         ret  = dict([(name,-1.0 if name[:2] == "i_" else 0.0) for name in self.branches])
         ## return if not on MC
-        ret0 = dict([("mc_"+name,val) for (name,val) in ret.iteritems()])
+        ret0 = dict([("mc_"+name,val) for (name,val) in ret.items()])
         if event.run != 1:   return ret0
         if event.nJet25 < 3: return ret0
         # make python lists as Collection does not support indexing in slices
@@ -119,7 +119,7 @@ class TTHWReco_MC:
         ret["mt_h_jjlv"] = mt_h_jjlv if mt_h_jjlv else -99.0
         ret["mt_t_lvb"]  = mt_t_lvb if mt_t_lvb else -99.0
         # --------------------------------------------------------------------------
-        return dict([("mc_"+name,val) for (name,val) in ret.iteritems() if name in self.branches])
+        return dict([("mc_"+name,val) for (name,val) in ret.items() if name in self.branches])
 
 
 ##
@@ -399,11 +399,11 @@ if __name__ == '__main__':
             self.counts[i] += 1; i += 1 
             if ret["mc_has_h_jj"] == 0: return False
             self.counts[i] += 1; i += 1 
-            for k,v in ret.iteritems(): setattr(ev,k,v)
-            print "\nrun %6d lumi %4d event %d: leps %d, bjets %d, jets %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood, ev.nBJetMedium25, ev.nJet25)
+            for k,v in ret.items(): setattr(ev,k,v)
+            print("\nrun %6d lumi %4d event %d: leps %d, bjets %d, jets %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood, ev.nBJetMedium25, ev.nJet25))
             for k in sorted(ret.keys()):
-                print "\t%-20s: %9.3f" % (k,float(ret[k]))
-            print self.counts
+                print("\t%-20s: %9.3f" % (k,float(ret[k])))
+            print(self.counts)
     test = Tester("tester")              
     el = EventLoop([ test ])
     el.loop([tree], maxEvents = 20000)

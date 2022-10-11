@@ -29,7 +29,7 @@ class SOSLepCleaner:
         mass = self.LepGood_mass.At
         riso = self.LepGood_RelIsoMIV04.At
         sip = self.LepGood_sip3d.At
-        for iL in xrange(self.nLepGood.Get()[0]):
+        for iL in range(self.nLepGood.Get()[0]):
             if pt(iL)*riso(iL) < 10 and sip(iL) < 8:
                 LepSel.append(iL)
         ret = { 'nLepSel'+self.label : len(LepSel),
@@ -78,7 +78,7 @@ class SOSLepCleanerIP3D:
         ip = self.LepGood_ip3d.At
         sip = self.LepGood_sip3d.At
         csv = self.LepGood_jetBTagCSV.At
-        for iL in xrange(self.nLepGood.Get()[0]):
+        for iL in range(self.nLepGood.Get()[0]):
             if not( sip(iL) < 8 and csv(iL) < 0.46 ): continue
             if not( sip(iL) < (self.mu_sip3d if abs(pdgId(iL)) == 13 else self.el_sip3d) ): continue
             if not( abs(ip(iL)) < (self.mu_ip3d  if abs(pdgId(iL)) == 13 else self.el_ip3d)  ): continue
@@ -127,7 +127,7 @@ class SOSLepCleanerIP:
         dz = self.LepGood_dz.At
         sip = self.LepGood_sip3d.At
         csv = self.LepGood_jetBTagCSV.At
-        for iL in xrange(self.nLepGood.Get()[0]):
+        for iL in range(self.nLepGood.Get()[0]):
             if abs(dxy(iL)) < 0.01 and abs(dz(iL)) < 0.01 and sip(iL) < 8 and csv(iL) < 0.46:
                 LepSel.append(iL)
                 if len(LepSel) == 2: break
@@ -175,7 +175,7 @@ class SOSJetCleaner:
             jid = getattr(self, J+"_id").At
             btag = getattr(self, J+"_btagCSV").At
             copys = [ getattr(self, J+"_"+V).At for V in self.ints + self.floats ]
-            for iJ in xrange(nJ):
+            for iJ in range(nJ):
                 jets.append( (pt(iJ),eta(iJ),phi(iJ),jid(iJ),btag(iJ), [c(iJ) for c in copys]) )
         badjets = []
         for (lpt,leta,lphi) in leps:

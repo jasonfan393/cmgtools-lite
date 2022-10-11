@@ -5,8 +5,8 @@ import ROOT  as r
 import pickle
 from tabulate import tabulate
 sys.path.append(os.environ['CMSSW_BASE']+ '/CMGTools/python/plotter/ttH-modules/')
-from signalExtractionHarvestingConfigs import regionMappingFortables
-from signalExtractionHarvesting        import readNominalAndToys, stackByMapping, tableToNumbers, buildRms, makeTable
+from .signalExtractionHarvestingConfigs import regionMappingFortables
+from .signalExtractionHarvesting        import readNominalAndToys, stackByMapping, tableToNumbers, buildRms, makeTable
 
 from optparse import OptionParser
 parser = OptionParser()

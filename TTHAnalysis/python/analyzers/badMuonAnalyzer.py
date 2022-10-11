@@ -63,19 +63,19 @@ class badMuonAnalyzer( Analyzer ):
  
         if len(event.crazyMuon)>0:
 #            print 'found muon: run=', event.run,' lumi=', event.lumi,' event',event.eventId
-            print 'met=',event.met.pt(),' metphi=',event.met.phi()
-            print 'number of muons: ',len(event.crazyMuon)
-            print ' muon candidate pt: ',event.crazyMuon[0].pt(),' phi=',event.crazyMuon[0].phi()
-            print ' muon candidate eta: ',event.crazyMuon[0].eta()
-            print ' pdgId candidate : ',event.crazyMuon[0].pdgId()
-            print ' trackHighPurity: ',event.crazyMuon[0].trackHighPurity()
-            print ' dz: ',event.crazyMuon[0].dz()
-            print ' fromPV: ',event.crazyMuon[0].fromPV()
-            print ' ptError: ',event.crazyMuon[0].pseudoTrack().ptError(),';relativeError',event.crazyMuon[0].pseudoTrack().ptError()/event.crazyMuon[0].pseudoTrack().pt()
-            print ' chi2: ',event.crazyMuon[0].pseudoTrack().normalizedChi2()
-            print ' algo: ',event.crazyMuon[0].algo(),' originalAlgo',event.crazyMuon[0].originalAlgo()
-            print '----------------'
-            print '----------------'
+            print('met=',event.met.pt(),' metphi=',event.met.phi())
+            print('number of muons: ',len(event.crazyMuon))
+            print(' muon candidate pt: ',event.crazyMuon[0].pt(),' phi=',event.crazyMuon[0].phi())
+            print(' muon candidate eta: ',event.crazyMuon[0].eta())
+            print(' pdgId candidate : ',event.crazyMuon[0].pdgId())
+            print(' trackHighPurity: ',event.crazyMuon[0].trackHighPurity())
+            print(' dz: ',event.crazyMuon[0].dz())
+            print(' fromPV: ',event.crazyMuon[0].fromPV())
+            print(' ptError: ',event.crazyMuon[0].pseudoTrack().ptError(),';relativeError',event.crazyMuon[0].pseudoTrack().ptError()/event.crazyMuon[0].pseudoTrack().pt())
+            print(' chi2: ',event.crazyMuon[0].pseudoTrack().normalizedChi2())
+            print(' algo: ',event.crazyMuon[0].algo(),' originalAlgo',event.crazyMuon[0].originalAlgo())
+            print('----------------')
+            print('----------------')
 
 setattr(badMuonAnalyzer,"defaultConfig", cfg.Analyzer(
         class_object = badMuonAnalyzer,

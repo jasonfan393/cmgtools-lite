@@ -381,20 +381,10 @@ finalMVA_4l = lambda : FinalMVA_4L()
 from PhysicsTools.NanoAODTools.postprocessing.modules.btv.btagSFProducer import btagSFProducer
 
 
-# btagSF2016_dj_allVars = lambda : btagSFProducer("UL2016",'deepjet',collName="JetSel_Recl",storeOutput=False,perJesComponents=True)
-# btagSF2016APV_dj_allVars = lambda : btagSFProducer("UL2016APV",'deepjet',collName="JetSel_Recl",storeOutput=False,perJesComponents=True)
-# btagSF2017_dj_allVars = lambda : btagSFProducer("UL2017",'deepjet',collName="JetSel_Recl",storeOutput=False,perJesComponents=True)
-# btagSF2018_dj_allVars = lambda : btagSFProducer("UL2018",'deepjet',collName="JetSel_Recl",storeOutput=False,perJesComponents=True)
 
-btagSF2016APV_dj = lambda : btagSFProducer("UL2016APV",'deepjet' ,selectedWPs=['shape_corr'], collName="JetSel_Recl")
-btagSF2016_dj    = lambda : btagSFProducer("UL2016",'deepjet'    ,selectedWPs=['shape_corr'], collName="JetSel_Recl")
-btagSF2017_dj    = lambda : btagSFProducer("UL2017",'deepjet'    ,selectedWPs=['shape_corr'], collName="JetSel_Recl")
-btagSF2018_dj    = lambda : btagSFProducer("UL2018",'deepjet'    ,selectedWPs=['shape_corr'], collName="JetSel_Recl")
 
-from CMGTools.TTHAnalysis.tools.nanoAOD.BtagSFs import BtagSFs
-bTagSFs = lambda : BtagSFs("JetSel_Recl",
-                           corrs = {"" : 1.},
-)
+from CMGTools.TTHAnalysis.tools.nanoAOD.btagSF import btagSF
+bTagSFs = lambda : btagSF()
 
 # bTagSFs_allvars = lambda : BtagSFs("JetSel_Recl",
 #                                    corrs=jecGroups,
@@ -403,14 +393,6 @@ bTagSFs = lambda : BtagSFs("JetSel_Recl",
 from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors import lepScaleFactors
 leptonSFs = lambda : lepScaleFactors()
 
-scaleFactorSequence_2016APV = [btagSF2016APV_dj,bTagSFs] 
-scaleFactorSequence_2016    = [btagSF2016_dj,bTagSFs] 
-scaleFactorSequence_2017    = [btagSF2017_dj,bTagSFs] 
-scaleFactorSequence_2018    = [btagSF2018_dj,bTagSFs]
-
-# scaleFactorSequence_allVars_2016 = [btagSF2016_dj_allVars,bTagSFs_allvars] 
-# scaleFactorSequence_allVars_2017 = [btagSF2017_dj_allVars,bTagSFs_allvars] 
-# scaleFactorSequence_allVars_2018 = [btagSF2018_dj_allVars,bTagSFs_allvars]
 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.higgsDecayFinder import higgsDecayFinder

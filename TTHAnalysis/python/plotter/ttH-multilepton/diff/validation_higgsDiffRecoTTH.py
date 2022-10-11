@@ -7,11 +7,11 @@ class Validation_HiggsDiffRecoTTH():
         gROOT.SetBatch()
         self.f = TFile.Open(fname, 'read')
         if not self.f:
-            print('Cannot open file %s. Exiting'%fname)
+            print(('Cannot open file %s. Exiting'%fname))
             return
         self.t = self.f.Get(tname)
         if not self.t:
-            print('Cannot open tree %s. Exiting'%tname)
+            print(('Cannot open tree %s. Exiting'%tname))
             return
         self.altf = TFile.Open(altfname, 'read') if altfname else None
         #self.altt = self.altf.Get(tname) if self.altf else None
@@ -30,7 +30,7 @@ class Validation_HiggsDiffRecoTTH():
 
     def printPlotList(self):
         for plot in self.p:
-            print('Plotting:', plot)
+            print(('Plotting:', plot))
 
     def plotList(self):
         for plot in self.p:
@@ -118,7 +118,7 @@ class Validation_HiggsDiffRecoTTH():
         self.p.append(['%sGenHiggsDecayMode'%(self.label), 20, -10, 10])
 
         # Somehow dependent on JES
-        for jesLabel in self.systsJEC.values(): 
+        for jesLabel in list(self.systsJEC.values()): 
 
             # Some quantities
             self.p.append(['%svisHmass%s'%(self.label,jesLabel)                   , 200, -100, 100])
@@ -179,7 +179,7 @@ class Validation_HiggsDiffRecoTTH():
         
 
 for year in [2016, 2017, 2018]:
-    print('With windows, year %s'%year)
+    print(('With windows, year %s'%year))
     validator = None
     #if year == 2016:
     validator = Validation_HiggsDiffRecoTTH('/nfs/user/pvischia/tth/v6/NanoTrees_TTH_091019_v6pre_skim2lss_tight/%s/6_higgsDiffRecoTTH/TTHnobb_fxfx_Friend.root'%year, outdir='validationPlots_higgsDiffRecoTTH_windows/%s'%year, altfname='/nfs/user/pvischia/tth/v6/NanoTrees_TTH_091019_v6pre_skim2lss_tight/%s/6_higgsDiffRecoTTH_noWmassConstraint/TTHnobb_fxfx_Friend.root'%year)
@@ -189,7 +189,7 @@ for year in [2016, 2017, 2018]:
     validator.printPlotList()
     validator.plotList()
     
-    print('Without windows, year %s'%year)
+    print(('Without windows, year %s'%year))
     validator2 = Validation_HiggsDiffRecoTTH('/nfs/user/pvischia/tth/v6/NanoTrees_TTH_091019_v6pre_skim2lss_tight/%s/6_higgsDiffRecoTTH_nowindows/TTHnobb_fxfx_Friend.root'%year, outdir='validationPlots_higgsDiffRecoTTH_nowindows/%s'%year, altfname='/nfs/user/pvischia/tth/v6/NanoTrees_TTH_091019_v6pre_skim2lss_tight/%s/6_higgsDiffRecoTTH_noWmassConstraint_nowindows/TTHnobb_fxfx_Friend.root'%year)
     validator2.buildPlotListFromBranches()
     validator2.printPlotList()

@@ -14,21 +14,21 @@ def makeH2D(name,xedges,yedges):
 
 def fillSliceY(th2,plot1d,yvalue,xslice):
     ybin = th2.GetYaxis().FindBin(yvalue)
-    for xbin in xrange(1,th2.GetNbinsX()+1):
+    for xbin in range(1,th2.GetNbinsX()+1):
         xval = th2.GetXaxis().GetBinCenter(xbin)
         if xslice[0] <= xval and xval <= xslice[1]:
-            for i in xrange(plot1d.GetN()):
+            for i in range(plot1d.GetN()):
                 x,xp,xm = plot1d.GetX()[i], plot1d.GetErrorXhigh(i), plot1d.GetErrorYlow(i)
                 if x-xm <= xval and xval <= x+xp:
                     th2.SetBinContent(xbin,ybin,plot1d.GetY()[i])
                     th2.SetBinError(xbin,ybin,max(plot1d.GetErrorYlow(i),plot1d.GetErrorYhigh(i)))
 def readSliceY(th2,filename,plotname,yvalue,xslice):
     slicefile = ROOT.TFile.Open(filename)
-    if not slicefile: raise RuntimeError, "Cannot open "+filename
+    if not slicefile: raise RuntimeError("Cannot open "+filename)
     plot = slicefile.Get(plotname)
     if not plot: 
         slicefile.ls()
-        raise RuntimeError, "Cannot find "+plotname+" in "+filename
+        raise RuntimeError("Cannot find "+plotname+" in "+filename)
     fillSliceY(th2,plot,yvalue,xslice)
     slicefile.Close()
 def read2D(th2,filepattern,plotname,yslices,xslice):
@@ -56,14 +56,14 @@ def makeVariants(h):
     ret = []
     for s,func in shifters:
         hsyst = h.Clone(h.GetName()+"_"+s)
-        for bx in xrange(1,h.GetNbinsX()+1):
+        for bx in range(1,h.GetNbinsX()+1):
             x = h.GetXaxis().GetBinCenter(bx) 
-            for by in xrange(1,h.GetNbinsY()+1):
+            for by in range(1,h.GetNbinsY()+1):
                 y = h.GetYaxis().GetBinCenter(by) 
                 fr0 = h.GetBinContent(bx,by)
                 err = h.GetBinError(bx,by)
                 fr = func(x,y,fr0,err)
-                print "Variation %-15s: pt %4.1f, eta %3.1f: nominal %.3f +- %.3f --> shifted %.3f "  % (hsyst.GetName(), x, y, fr0, err, fr)
+                print("Variation %-15s: pt %4.1f, eta %3.1f: nominal %.3f +- %.3f --> shifted %.3f "  % (hsyst.GetName(), x, y, fr0, err, fr))
                 hsyst.SetBinContent(bx, by, fr)
                 hsyst.SetBinError(bx, by, 0)
         ret.append(hsyst)
@@ -81,9 +81,9 @@ def styles(hs,ext=False):
         colors['Z + l'] = ROOT.kGray+2
         colors['MC DY'] = ROOT.kViolet+1
     for label,h in hs:
-        for n,c in colors.iteritems():
+        for n,c in colors.items():
             if n in label:
-                print "%s in %s" % (n, label)
+                print("%s in %s" % (n, label))
                 h.SetLineColor(c)
                 h.SetMarkerColor(c)
         if ext:
@@ -118,7 +118,7 @@ if __name__ == "__main__":
     parser.add_option("--normEffUncToLumi", dest="normEffUncToLumi", action="store_true", default=False, help="Normalize the dataset to the given lumi for the uncertainties on the calculated efficiency")
     (options, args) = parser.parse_args()
     (outname) = args[0]
-    print outname
+    print(outname)
     outfile = ROOT.TFile.Open(outname,"RECREATE")
     if options.outdir:
         if not os.path.exists(options.outdir):

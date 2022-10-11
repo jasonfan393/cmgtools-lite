@@ -1,4 +1,4 @@
-from __future__ import division
+
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module 
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput, writeOutput
@@ -155,101 +155,101 @@ class HiggsDiffGenTTH(Module):
             if (abs(part.pdgId) == 24 and part.statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcess'])
                 and part.genPartIdxMother >= 0 and  genpar[part.genPartIdxMother].pdgId == 25 ):
                 WFromH.append(part)
-                if self.debug: print "it is a hard W coming from a Higgs"
+                if self.debug: print("it is a hard W coming from a Higgs")
                 
             # W from tops 
             if (abs(part.pdgId) == 24 and part.statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcess'])
                 and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 6):
                 WFromT.append(part)
-                if self.debug: print "it is a hard W coming from a top"
+                if self.debug: print("it is a hard W coming from a top")
 
             # W decays to quarks
             if (abs(part.pdgId) in [1,2,3,4,5,6] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 24): 
                 QFromW.append(part)
-                if self.debug: print "it is a quark coming from a W"
+                if self.debug: print("it is a quark coming from a W")
 
             # gen leptons
             if (abs(part.pdgId) in [11,13] and part.status == 1 and part.statusFlags &(1 << diffUtils.statusFlagsMap['isLastCopy']) 
                 and not part.statusFlags &(1 << diffUtils.statusFlagsMap['isDirectHadronDecayProduct'])):
                 if part.statusFlags &(1 << diffUtils.statusFlagsMap['isPrompt']) or part.statusFlags &(1 << diffUtils.statusFlagsMap['isDirectPromptTauDecayProduct']):
                     GenLep.append(part)
-                    if self.debug: print "it is a prompt lepton"
+                    if self.debug: print("it is a prompt lepton")
 
             # gen leptons from W
             if (abs(part.pdgId) in [11,13] and part.status == 1 and part.statusFlags &(1 << diffUtils.statusFlagsMap['isLastCopy']) and not part.statusFlags &(1 << diffUtils.statusFlagsMap['isDirectHadronDecayProduct'])):
                 if part.statusFlags &(1 << diffUtils.statusFlagsMap['isPrompt']) or part.statusFlags &(1 << diffUtils.statusFlagsMap['isDirectPromptTauDecayProduct']):
                     if part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 24: 
                         LFromW.append(part)
-                        if self.debug: print "it is a prompt lepton"
+                        if self.debug: print("it is a prompt lepton")
                         
             # neutrino from W from H
             if abs(part.pdgId) in [12, 14]:
-                if self.debug: print "it is a neutrino"
+                if self.debug: print("it is a neutrino")
                 if part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 24: 
-                    if self.debug: print "the mother of this neutrino is W+ or W-"
+                    if self.debug: print("the mother of this neutrino is W+ or W-")
                     if abs(genpar[genpar[part.genPartIdxMother].genPartIdxMother].pdgId) == 25:
                         NuFromWFromH.append(part)
-                        if self.debug: print "the mother of this W is a Higgs"
+                        if self.debug: print("the mother of this W is a Higgs")
                         
             # neutrino from W from top
             if abs(part.pdgId) in [12, 14, 16]:
-                if self.debug: print "it is a neutrino"
+                if self.debug: print("it is a neutrino")
                 if part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 24: 
-                    if self.debug: print "the mother of this neutrino is W+ or W-"
+                    if self.debug: print("the mother of this neutrino is W+ or W-")
                     mpart = genpar[part.genPartIdxMother]
                     while (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 24): mpart = genpar[mpart.genPartIdxMother]
                     if abs(genpar[mpart.genPartIdxMother].pdgId) == 6:
                         NuFromWFromT.append(part)
                         if mpart not in WFromLepT: WFromLepT.append(mpart)
                         if genpar[mpart.genPartIdxMother] not in LepT: LepT.append(genpar[mpart.genPartIdxMother])
-                        if self.debug: print "the mother of this W is a top"
+                        if self.debug: print("the mother of this W is a top")
         
             # quarks from W from H
             if (abs(part.pdgId) in [1,2,3,4,5,6] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 24
                      and genpar[part.genPartIdxMother].statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcess'])):
-                if self.debug: print "it is a quark coming from a hard W"
+                if self.debug: print("it is a quark coming from a hard W")
                 if (genpar[genpar[part.genPartIdxMother].genPartIdxMother].genPartIdxMother >= 0 
                     and genpar[genpar[part.genPartIdxMother].genPartIdxMother].pdgId == 25
                     and genpar[part.genPartIdxMother].statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcess'])):
                     QFromWFromH.append(part)
                     if genpar[part.genPartIdxMother] not in HadWFromH: HadWFromH.append(genpar[part.genPartIdxMother])
-                    if self.debug: print "the mother of this hard W is a hard Higgs"
+                    if self.debug: print("the mother of this hard W is a hard Higgs")
 
             # quarks from W from T 
             if (abs(part.pdgId) in [1,2,3,4,5,6] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 24): 
-                if self.debug: print "it is a quark coming from a hard W"
+                if self.debug: print("it is a quark coming from a hard W")
                 mpart = genpar[part.genPartIdxMother]
                 while (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 24): mpart = genpar[mpart.genPartIdxMother]
                 if abs(genpar[mpart.genPartIdxMother].pdgId) == 6:
                     QFromWFromT.append(part)
                     if mpart not in WFromHadT: WFromHadT.append(mpart)
                     if genpar[mpart.genPartIdxMother] not in HadT: HadT.append(genpar[mpart.genPartIdxMother])
-                    if self.debug: print "the mother of this hard W is a hard top"
+                    if self.debug: print("the mother of this hard W is a hard top")
 
             # leptons (excl. taus) from W from H 
             if (abs(part.pdgId) in [11,13] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 24 
                      and genpar[part.genPartIdxMother].statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcess'])):
-                if self.debug: print "it is a lepton coming from a hard W"
+                if self.debug: print("it is a lepton coming from a hard W")
                 if (genpar[genpar[part.genPartIdxMother].genPartIdxMother].genPartIdxMother >= 0 
                     and genpar[genpar[part.genPartIdxMother].genPartIdxMother].pdgId == 25 
                     and genpar[part.genPartIdxMother].statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcess'])):
                     LFromWFromH.append(part)
-                    if self.debug: print "the mother of this hard W is a hard Higgs"
+                    if self.debug: print("the mother of this hard W is a hard Higgs")
                     
             # leptons (excl. taus) from W from top
             if (abs(part.pdgId) in [11,13] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 24
                      and genpar[part.genPartIdxMother].statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcess'])):
-                if self.debug: print "it is a lepton coming from a hard W"
+                if self.debug: print("it is a lepton coming from a hard W")
                 if (genpar[genpar[part.genPartIdxMother].genPartIdxMother].genPartIdxMother >= 0 
                     and abs(genpar[genpar[part.genPartIdxMother].genPartIdxMother].pdgId) == 6 
                     and genpar[part.genPartIdxMother].statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcess'])):
                     LFromWFromT.append(part)
-                    if self.debug: print "the mother of this W is a hard top"
+                    if self.debug: print("the mother of this W is a hard top")
         
             # Tau from H
             if (abs(part.pdgId) in [15] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId)==25):
                 TauFromH.append(part)
-                if self.debug: print "it is a hard tau coming from a higgs"
+                if self.debug: print("it is a hard tau coming from a higgs")
 
             # pion / kaon from tau from H
             if (abs(part.pdgId) in [111,211,311,321] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId)==15):
@@ -257,7 +257,7 @@ class HiggsDiffGenTTH(Module):
                 while (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 15): mpart = genpar[mpart.genPartIdxMother]
                 if (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 25):
                     hFromTauFromH.append(part)
-                    if self.debug: print "it is a pion or kaon coming from a hard tau from a higgs"
+                    if self.debug: print("it is a pion or kaon coming from a hard tau from a higgs")
 
             # Lepton from tau from H
             if (abs(part.pdgId) in [11,13] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId)==15):
@@ -265,7 +265,7 @@ class HiggsDiffGenTTH(Module):
                 while (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 15): mpart = genpar[mpart.genPartIdxMother]
                 if (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 25):
                     LFromTauFromH.append(part)
-                    if self.debug: print "it is a lepton coming from a hard tau from a higgs"
+                    if self.debug: print("it is a lepton coming from a hard tau from a higgs")
 
             # lnu from tau from H
             if (abs(part.pdgId) in [12,14] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId)==15):
@@ -273,7 +273,7 @@ class HiggsDiffGenTTH(Module):
                 while (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 15): mpart = genpar[mpart.genPartIdxMother]
                 if (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 25):
                     NuFromTauFromH.append(part)
-                    if self.debug: print "it is a lepton neutrino coming from a hard tau from a higgs"
+                    if self.debug: print("it is a lepton neutrino coming from a hard tau from a higgs")
 
             # tnu from tau from H
             if (abs(part.pdgId) in [16] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId)==15):
@@ -281,36 +281,36 @@ class HiggsDiffGenTTH(Module):
                 while (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 15): mpart = genpar[mpart.genPartIdxMother]
                 if (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 25):
                     TNuFromTauFromH.append(part)
-                    if self.debug: print "it is a tau neutrino coming from a hard tau from a higgs"
+                    if self.debug: print("it is a tau neutrino coming from a hard tau from a higgs")
 
             # Z from H
             if (abs(part.pdgId) in [23] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId)==25):
                 ZFromH.append(part)
-                if self.debug: print "it is a hard Z coming from a higgs"
+                if self.debug: print("it is a hard Z coming from a higgs")
 
             # Q from Z from H
             if (abs(part.pdgId) in [1,2,3,4,5,6] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId)==23):
                 if (genpar[part.genPartIdxMother].genPartIdxMother >= 0 and abs(genpar[genpar[part.genPartIdxMother].genPartIdxMother].pdgId)==25):
                     QFromZFromH.append(part)
-                    if self.debug: print "it is a quark coming from a hard Z from a higgs"
+                    if self.debug: print("it is a quark coming from a hard Z from a higgs")
 
             # L from Z from H
             if (abs(part.pdgId) in [11,13] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId)==23):
                 if (genpar[part.genPartIdxMother].genPartIdxMother >= 0 and abs(genpar[genpar[part.genPartIdxMother].genPartIdxMother].pdgId)==25):
                     LFromZFromH.append(part)
-                    if self.debug: print "it is a lepton coming from a hard Z from a higgs"
+                    if self.debug: print("it is a lepton coming from a hard Z from a higgs")
 
             # Nu from Z from H
             if (abs(part.pdgId) in [12,14] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId)==23):
                 if (genpar[part.genPartIdxMother].genPartIdxMother >= 0 and abs(genpar[genpar[part.genPartIdxMother].genPartIdxMother].pdgId)==25):
                     NuFromZFromH.append(part)
-                    if self.debug: print "it is a lepton neutrino coming from a hard Z from a higgs"
+                    if self.debug: print("it is a lepton neutrino coming from a hard Z from a higgs")
 
             # Tau from W from H
             if (abs(part.pdgId) in [15] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 24):
                 if (genpar[part.genPartIdxMother].genPartIdxMother >= 0 and abs(genpar[genpar[part.genPartIdxMother].genPartIdxMother].pdgId)==25):
                     TauFromWFromH.append(part)
-                    if self.debug: print "it is a tau coming from a hard W from a higgs"
+                    if self.debug: print("it is a tau coming from a hard W from a higgs")
 
             # L from tau from W from H
             if (abs(part.pdgId) in [11,13] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 15):
@@ -320,7 +320,7 @@ class HiggsDiffGenTTH(Module):
                         and genpar[mpart.genPartIdxMother].genPartIdxMother >= 0
                         and abs(genpar[genpar[mpart.genPartIdxMother].genPartIdxMother].pdgId) == 25):
                     LFromTauFromWFromH.append(part)
-                    if self.debug: print "it is a lepton coming from a tau from a hard W from a higgs"
+                    if self.debug: print("it is a lepton coming from a tau from a hard W from a higgs")
 
             # Nu from tau from W from H
             if (abs(part.pdgId) in [12,14] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 15):
@@ -330,7 +330,7 @@ class HiggsDiffGenTTH(Module):
                         and genpar[mpart.genPartIdxMother].genPartIdxMother >= 0
                         and abs(genpar[genpar[mpart.genPartIdxMother].genPartIdxMother].pdgId) == 25):
                     NuFromTauFromWFromH.append(part)
-                    if self.debug: print "it is a lepton neutrino coming from a tau from a hard W from a higgs"
+                    if self.debug: print("it is a lepton neutrino coming from a tau from a hard W from a higgs")
 
             # pion / kaon from tau from W from H
             if (abs(part.pdgId) in [111,211,311,321] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 15):
@@ -340,14 +340,14 @@ class HiggsDiffGenTTH(Module):
                         and genpar[mpart.genPartIdxMother].genPartIdxMother >= 0
                         and abs(genpar[genpar[mpart.genPartIdxMother].genPartIdxMother].pdgId) == 25):
                     hFromTauFromWFromH.append(part)
-                    if self.debug: print "it is a pion or kaon coming from a tau from a hard W from a higgs"
+                    if self.debug: print("it is a pion or kaon coming from a tau from a hard W from a higgs")
 
             if self.debug:
                 # taus
                 if (abs(part.pdgId) in [15] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 24):
                     if(genpar[part.genPartIdxMother].statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcess'])):
                         tauFromW.append(part)
-                        if self.debug: print "it is a tau coming from a hard W"
+                        if self.debug: print("it is a tau coming from a hard W")
                     
                     # leptons from top as recommended by gen particle producer
                 if (abs(part.pdgId) in [11,13] 
@@ -355,12 +355,12 @@ class HiggsDiffGenTTH(Module):
                     and part.statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcess'])
                     and part.statusFlags &(1 << diffUtils.statusFlagsMap['isFirstCopy'])
                     and not part.statusFlags &(1 << diffUtils.statusFlagsMap['isDirectHadronDecayProduct'])):
-                    if self.debug: print "it should be a  lepton coming from top"
+                    if self.debug: print("it should be a  lepton coming from top")
                     # LFromWFromT.append(part) # why to the same collection? No.
         # End loop on genparticles
 
         if self.debug:
-            print (" >> in this event: "  
+            print((" >> in this event: "  
                    + " \n higgses              = " + str(len(Higgses)) 
                    + " \n W from Higgs         = " + str(len(WFromH))
                    + " \n hard tops            = " + str(len(Tfromhardprocess))
@@ -375,7 +375,7 @@ class HiggsDiffGenTTH(Module):
                    + " \n quarks from W's      = " + str(len(QFromW))
                    + " \n leptons from W's     = " + str(len(LFromW))
                    #   + " \n taus from W's        = " + str(len(tauFromW))
-                   + " \n <<")
+                   + " \n <<"))
 
 
         # Fill branches for particles

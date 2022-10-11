@@ -18,17 +18,17 @@ args = parser.parse_args()
 mydir = args.idir
 
 for f in os.listdir(mydir):
-    print('Converting ', f)
+    print(('Converting ', f))
     fileIn = f
     fileOut = f
     treename = 'Friends'
-    print "Reading tree {} in file {}".format(treename, fileIn)
+    print("Reading tree {} in file {}".format(treename, fileIn))
     data = uproot.open("%s/%s"%(mydir,fileIn))[treename]
 
-    names = data.keys()
+    names = list(data.keys())
 
     print ("Tree has the following branches:")
-    print ("  [{}]".format(', '.join(names)))
+    print(("  [{}]".format(', '.join(names))))
 
     #data.arrays(names)
     dfObj = data.pandas.df()

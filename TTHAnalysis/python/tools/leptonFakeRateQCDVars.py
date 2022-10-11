@@ -56,9 +56,9 @@ class LeptonFakeRateQCDExtraVars:
         nJet = self.nJet.Get()[0]
         ret = { "nLepGood":nLep }
         for B in self.branches:
-            if B[0] not in ret: ret[B[0]] = [0  for il in xrange(nLep)]
-        for il in xrange(nLep):
-            for ij in xrange(nJet):
+            if B[0] not in ret: ret[B[0]] = [0  for il in range(nLep)]
+        for il in range(nLep):
+            for ij in range(nJet):
                 if jpt(ij) <= 25: continue
                 if deltaR(leta(il), lphi(il), jeta(ij), jphi(ij)) > 0.7:
                     ret["LepGood_awayNJet25"][il] += 1
@@ -100,9 +100,9 @@ if __name__ == '__main__':
                 lambda jet, lep, dr : jet.pt > 20 and abs(jet.eta) < 2.4 and dr > 0.7, 
                 label="Central")
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
-            print self.sf1(ev)
-            print self.sf2(ev)
+            print("\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood))
+            print(self.sf1(ev))
+            print(self.sf2(ev))
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)
 

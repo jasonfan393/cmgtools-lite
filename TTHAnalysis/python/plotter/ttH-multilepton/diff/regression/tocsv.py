@@ -23,7 +23,7 @@ def load_data(file, vars):
     print('Loaded tree in array')
     
     thedf = pandas.DataFrame(arr, columns=vars)
-    print(thedf.head())
+    print((thedf.head()))
     #thedf = thedf[thedf['Hreco_nLeps']==2]
     #thedf = thedf[thedf['Hreco_nJets']>5]
     return thedf
@@ -64,7 +64,7 @@ thevars = [ 'Hreco_%s'%i for i in thevars]
 mydir = args.idir
 
 for f in os.listdir(mydir):
-    print('Converting ', f)
+    print(('Converting ', f))
     data = load_data("%s/%s" %(mydir, f),  thevars)
     c = f.replace('.root', '.csv')
     data.to_csv("%s/%s" %(mydir, c), index=False)

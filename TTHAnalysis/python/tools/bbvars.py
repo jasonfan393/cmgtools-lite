@@ -3,7 +3,7 @@ from CMGTools.TTHAnalysis.treeReAnalyzer import *
 class bbVars:
     def __init__(self):
         self.branches = [ "minDrbbLoose", "minMbbLoose", "minDrbbMedium", "minMbbMedium" ]
-        self.branches += [ "JetPt_%d" % i for i in xrange(1,9) ]
+        self.branches += [ "JetPt_%d" % i for i in range(1,9) ]
     def listBranches(self):
         return self.branches[:]
     def jjvals(self, jets, func):
@@ -27,7 +27,7 @@ class bbVars:
             ret["minMbbMedium"]  = min( self.jjvals(bmedium, mbb ) )
         jpts = [ j.pt for j in jets]
         jpts.sort(); jpts.reverse()
-        for i in xrange(1,9):
+        for i in range(1,9):
             ret["JetPt_%d" % i] = jpts[i-1] if i <= len(jets) else 0
         return ret
 if __name__ == '__main__':
@@ -39,8 +39,8 @@ if __name__ == '__main__':
             Module.__init__(self,name,None)
             self.sf = bbVars()
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: bloose %d, bmedium %d" % (ev.run, ev.lumi, ev.evt, ev.nBJetLoose25, ev.nBJetMedium25)
-            print self.sf(ev)
+            print("\nrun %6d lumi %4d event %d: bloose %d, bmedium %d" % (ev.run, ev.lumi, ev.evt, ev.nBJetLoose25, ev.nBJetMedium25))
+            print(self.sf(ev))
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)
 

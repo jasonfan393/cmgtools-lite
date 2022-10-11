@@ -7,8 +7,8 @@ from array import array
 from math import log10, sqrt
 from tabulate import tabulate
 sys.path.append(os.environ['CMSSW_BASE']+ '/CMGTools/python/plotter/ttH-modules/')
-from signalExtractionHarvestingConfigs import catsStackYears
-from signalExtractionHarvesting        import readNominalAndToys, stackByMapping, tableToNumbers, buildRms, getSoverB
+from .signalExtractionHarvestingConfigs import catsStackYears
+from .signalExtractionHarvesting        import readNominalAndToys, stackByMapping, tableToNumbers, buildRms, getSoverB
 r.gROOT.SetBatch(True)
 
 def doSpam(text,x1,y1,x2,y2,align=12,fill=False,textSize=0.033,_noDelete={}):
@@ -45,7 +45,7 @@ else:
 results, data=stackByMapping( results, data, catsStackYears, 'stack_soverb', readFromPickle=(not options.redoStack))
 #print results
 points=getSoverB(results,data, [x for x in catsStackYears],['ttH','tH'])
-print 'hola'
+print('hola')
 bins=[-5,-3,-2.5,-2,-1.5,-1.,-0.5,0.5]
 
 hData=r.TH1F('data','',len(bins)-1, array('d',bins))
@@ -68,7 +68,7 @@ for cat, bin, data,bkg,sigs in points['nom']:
     hth.AddBinContent(histbin, sigs.get('tH',0))
 
 toylist=[]
-print binlist
+print(binlist)
 for toy in range(100):
     hbkg =r.TH1F('hbkg_toy%d'%toy,'',len(bins)-1, array('d',bins))
     for cat, bin, data,bkg,sigs in points['toy_%d'%toy]:

@@ -58,6 +58,6 @@ h_nSites.Draw()
 c[h_timeAll.GetName()] = ROOT.TCanvas()
 h_timeAll.Draw()
 
-for h in h_timeSite.values():
+for h in list(h_timeSite.values()):
     c[h.GetName()] = ROOT.TCanvas()
     h.Draw()

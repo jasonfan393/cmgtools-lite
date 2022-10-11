@@ -271,11 +271,11 @@ sequence = cfg.Sequence(susyCoreSequence+[
 #-------- HOW TO RUN -----------
 test = getHeppyOption('test')
 if test == "1":
-    print "The test wil use %s " % selectedComponents[0].name
+    print("The test wil use %s " % selectedComponents[0].name)
     selectedComponents = doTest1(selectedComponents[0], sequence=sequence, cache=False )
-    print "The test wil use file %s " % selectedComponents[0].files[0]
+    print("The test wil use file %s " % selectedComponents[0].files[0])
 elif test == "1Z":
-    print ZJetsToNuNu_HT200to400_ext.files[2]
+    print(ZJetsToNuNu_HT200to400_ext.files[2])
     selectedComponents = doTest1(ZJetsToNuNu_HT200to400_ext, sequence=sequence, cache=True )
 elif test == "sync":
     T2ttDeg_mStop425_mChi405_4bodydec.files = T2ttDeg_mStop425_mChi405_4bodydec.files[:5]

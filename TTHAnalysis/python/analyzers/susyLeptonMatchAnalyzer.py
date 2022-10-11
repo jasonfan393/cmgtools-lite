@@ -21,7 +21,7 @@ class susyLeptonMatchAnalyzer( Analyzer ):
         super(susyLeptonMatchAnalyzer,self).beginLoop(setup)
 
     def isFromGamma(self,particle,gid=22, done={}):
-        for i in xrange( particle.numberOfMothers() ): 
+        for i in range( particle.numberOfMothers() ): 
             mom  = particle.mother(i)
             momid = abs(mom.pdgId())
             if momid == gid: 

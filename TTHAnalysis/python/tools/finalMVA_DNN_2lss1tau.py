@@ -14,7 +14,7 @@ def mTauTauVis( ev, ind ):
     all_leps = [l for l in Collection(ev,"LepGood")]
     nFO = getattr(ev,"nLepFO_Recl")
     chosen = getattr(ev,"iLepFO_Recl")
-    leps = [all_leps[chosen[i]] for i in xrange(nFO)]
+    leps = [all_leps[chosen[i]] for i in range(nFO)]
     if len(leps) < 2: return -1
     
     if ev.Tau_tight2lss1tau_idx < 0: return -1
@@ -27,7 +27,7 @@ def massL3( ev, var ):
     all_leps = [l for l in Collection(ev,"LepGood")]
     nFO = getattr(ev,"nLepFO_Recl")
     chosen = getattr(ev,"iLepFO_Recl")
-    leps = [all_leps[chosen[i]] for i in xrange(nFO)]
+    leps = [all_leps[chosen[i]] for i in range(nFO)]
     if len(leps) < 2: return 0
 
     taus = [ t for t in Collection(ev, 'TauSel_Recl')]
@@ -130,7 +130,7 @@ class finalMVA_DNN_2lss1tau(Module):
 
 
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
-        print self.outVars
+        print(self.outVars)
         declareOutput(self, wrappedOutputTree, self.outVars)
         
     def analyze(self,event):
@@ -139,7 +139,7 @@ class finalMVA_DNN_2lss1tau(Module):
         for worker in self._MVAs:
             name = worker.name
             if not hasattr(event,"nJet25_jerUp_Recl") and ('_jes' in name or  '_jer' in name or '_uncl' in name): continue # using jer bc components wont change
-            ret.extend( [(x,y) for x,y in worker(event).iteritems()])
+            ret.extend( [(x,y) for x,y in worker(event).items()])
             
 
             

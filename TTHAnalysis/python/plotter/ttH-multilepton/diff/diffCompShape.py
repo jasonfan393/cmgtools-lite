@@ -111,8 +111,8 @@ comparisonplotlists = [
 ]
 
 def draw_comparison(args):
-    fname = args['pars'].keys()[0]
-    nbins, lowbin, highbin = args['pars'].values()[0]
+    fname = list(args['pars'].keys())[0]
+    nbins, lowbin, highbin = list(args['pars'].values())[0]
 
     gStyle.SetOptTitle(0)
     gStyle.SetOptStat(0) 
@@ -126,7 +126,7 @@ def draw_comparison(args):
     h.Draw("ICE")
     ip=0
     ymax=0
-    for var, vals in args['vars'].items():
+    for var, vals in list(args['vars'].items()):
         ps.append(TH1F(var, var, nbins, lowbin, highbin))
         tr.Draw("%s>>%s"%(var,var),vals[0])
         ps[ip].GetXaxis().SetTitle("%s [GeV]"%fname)

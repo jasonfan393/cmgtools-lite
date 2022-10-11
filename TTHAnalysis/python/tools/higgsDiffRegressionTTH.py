@@ -22,7 +22,7 @@ class HiggsDiffRegressionTTH(Module):
 
         # Somehow dependent on JES
 
-        for jesLabel in self.systsJEC.values():
+        for jesLabel in list(self.systsJEC.values()):
             
             # Counters
             self.out.branch('%snLeps%s'%(self.label,jesLabel), 'I') 
@@ -78,11 +78,11 @@ class HiggsDiffRegressionTTH(Module):
         nFO = getattr(event,"nLepFO_Recl")
         ileps = getattr(event,"iLepFO_Recl")
         leps = Collection(event,"LepGood","nLepGood")
-        lepsFO = [leps[ileps[i]] for i in xrange(nFO)]
+        lepsFO = [leps[ileps[i]] for i in range(nFO)]
         jets = [x for x in Collection(event,"JetSel_Recl","nJetSel_Recl")]
         (met, met_phi)  = event.MET_pt, event.MET_phi
 
-        for jesLabel in self.systsJEC.values():
+        for jesLabel in list(self.systsJEC.values()):
             score = getattr(event,"BDThttTT_eventReco_mvaValue%s"%jesLabel)
             
             candidates=[]

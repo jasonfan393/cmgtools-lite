@@ -1,4 +1,4 @@
-from __future__ import division
+
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module 
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput, writeOutput
@@ -29,7 +29,7 @@ class HiggsDiffRecoTTH(Module):
         self.out.branch('%sGenHiggsDecayMode'%(self.label)          , 'I')
 
         # Somehow dependent on JES
-        for jesLabel in self.systsJEC.values(): 
+        for jesLabel in list(self.systsJEC.values()): 
 
             # Some quantities
             self.out.branch('%sminDRlj%s'%(self.label,jesLabel)                    , 'F')
@@ -94,7 +94,7 @@ class HiggsDiffRecoTTH(Module):
         allLeps     = Collection(event,"LepGood","nLepGood")
         nFO      = getattr(event,"nLepFO_Recl")
         selLeps    = getattr(event,"iLepFO_Recl")
-        leps   = [allLeps[selLeps[i]] for i in xrange(nFO)]
+        leps   = [allLeps[selLeps[i]] for i in range(nFO)]
         jets     = [x for x in Collection(event,"JetSel_Recl","nJetSel_Recl")]
         fatjets  = [x for x in Collection(event,"FatJet","nFatJet")]
 
@@ -111,7 +111,7 @@ class HiggsDiffRecoTTH(Module):
             rightlep = ilist[0]
             wronglep = ilist[-1] # last element in list, usually ilist[1] since len(leps)==2 usually
 
-        for jesLabel in self.systsJEC.values():
+        for jesLabel in list(self.systsJEC.values()):
             score = getattr(event,"BDThttTT_eventReco_mvaValue%s"%jesLabel)
             ljj_candidates=[];
             testing_list=[] 

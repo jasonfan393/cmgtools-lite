@@ -18,9 +18,9 @@ class FinalMVA_3L:
         self._MVAs["FinalMVA_3L_BDTG"] = MVATool("ee", P+"3l_mix_BDTG.weights.xml", self._vars_1_7) 
         
     def listBranches(self):
-        return self._MVAs.keys()
+        return list(self._MVAs.keys())
     def __call__(self,event):
-        return dict([ (name, mva(event)) for name, mva in self._MVAs.iteritems()])
+        return dict([ (name, mva(event)) for name, mva in self._MVAs.items()])
 
 if __name__ == '__main__':
     from sys import argv
@@ -32,8 +32,8 @@ if __name__ == '__main__':
             Module.__init__(self,name,None)
             self.sf = FinalMVA_3L()
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
-            print self.sf(ev)
+            print("\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood))
+            print(self.sf(ev))
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)
 

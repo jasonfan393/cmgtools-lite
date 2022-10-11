@@ -1,6 +1,6 @@
 from optparse import OptionParser
-from lib import maker
-from lib import functions as func
+from .lib import maker
+from .lib import functions as func
 
 parser = OptionParser(usage="%prog cfg regions treedir outdir [options]")
 parser = maker.addMakerOptions(parser)

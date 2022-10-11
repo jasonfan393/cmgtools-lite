@@ -15,9 +15,9 @@ class FinalMVA_2LSS_2:
             ]
             self._MVAs[name] = MVATool("FinalMVA_2LSS_"+algo, training, self._vars, rarity=rarity) 
     def listBranches(self):
-        return self._MVAs.keys()
+        return list(self._MVAs.keys())
     def __call__(self,event):
-        return dict([ (name, mva(event)) for name, mva in self._MVAs.iteritems()])
+        return dict([ (name, mva(event)) for name, mva in self._MVAs.items()])
 
 if __name__ == '__main__':
     from sys import argv
@@ -33,9 +33,9 @@ if __name__ == '__main__':
                 for A in "BDTG" ,"LD", "Likelihood":
                     self.mvas[X+"_"+A] = FinalMVA_2LSS_2(X+"_"+A, "old", A, P+("%s_%s.weights.xml" % (X,A)), rarity=(A=="LD"))
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
-            for n,x in self.mvas.iteritems():
-                print "%-20s: %s" % (n, x(ev).values()[0])
+            print("\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood))
+            for n,x in self.mvas.items():
+                print("%-20s: %s" % (n, list(x(ev).values())[0]))
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)
 

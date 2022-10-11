@@ -50,11 +50,11 @@ class mvaCP_3l(Module):
             
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         self.wrappedOutputTree = wrappedOutputTree
-        for out in self._MVAs.keys():
+        for out in list(self._MVAs.keys()):
             self.wrappedOutputTree.branch(out,'F')
 
     def analyze(self, event):
         myvars = [event.iLepFO_Recl[0],event.iLepFO_Recl[1],event.iLepFO_Recl[2]]
-        writeOutput(self, dict([ (name, mva(event)) for name, mva in self._MVAs.iteritems()]))
+        writeOutput(self, dict([ (name, mva(event)) for name, mva in self._MVAs.items()]))
         return True
 

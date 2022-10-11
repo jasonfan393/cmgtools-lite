@@ -121,7 +121,7 @@ class EventVarsMT2:
                         pseudoViaKtJet2_had = groupingViaKt[1]
                         ret["mt2_had_30"] = computeMT2(pseudoViaKtJet1_had, pseudoViaKtJet2_had, metp4)
 
-        print 'mt2(had-original)=',event.mt2,'--- mt2ViaKt_had(original)=',event.mt2ViaKt_had,'--- mt2(new)=',ret["mt2_had_30"]
+        print('mt2(had-original)=',event.mt2,'--- mt2ViaKt_had(original)=',event.mt2ViaKt_had,'--- mt2(new)=',ret["mt2_had_30"])
 
         return ret
 
@@ -134,8 +134,8 @@ if __name__ == '__main__':
             Module.__init__(self,name,None)
             self.sf = EventVars2LSS()
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
-            print self.sf(ev)
+            print("\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood))
+            print(self.sf(ev))
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)
 

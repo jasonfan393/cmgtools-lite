@@ -36,7 +36,7 @@ class ttHHeavyFlavourHadronAnalyzer( Analyzer ):
             myflav = flav(g)
             if myflav not in [4,5]: continue
             lastInChain = True
-            for idau in xrange(g.numberOfDaughters()):
+            for idau in range(g.numberOfDaughters()):
                 if flav(g.daughter(idau)) == myflav:
                     lastInChain = False
                     break
@@ -77,7 +77,7 @@ class ttHHeavyFlavourHadronAnalyzer( Analyzer ):
                 if shared_n:
                     #print "       matched %d tracks (total pt: %.2f) " % (shared_n, shared_pt)
                     had_ivf_pairs.append( (ihad, isv, shared_n, shared_pt) )
-        had_ivf_pairs.sort(key = lambda (i1,i2,n,pt) : n + 0.0001*pt, reverse=True)
+        had_ivf_pairs.sort(key = lambda i1_i2_n_pt : i1_i2_n_pt[2] + 0.0001*i1_i2_n_pt[3], reverse=True)
         for ihad,isv,n,pt in had_ivf_pairs:
             had = heavyHadrons[ihad]
             #print "( had %d, sv %d ): shared %d tracks, %.2f pt ==> %s" % (ihad, isv, n, pt, had.sv)
@@ -92,7 +92,7 @@ class ttHHeavyFlavourHadronAnalyzer( Analyzer ):
         jetsWithMatchedDaughters = [] 
         for j in event.jetsIdOnly:
             dausWithMatch = []
-            for idau in xrange(j.numberOfDaughters()):
+            for idau in range(j.numberOfDaughters()):
                 dau = j.daughter(idau)
                 if dau.charge() == 0 or abs(dau.eta()) > 2.5: continue
                 mct, dr, dpt =  matchToGenHadron(dau, event, minDR=0.05, minDpt=0.1)
@@ -108,7 +108,7 @@ class ttHHeavyFlavourHadronAnalyzer( Analyzer ):
                         shared_n += 1; shared_pt += mct.pt()
                 if shared_n:
                     had_jet_pairs.append( (ihad, ij, shared_n, shared_pt) )
-        had_jet_pairs.sort(key = lambda (i1,i2,n,pt) : n + 0.0001*pt, reverse=True)
+        had_jet_pairs.sort(key = lambda i1_i2_n_pt1 : i1_i2_n_pt1[2] + 0.0001*i1_i2_n_pt1[3], reverse=True)
         for ihad,ij,n,pt in had_jet_pairs:
             had = heavyHadrons[ihad]
             if had.jet == None:

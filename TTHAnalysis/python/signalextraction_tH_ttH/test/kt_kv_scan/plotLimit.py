@@ -17,9 +17,9 @@ import seaborn as sns
 sns.set(style="ticks")
 sns.set_context("poster")
 
-from process_limits import scale_limits
-from process_limits import xs_limit, xs_limit_ratio
-from process_limits import print_limits
+from .process_limits import scale_limits
+from .process_limits import xs_limit, xs_limit_ratio
+from .process_limits import print_limits
 
 ## type 1
 
@@ -42,8 +42,8 @@ def readConfig(configfile, options=None):
     with open(configfile, 'read') as cfile:
         try:
             return json.load(cfile)
-        except Exception, e:
-            print "Failed to load config from %s" % configfile
+        except Exception as e:
+            print("Failed to load config from %s" % configfile)
             raise e
 
     return None
@@ -60,13 +60,13 @@ def process_limits(csv_files,
     if not ('0p5' in csv_files[0] and
             '1p0' in csv_files[1] and
             '1p5' in csv_files[2]):
-        print "WARNING, wrong order for csv files? %s" % csv_files
+        print("WARNING, wrong order for csv files? %s" % csv_files)
     df_limits = pd.read_csv(csv_files[0], sep=",", index_col=None)
     df_limits = df_limits.append(pd.read_csv(csv_files[1], sep=",", index_col=None), ignore_index=True)
     df_limits = df_limits.append(pd.read_csv(csv_files[2], sep=",", index_col=None), ignore_index=True)
 
     # Read the cross sections from csv files
-    print "...reading scalings from %s" % scalings
+    print("...reading scalings from %s" % scalings)
     df_xsecs = pd.read_csv(scalings, sep=",", index_col=None)
 
     if printout:
@@ -84,7 +84,7 @@ def process_limits(csv_files,
     # Remove the duplicate entries, sort, reset the index, and write to csv
     df_xs_limits.drop_duplicates(subset='ratio', inplace=True)
     df_xs_limits.sort_values(by='ratio', inplace=True)
-    df_xs_limits.index = range(1,len(df_xs_limits)+1)
+    df_xs_limits.index = list(range(1,len(df_xs_limits)+1))
 
     if writeout:
         df_xs_limits.to_csv(os.path.join(outdir, "xs_limits.csv"))
@@ -93,7 +93,7 @@ def process_limits(csv_files,
 def process(df, scalings=None, att='tot', scale_by_ratio=False):
     # Scale with a cross section?
     if scalings:
-        print "...scaling limits with cross section (%s) from %s" % (att, scalings)
+        print("...scaling limits with cross section (%s) from %s" % (att, scalings))
         df_xsecs = pd.read_csv(scalings, sep=",", index_col=0)
         scale_limits(df, df, df_xsecs, att=att, scale_by_ratio=scale_by_ratio)
 
@@ -103,13 +103,13 @@ def process(df, scalings=None, att='tot', scale_by_ratio=False):
             df['ratio'] = df.cf/df.cv
             df['ratio'] = df.ratio.round(3)
         except AttributeError:
-            print "Failed to build ratio column in dataframe... check input file"
+            print("Failed to build ratio column in dataframe... check input file")
 
     return df
 
 def plotLimits(cfg, outdir='plots/', tag=''):
-    print "...reading observed limits from %s" % str(cfg['observed']['csv_files'])
-    print "...reading cross sections from %s" % (cfg['xsecs'])
+    print("...reading observed limits from %s" % str(cfg['observed']['csv_files']))
+    print("...reading cross sections from %s" % (cfg['xsecs']))
 
     # Fill dataframes
     df_obs = None
@@ -237,7 +237,7 @@ def plotLimits(cfg, outdir='plots/', tag=''):
     outfile = os.path.join(outdir, cfg['name'])
     plt.savefig("%s.pdf"%outfile, bbox_inches='tight')
     plt.savefig("%s.png"%outfile, bbox_inches='tight', dpi=300)
-    print "...saved plots in %s.pdf/.png" % outfile
+    print("...saved plots in %s.pdf/.png" % outfile)
 
     return 0
 
@@ -283,7 +283,7 @@ if __name__ == '__main__':
     setUpMPL()
     for ifile in args:
         if not os.path.exists(ifile):
-            print "Ignoring %s" % ifile
+            print("Ignoring %s" % ifile)
             continue
 
         plotConfig = readConfig(options.defaultOptions, options=options)

@@ -4,7 +4,7 @@ from array import array
 from math import log, exp
 
 from CMGTools.TTHAnalysis.treeReAnalyzer import ROOT, EventLoop, Module, Collection
-from BTagScaleFactors import BTagScaleFactors
+from .BTagScaleFactors import BTagScaleFactors
 
 class BTagEventWeightFriend:
     def __init__(self,
@@ -72,7 +72,7 @@ class BTagEventWeightFriend:
             _ijets_list = getattr(event, "iJSel_%s%s" % (self.recllabel, jec_syst))
             return [(jets[ij] if ij>=0 else jets_disc[-ij-1]) for ij in _ijets_list]
         except AttributeError:
-            if not hasattr(self,'_debugprinted'): print 'Recleaned jets not found, falling back to default cleaned collection'
+            if not hasattr(self,'_debugprinted'): print('Recleaned jets not found, falling back to default cleaned collection')
             self._debugprinted = True
             return jets
 
@@ -141,7 +141,7 @@ class BTagEventWeightFriend:
         try:
             return pmc/pdata
         except ZeroDivisionError:
-            print "WARNING: scale factor of 0 found"
+            print("WARNING: scale factor of 0 found")
             return 1.0
 
 
@@ -167,13 +167,13 @@ if __name__ == '__main__':
     treefile = ROOT.TFile.Open(argv[1])
     tree = treefile.Get("tree")
     tree.vectorTree = True
-    print "... processing %s" % argv[1]
+    print("... processing %s" % argv[1])
 
     try:
         friendfile = ROOT.TFile.Open(argv[2])
         friendtree = friendfile.Get("sf/t")
         tree.AddFriend(friendtree)
-        print "... adding friend tree from %s" % argv[2]
+        print("... adding friend tree from %s" % argv[2])
     except IndexError:
         pass
 
@@ -184,24 +184,24 @@ if __name__ == '__main__':
         def __init__(self, name):
             Module.__init__(self,name,None)
             self.sf = BTagEventWeightFriend(btagsf_payload, recllabel="Recl", algo='csv')
-            print "Adding these branches:", self.sf.listBranches()
+            print("Adding these branches:", self.sf.listBranches())
 
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: jets %d, isdata=%d" % (ev.run, ev.lumi, ev.evt, ev.nJet25, int(ev.isData))
+            print("\nrun %6d lumi %4d event %d: jets %d, isdata=%d" % (ev.run, ev.lumi, ev.evt, ev.nJet25, int(ev.isData)))
             ret = self.sf(ev)
             jets = Collection(ev,"Jet")
             # leps = Collection(ev,"LepGood")
 
             for i,j in enumerate(jets):
-                print "\tjet %8.2f %+5.2f %1d %.3f" % (j.pt, j.eta, getattr(j, "hadronFlavour", -1), min(max(0, j.btagCSV), 1))
+                print("\tjet %8.2f %+5.2f %1d %.3f" % (j.pt, j.eta, getattr(j, "hadronFlavour", -1), min(max(0, j.btagCSV), 1)))
 
             for label in self.sf.listBranches()[:10]:
-                print "%8s"%label[-8:],
-            print ""
+                print("%8s"%label[-8:], end=' ')
+            print("")
 
             for label in self.sf.listBranches()[:10]:
-                print "%8.3f" % ret[label],
-            print ""
+                print("%8.3f" % ret[label], end=' ')
+            print("")
 
 
         def done(self):
@@ -217,7 +217,7 @@ if __name__ == '__main__':
                                             csvfastsim=btagsf_payload_fastsim,
                                             eff_rootfile=btag_efficiency_file,
                                             recllabel="Recl", algo='csv')
-            print "Adding these branches:", self.sf.listBranches()
+            print("Adding these branches:", self.sf.listBranches())
 
         def analyze(self,ev):
             # print "\nrun %6d lumi %4d event %d: jets %d, isdata=%d" % (ev.run, ev.lumi, ev.evt, ev.nJet25, int(ev.isData))
@@ -233,8 +233,8 @@ if __name__ == '__main__':
             # print ""
 
             for label in self.sf.listBranches()[:10]:
-                print "%8.3f" % ret[label],
-            print ""
+                print("%8.3f" % ret[label], end=' ')
+            print("")
 
 
         def done(self):

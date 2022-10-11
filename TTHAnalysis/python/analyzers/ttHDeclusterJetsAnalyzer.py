@@ -46,19 +46,19 @@ class ttHDeclusterJetsAnalyzer( Analyzer ):
             if not self.cfg_ana.jetCut(j): 
                 continue
             objects  = ROOT.std.vector(ROOT.reco.Particle.LorentzVector)()
-            for idau in xrange(j.numberOfDaughters()):
+            for idau in range(j.numberOfDaughters()):
                dau = j.daughter(idau)
                objects.push_back(dau.p4())
             if objects.size() <= 1: continue           
-            if self.verbose: print "Jet of pt %8.2f, eta %+5.2f, mass %6.2f " % (j.pt(), j.eta(), j.mass())
+            if self.verbose: print("Jet of pt %8.2f, eta %+5.2f, mass %6.2f " % (j.pt(), j.eta(), j.mass()))
             if self.cfg_comp.isMC: 
-                if self.verbose: print "\t partons %2d, leptons %1d, taus %2d (total mass: %8.2f)" % ( j.mcNumPartons, j.mcNumLeptons, j.mcNumTaus, j.mcAnyPartonMass)
+                if self.verbose: print("\t partons %2d, leptons %1d, taus %2d (total mass: %8.2f)" % ( j.mcNumPartons, j.mcNumLeptons, j.mcNumTaus, j.mcAnyPartonMass))
             if self.cfg_ana.prune:
                 # kt exclusive
                 reclusterJets = ROOT.heppy.ReclusterJets(objects, 1.,10)
                 pruned = reclusterJets.getPruned(self.cfg_ana.pruneZCut,self.cfg_ana.pruneRCutFactor)
                 j.prunedP4 = pruned
-                if self.verbose: print "\t pruned mass %8.2f, ptLoss %.3f" % ( pruned.M(), pruned.Pt()/j.pt() )
+                if self.verbose: print("\t pruned mass %8.2f, ptLoss %.3f" % ( pruned.M(), pruned.Pt()/j.pt() ))
             # kt inclusive R=0.2
             reclusterJets02 = ROOT.heppy.ReclusterJets(objects, 1.,0.2)          
             inclusiveJets02 = reclusterJets02.getGrouping(self.cfg_ana.ptMinSubjets)
@@ -66,7 +66,7 @@ class ttHDeclusterJetsAnalyzer( Analyzer ):
             j.nSubJets30 = sum([(js.pt() > 30) for js in inclusiveJets02])
             j.nSubJets40 = sum([(js.pt() > 40) for js in inclusiveJets02])
             j.nSubJetsZ01 = sum([(js.pt() > 0.1*j.pt()) for js in inclusiveJets02])
-            if self.verbose: print "\t subjets: \n\t\t%s" % ("\n\t\t".join(["pt %8.2f, mass %6.2f" % (js.pt(),js.M()) for js in inclusiveJets02]))
+            if self.verbose: print("\t subjets: \n\t\t%s" % ("\n\t\t".join(["pt %8.2f, mass %6.2f" % (js.pt(),js.M()) for js in inclusiveJets02])))
 
     def processLeptons(self, event):
         event.recoveredJets = []
@@ -97,13 +97,13 @@ class ttHDeclusterJetsAnalyzer( Analyzer ):
             if self.verbose and type(self.verbose) == int: self.verbose -= 1
             j = l.jet  
             fj = l.fatjet
-            if self.verbose: print "lepton pt %6.1f [mc %d], jet pt %6.1f, mass %6.2f,  relIso %5.2f, dr(lep) = %.3f, ptRel v1 = %5.1f, ptF = %5.2f" % (l.pt(), getattr(l,'mcMatchId',0), j.pt(), j.mass(), l.relIso03, l.jetDecDR, l.jetDecPtRel, l.jetDecPtRatio)
+            if self.verbose: print("lepton pt %6.1f [mc %d], jet pt %6.1f, mass %6.2f,  relIso %5.2f, dr(lep) = %.3f, ptRel v1 = %5.1f, ptF = %5.2f" % (l.pt(), getattr(l,'mcMatchId',0), j.pt(), j.mass(), l.relIso03, l.jetDecDR, l.jetDecPtRel, l.jetDecPtRatio))
             objects  = ROOT.std.vector(ROOT.reco.Particle.LorentzVector)()
             fobjects  = ROOT.std.vector(ROOT.reco.Particle.LorentzVector)()
-            for idau in xrange(j.numberOfDaughters()):
+            for idau in range(j.numberOfDaughters()):
                dau = j.daughter(idau)
                objects.push_back(dau.p4())
-            for fidau in xrange(fj.numberOfDaughters()):
+            for fidau in range(fj.numberOfDaughters()):
                 fdau = fj.daughter(fidau)
                 fobjects.push_back(fdau.p4()) 
                
@@ -118,14 +118,14 @@ class ttHDeclusterJetsAnalyzer( Analyzer ):
                 pruned = reclusterJets.getPruned(self.cfg_ana.pruneZCut,self.cfg_ana.pruneRCutFactor)
                 l.jetDecPrunedPtRatio = l.pt()/pruned.pt()
                 if self.verbose:
-                    print "    ... pruned jet mass: %6.2f, ptRelv1 %5.2f, ptFraction %5.2f " % (pruned.mass(), ptRelv1(l.p4(),pruned), l.pt()/pruned.pt())
+                    print("    ... pruned jet mass: %6.2f, ptRelv1 %5.2f, ptFraction %5.2f " % (pruned.mass(), ptRelv1(l.p4(),pruned), l.pt()/pruned.pt()))
                     
             # compute lepton-jet variable, jet is obtained from reclustering of associated akt04 jet daughters, with kt exclusive        
-            for nsub in xrange(2,self.cfg_ana.maxSubjets+1):
+            for nsub in range(2,self.cfg_ana.maxSubjets+1):
                if nsub > objects.size(): break
                exclusiveJets = reclusterJets.getGroupingExclusive(nsub)
                drbest = 1; ibest = -1
-               for isub in xrange(len(exclusiveJets)):
+               for isub in range(len(exclusiveJets)):
                    sj = exclusiveJets[isub]
                    dr  = deltaR(l.eta(),l.phi(),sj.eta(),sj.phi())
                    ptR = ptRelv1(l.p4(),sj)
@@ -139,9 +139,9 @@ class ttHDeclusterJetsAnalyzer( Analyzer ):
                        pM  = pp4.mass()
                    if self.verbose:
                       if self.cfg_ana.prune:
-                         print "    exclusive subjet %d/%d: pt %6.1f, mass %6.2f (pruned %6.2f), dr(lep) = %.3f, ptRel v1 = %5.1f (pruned %5.1f), ptF = %5.2f (pruned %5.2f)" % (isub,nsub, sj.pt(), sj.mass(), pM, dr, ptR, ppR, ptF, ppF)
+                         print("    exclusive subjet %d/%d: pt %6.1f, mass %6.2f (pruned %6.2f), dr(lep) = %.3f, ptRel v1 = %5.1f (pruned %5.1f), ptF = %5.2f (pruned %5.2f)" % (isub,nsub, sj.pt(), sj.mass(), pM, dr, ptR, ppR, ptF, ppF))
                       else:
-                         print "    exlcusive subjet %d/%d: pt %6.1f, mass %6.2f, dr(lep) = %.3f, ptRel v1 = %5.1f, ptF = %5.2f" % (isub,nsub, sj.pt(), sj.mass(), dr, ptR, ptF)
+                         print("    exlcusive subjet %d/%d: pt %6.1f, mass %6.2f, dr(lep) = %.3f, ptRel v1 = %5.1f, ptF = %5.2f" % (isub,nsub, sj.pt(), sj.mass(), dr, ptR, ptF))
                if ibest == -1: continue
                sj = exclusiveJets[ibest]
                dr  = deltaR(l.eta(),l.phi(),sj.eta(),sj.phi())
@@ -159,11 +159,11 @@ class ttHDeclusterJetsAnalyzer( Analyzer ):
                   l.jetDecPrunedMass    = pM  #l.jet.mass()
                if self.verbose:
                   if self.cfg_ana.prune:
-                     print "    best exclusive subject %d/%d: pt %6.1f, mass %6.2f (pruned %6.2f), dr(lep) = %.3f, ptRel v1 = %5.1f (pruned %5.1f), ptF = %5.2f (pruned %5.2f)" % (ibest,nsub, sj.pt(), sj.mass(), pM, dr, ptR, ppR, ptF, ppF)
+                     print("    best exclusive subject %d/%d: pt %6.1f, mass %6.2f (pruned %6.2f), dr(lep) = %.3f, ptRel v1 = %5.1f (pruned %5.1f), ptF = %5.2f (pruned %5.2f)" % (ibest,nsub, sj.pt(), sj.mass(), pM, dr, ptR, ppR, ptF, ppF))
                   else:
-                     print "    best exclusive subject %d/%d: pt %6.1f, mass %6.2f, dr(lep) = %.3f, ptRel v1 = %5.1f, ptF = %5.2f" % (ibest,nsub, sj.pt(), sj.mass(), dr, ptR, ptF)
+                     print("    best exclusive subject %d/%d: pt %6.1f, mass %6.2f, dr(lep) = %.3f, ptRel v1 = %5.1f, ptF = %5.2f" % (ibest,nsub, sj.pt(), sj.mass(), dr, ptR, ptF))
                if dr < self.cfg_ana.drMin and ptF < self.cfg_ana.ptRatioMax and (abs(ptF-1) < self.cfg_ana.ptRatioDiff or dr < self.cfg_ana.drMatch or ptR < self.cfg_ana.ptRelMin):
-                    if self.verbose: print "       ---> take this as best subject, stop reclustering, consider it successful"
+                    if self.verbose: print("       ---> take this as best subject, stop reclustering, consider it successful")
                     restp4 = None
                     for (i2,s2) in enumerate(exclusiveJets):
                         if i2 == ibest: continue
@@ -177,15 +177,15 @@ class ttHDeclusterJetsAnalyzer( Analyzer ):
                     prunedJet.setP4(restp4)
                     event.recoveredJets.append(prunedJet)
                     break
-               if self.verbose: print ""
-            if self.verbose: print ""
+               if self.verbose: print("")
+            if self.verbose: print("")
             event.recoveredJets.sort(key = lambda j : j.pt(), reverse=True)
             event.recoveredSplitJets.sort(key = lambda j : j.pt(), reverse=True)
 
             # lepton-jet variable, jet is obtained from reclustering of associated akt04 jet daughters, with kt inclusive R=0.2
             inclusiveJets02 = reclusterJets02.getGrouping(self.cfg_ana.ptMinSubjets)
             drbest = 1; ibest = -1
-            for isub in xrange(len(inclusiveJets02)):
+            for isub in range(len(inclusiveJets02)):
                 ij = inclusiveJets02[isub]
                 dr  = deltaR(l.eta(),l.phi(),ij.eta(),ij.phi())
                 ptR = ptRelv1(l.p4(),ij)
@@ -199,9 +199,9 @@ class ttHDeclusterJetsAnalyzer( Analyzer ):
                     pM  = pp4.mass()
                 if self.verbose:
                    if self.cfg_ana.prune:
-                      print "    inclusive subjet %d/%d: pt %6.1f, mass %6.2f (pruned %6.2f), dr(lep) = %.3f, ptRel v1 = %5.1f (pruned %5.1f), ptF = %5.2f (pruned %5.2f)" % (isub,nsub, ij.pt(), ij.mass(), pM, dr, ptR, ppR, ptF, ppF)
+                      print("    inclusive subjet %d/%d: pt %6.1f, mass %6.2f (pruned %6.2f), dr(lep) = %.3f, ptRel v1 = %5.1f (pruned %5.1f), ptF = %5.2f (pruned %5.2f)" % (isub,nsub, ij.pt(), ij.mass(), pM, dr, ptR, ppR, ptF, ppF))
                    else:
-                      print "    inclusive subjet %d/%d: pt %6.1f, mass %6.2f, dr(lep) = %.3f, ptRel v1 = %5.1f, ptF = %5.2f" % (isub,nsub, ij.pt(), ij.mass(), dr, ptR, ptF)
+                      print("    inclusive subjet %d/%d: pt %6.1f, mass %6.2f, dr(lep) = %.3f, ptRel v1 = %5.1f, ptF = %5.2f" % (isub,nsub, ij.pt(), ij.mass(), dr, ptR, ptF))
             if ibest != -1:
                 ij = inclusiveJets02[ibest]
                 dr  = deltaR(l.eta(),l.phi(),ij.eta(),ij.phi())
@@ -219,9 +219,9 @@ class ttHDeclusterJetsAnalyzer( Analyzer ):
                    l.jetDec02PrunedMass    = pM  #l.jet.mass()
                 if self.verbose:
                    if self.cfg_ana.prune:
-                      print "    best inclusive subject %d/%d: pt %6.1f, mass %6.2f (pruned %6.2f), dr(lep) = %.3f, ptRel v1 = %5.1f (pruned %5.1f), ptF = %5.2f (pruned %5.2f)" % (ibest,nsub, ij.pt(), ij.mass(), pM, dr, ptR, ppR, ptF, ppF)
+                      print("    best inclusive subject %d/%d: pt %6.1f, mass %6.2f (pruned %6.2f), dr(lep) = %.3f, ptRel v1 = %5.1f (pruned %5.1f), ptF = %5.2f (pruned %5.2f)" % (ibest,nsub, ij.pt(), ij.mass(), pM, dr, ptR, ppR, ptF, ppF))
                    else:
-                      print "    best inclusive subject %d/%d: pt %6.1f, mass %6.2f, dr(lep) = %.3f, ptRel v1 = %5.1f, ptF = %5.2f" % (ibest,nsub, ij.pt(), ij.mass(), dr, ptR, ptF)
+                      print("    best inclusive subject %d/%d: pt %6.1f, mass %6.2f, dr(lep) = %.3f, ptRel v1 = %5.1f, ptF = %5.2f" % (ibest,nsub, ij.pt(), ij.mass(), dr, ptR, ptF))
 
                     
                      

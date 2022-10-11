@@ -72,13 +72,13 @@ class isoTrackDeDxAnalyzer( Analyzer ):
             if self.cfg_ana.doDeDx:
                 ref = getDeDxRef(t.index)
                 if ref.isNull():
-                    print "ERROR: no dE/dx for track of pt %.2f, eta %.2f" % (t.pt(),t.eta())
+                    print("ERROR: no dE/dx for track of pt %.2f, eta %.2f" % (t.pt(),t.eta()))
                     continue
                 dedx = ref.get(); 
                 nhits = dedx.size()
                 # this below is just dummy to give you a template
                 mysum = 0
-                for ih in xrange(dedx.size()):
+                for ih in range(dedx.size()):
                     pxclust = dedx.pixelCluster(ih)
                     if not pxclust: continue
                     mysum += pxclust.charge()
@@ -98,7 +98,7 @@ class isoTrackDeDxAnalyzer( Analyzer ):
                 g.index = i
                 g.decayPoint = g.vertex()
                 if g.numberOfDaughters() > 1:
-                    for i in xrange(g.numberOfDaughters()):
+                    for i in range(g.numberOfDaughters()):
                         dau = g.daughter(i)
                         if dau: 
                             g.decayPoint = dau.vertex()

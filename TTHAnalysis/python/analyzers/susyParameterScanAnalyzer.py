@@ -76,7 +76,7 @@ class susyParameterScanAnalyzer( Analyzer ):
                 if particle != None:
                     if particle not in masses: masses[particle] = []
                     masses[particle].append(p.mass())
-        for p,ms in masses.iteritems():
+        for p,ms in masses.items():
             avgmass = floor(sum(ms)/len(ms)+0.5)
             setattr(event, "genSusyM"+p, avgmass)
 
@@ -84,16 +84,16 @@ class susyParameterScanAnalyzer( Analyzer ):
         #print " validity ", self.genLumiHandle.product().configDescription()
         if not self.mchandles['lhe'].isValid():
             if not hasattr(self,"warned_already"):
-                print "ERROR: Missing LHE header in file"
+                print("ERROR: Missing LHE header in file")
                 self.warned_already = True
             return
         lheprod = self.mchandles['lhe'].configDescription();#product()
         
         scanline = re.compile(r"#\s*model\s+([A-Za-z0-9]+)_((\d+\.?\d*)(_\d+\.?\d*)*)(\s+(\d+\.?\d*))*\s*")
-        for i in xrange(lheprod.comments_size()):
+        for i in range(lheprod.comments_size()):
             comment = lheprod.getComment(i)
             if (not hasattr(self,'model_printed')) and ('model' in comment):
-                print 'LHE contains this model string: %s (will not print the ones in the following events)'%comment
+                print('LHE contains this model string: %s (will not print the ones in the following events)'%comment)
                 self.model_printed = True
             m = re.match(scanline, comment) 
             if m:
@@ -105,7 +105,7 @@ class susyParameterScanAnalyzer( Analyzer ):
                 if len(masses) >= 4: event.genSusyMScan4 = masses[3]
             elif "model" in comment:
                 if not hasattr(self,"warned_already"):
-                    print "ERROR: I can't understand the model: ",comment
+                    print("ERROR: I can't understand the model: ",comment)
                     self.warned_already = True
 
     def readLHELumiInfo(self, event):
@@ -157,7 +157,7 @@ class susyParameterScanAnalyzer( Analyzer ):
         event.susyModel = None
         if not event.susyModel and self.susyParticles:
             event.susyModel = 'Unknown'
-        for id,X in self.susyParticles.iteritems():
+        for id,X in self.susyParticles.items():
             setattr(event, "genSusyM"+X, -99.0)
         event.genSusyMScan1 = 0.0
         event.genSusyMScan2 = 0.0

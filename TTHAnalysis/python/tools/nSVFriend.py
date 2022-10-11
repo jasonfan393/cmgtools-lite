@@ -28,7 +28,7 @@ class nSVFriend:
         sels = []
         for i,v in enumerate(sv):
             if self.sel(v): sels.append((i,v))
-        sels.sort(key = lambda (i,v): self.sort(v))
+        sels.sort(key = lambda i_v: self.sort(i_v[1]))
         ret = {}
         ret["n%sSV" % self.label] = len(sels)
         if self.indices:
@@ -47,8 +47,8 @@ if __name__ == '__main__':
             Module.__init__(self,name,None)
             self.sf = nSVFriend(sel = lambda sv : sv.pt > 5 and sv.ntracks >= 2 and abs(sv.dxy)<2 and sv.cosTheta > 0.98)
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nSV)
-            print self.sf(ev)
+            print("\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nSV))
+            print(self.sf(ev))
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)
 

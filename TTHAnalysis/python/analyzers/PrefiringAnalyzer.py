@@ -16,7 +16,7 @@ import PhysicsTools.HeppyCore.framework.config as cfg
 
 def getPrefiringRate(eta,  pt, h_prefmap, fluctuation,prefiringRateSystUnc_):
     if (not h_prefmap  and not skipwarnings_) :
-        print "Prefiring map not found, setting prefiring rate to 0 "
+        print("Prefiring map not found, setting prefiring rate to 0 ")
     if (not h_prefmap) : 
         return 0.
     #//Check pt is not above map overflow
@@ -51,14 +51,14 @@ class PrefiringAnalyzer(Analyzer):
          self.skipwarnings_                = cfg_ana.SkipWarnings
          ### warning messege if file is not exist
          if not self.file_prefiringmaps_ and not skipwarnings_: 
-            print "File with maps not found. All prefiring weights set to 0. " 
+            print("File with maps not found. All prefiring weights set to 0. ") 
          self.h_prefmap_photon             = self.file_prefiringmaps_.Get("L1prefiring_photonptvseta_"+self.dataera_)
          self.h_prefmap_jet                = self.file_prefiringmaps_.Get("L1prefiring_jetemptvseta_"+self.dataera_)
          ### warning messege if file is exist but the histograms are not 
          if not self.file_prefiringmaps_.Get("L1prefiring_photonptvseta_"+self.dataera_) and  not skipwarnings_ :
-             print "Photon map not found. All photons prefiring weights set to 0. "
+             print("Photon map not found. All photons prefiring weights set to 0. ")
          if not self.file_prefiringmaps_.Get("L1prefiring_jetemptvseta_"+self.dataera_) and  not skipwarnings_ :
-             print "Jet map not found. All jets prefiring weights set to 0. "
+             print("Jet map not found. All jets prefiring weights set to 0. ")
 
     def declareHandles(self):
         super(PrefiringAnalyzer, self).declareHandles()

@@ -10,7 +10,7 @@ class LeptonFromGen:
     def __getattr__(self, attr):
         if hasattr(self.physObj, attr):
             return getattr(self.physObj, attr)
-        raise RuntimeError, "Missing attribute '%s'" % attr
+        raise RuntimeError("Missing attribute '%s'" % attr)
 
 class JetFromGen:
     def __init__(self, physObj):
@@ -21,7 +21,7 @@ class JetFromGen:
     def __getattr__(self, attr):
         if hasattr(self.physObj, attr):
             return getattr(self.physObj, attr)
-        raise RuntimeError, "Missing attribute '%s'" % attr
+        raise RuntimeError("Missing attribute '%s'" % attr)
 
 class ttHGenLevelOnlyStudy( Analyzer ):
     """
@@ -57,7 +57,7 @@ class ttHGenLevelOnlyStudy( Analyzer ):
             if not isNotFromHadronicShower(l):
                 continue
             if not self.includeTauDecays:
-                isFromTau = any(im for im in xrange(l.numberOfMothers()) if abs(l.mother(im).pdgId()) == 15)
+                isFromTau = any(im for im in range(l.numberOfMothers()) if abs(l.mother(im).pdgId()) == 15)
                 if isFromTau: continue
             event.genLeptons.append(LeptonFromGen(l))
             if abs(l.pdgId()) == 13:
@@ -89,7 +89,7 @@ class ttHGenLevelOnlyStudy( Analyzer ):
                 #print "(pass 0) gen jet pt %7.1f eta %+5.2f phi %+5.2f invEnF %.3f " %  (j.pt(), j.eta(), j.phi(), j.invisibleEnergy()/j.energy())
                 if j.invisibleEnergy() > 0:
                     p4noNu = j.p4()
-                    for idau in xrange(j.numberOfDaughters()):
+                    for idau in range(j.numberOfDaughters()):
                         dau = j.daughter(idau)
                         if abs(dau.pdgId()) in [12,14,16]:
                             p4noNu -= dau.p4()

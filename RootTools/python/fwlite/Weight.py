@@ -1,8 +1,8 @@
 
 def printWeights( weights ):
-    for key, value in weights.iteritems():
-        print key
-        print value 
+    for key, value in weights.items():
+        print(key)
+        print(value) 
 
 class Weight( object ):
     '''make names uniform wrt Component.

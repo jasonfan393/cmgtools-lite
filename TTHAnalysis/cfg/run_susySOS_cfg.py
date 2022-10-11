@@ -181,7 +181,7 @@ from CMGTools.TTHAnalysis.analyzers.treeProducerSusyMultilepton import *
 
 _variablesToRemove = ['Flag_badMuonMoriond2017','Flag_badCloneMuonMoriond2017','badCloneMuonMoriond2017_maxPt','badNotCloneMuonMoriond2017_maxPt',
                       'nSoftBLoose25','nSoftBMedium25','nSoftBTight25','Flag_badChargedHadronFilter','Flag_badMuonFilter']
-susyMultilepton_globalVariables = filter(lambda x: x.name not in _variablesToRemove, susyMultilepton_globalVariables)
+susyMultilepton_globalVariables = [x for x in susyMultilepton_globalVariables if x.name not in _variablesToRemove]
 del susyMultilepton_collections['ivf']
 
 # Soft lepton MVA
@@ -247,7 +247,7 @@ else:
 
 if not skipT1METCorr:
     if doMETpreprocessor: 
-        print "WARNING: you're running the MET preprocessor and also Type1 MET corrections. This is probably not intended."
+        print("WARNING: you're running the MET preprocessor and also Type1 MET corrections. This is probably not intended.")
     jetAna.calculateType1METCorrection = True
     metAna.recalibrate = "type1"
     jetAnaScaleUp.calculateType1METCorrection = True
@@ -354,7 +354,7 @@ if scaleProdToLumi>0: # select only a subset of a sample, corresponding to a giv
         if not c.isMC: continue
         nfiles = int(min(ceil(target_lumi * c.xSection / 30e3), len(c.files)))
         #if nfiles < 50: nfiles = min(4*nfiles, len(c.files))
-        print "For component %s, will want %d/%d files; AAA %s" % (c.name, nfiles, len(c.files), "eoscms" not in c.files[0])
+        print("For component %s, will want %d/%d files; AAA %s" % (c.name, nfiles, len(c.files), "eoscms" not in c.files[0]))
         c.files = c.files[:nfiles]
         c.splitFactor = len(c.files)
         c.fineSplitFactor = 1
@@ -367,7 +367,7 @@ if runData and not isTest: # For running on data
 
     json = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/ReReco/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON.txt' # full 2017 dataset, EOY rereco, 41.4/fb
 
-    for era in 'BCDEF': dataChunks.append((json,filter(lambda dset: 'Run2017'+era in dset.name,dataSamples_31Mar2018),'2017'+era,[],False))
+    for era in 'BCDEF': dataChunks.append((json,[dset for dset in dataSamples_31Mar2018 if 'Run2017'+era in dset.name],'2017'+era,[],False))
 
     DatasetsAndTriggers = []
     selectedComponents = [];
@@ -399,7 +399,7 @@ if runData and not isTest: # For running on data
                 label = ""
                 if run_range!=None:
                     label = "_runs_%d_%d" % run_range if run_range[0] != run_range[1] else "run_%d" % (run_range[0],)
-                _ds = filter(lambda dset : re.match('%s_.*'%pd,dset.name),dsets)
+                _ds = [dset for dset in dsets if re.match('%s_.*'%pd,dset.name)]
                 for idx,_comp in enumerate(_ds):
                     compname = pd+"_"+short+label
                     if (len(_ds)>1): compname += '_ds%d'%(idx+1)
@@ -646,7 +646,7 @@ if getHeppyOption("noLepSkim",False):
         ttHLepSkim.minLeptons=0 
 
 if forcedSplitFactor>0 or forcedFineSplitFactor>0:
-    if forcedFineSplitFactor>0 and forcedSplitFactor!=1: raise RuntimeError, 'splitFactor must be 1 if setting fineSplitFactor'
+    if forcedFineSplitFactor>0 and forcedSplitFactor!=1: raise RuntimeError('splitFactor must be 1 if setting fineSplitFactor')
     for c in selectedComponents:
         if forcedSplitFactor>0: c.splitFactor = forcedSplitFactor
         if forcedFineSplitFactor>0: c.fineSplitFactor = forcedFineSplitFactor
@@ -670,7 +670,7 @@ if forcedSplitFactor>0 or forcedFineSplitFactor>0:
 
 if selectedEvents!="":
     events=[ int(evt) for evt in selectedEvents.split(",") ]
-    print "selecting only the following events : ", events
+    print("selecting only the following events : ", events)
     eventSelector= cfg.Analyzer(
         EventSelector,'EventSelector',
         toSelect = events
@@ -749,9 +749,9 @@ elif test == '80X-MC':
             os.system("xrdcp root://eoscms//eos/cms%s %s" % (comp.files[0],tmpfil))
         comp.files = [ tmpfil ]
         if not getHeppyOption("single"): comp.fineSplitFactor = 4
-    else: raise RuntimeError, "Unknown MC sample: %s" % what
+    else: raise RuntimeError("Unknown MC sample: %s" % what)
 elif test == '94X-MC':
-    print "=================================dwdwdwdwd======"
+    print("=================================dwdwdwdwd======")
     what = getHeppyOption("sample","TTLep")
     if what == "TTLep":
         TTLep_pow = kreator.makeMCComponent("TTLep_pow", "/TTTo2L2Nu_mtop166p5_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM", "CMS", ".*root", 831.76*((3*0.108)**2) )
@@ -764,7 +764,7 @@ elif test == '94X-MC':
             os.system("xrdcp root://cms-xrd-global.cern.ch/%s %s" % (comp.files[0],tmpfil))
         comp.files = [ tmpfil ]
         if not getHeppyOption("single"): comp.fineSplitFactor = 4
-    else: raise RuntimeError, "Unknown MC sample: %s" % what
+    else: raise RuntimeError("Unknown MC sample: %s" % what)
 elif test == '80X-Data':
     what = getHeppyOption("sample","ZLL")
     if what == "ZLL":
@@ -806,7 +806,7 @@ elif test == '94X-Data':
         comp.splitFactor = 1
         if not getHeppyOption("single"): comp.fineSplitFactor = 4
 elif test != None:
-    raise RuntimeError, "Unknown test %r" % test
+    raise RuntimeError("Unknown test %r" % test)
 
 ## FAST mode: pre-skim using reco leptons, don't do accounting of LHE weights (slow)"
 ## Useful for large background samples with low skim efficiency

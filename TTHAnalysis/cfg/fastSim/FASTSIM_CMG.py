@@ -92,7 +92,7 @@ dumpf.write(process.dumpPython());
 dumpf.close();
 exit(); """ % tmpf.name
 
-print "WILL FULLY EXPAND PATCMG_fastSim_cfg.py INTO %s" % tmpf.name
+print("WILL FULLY EXPAND PATCMG_fastSim_cfg.py INTO %s" % tmpf.name)
 
 subp = subprocess.Popen(["python", "-i", "PATCMG_fastSim_cfg.py"], stdin=subprocess.PIPE, bufsize=-1)
 subp.communicate(dumpcode)
@@ -100,7 +100,7 @@ subp.communicate(dumpcode)
 subp.wait()
 
 #print "WILL NOW READ %s" % tmpf.name
-execfile(tmpf.name)
+exec(compile(open(tmpf.name).read(), tmpf.name, 'exec'))
 #print "NOW PROCESS NAME IS ",process.name_()," AND PROCESS ID IS ",id(process)
 
 os.unlink(tmpf.name)

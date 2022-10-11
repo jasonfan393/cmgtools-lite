@@ -957,22 +957,22 @@ basecommand             = 'combineTool.py -M MultiDimFit --algo grid --points 10
 if dowhat=='step1':
     for poi in POIs: 
         cumulative      = [x for x in ["r_tH", "r_ttW", "r_ttZ", "r_ttH"] if x != poi] 
-        print basecommand + '-n nominal_%s  ttHmultilep_WS.root --task-name nominal_%s -P %s %s'%(poi,poi,poi,",".join(cumulative))
-        print basecommand.replace('--algo grid','--algo none').replace("--points 100","").replace("--job-mode SGE","")+ '-n bestfit_%s --saveWorkspace ttHmultilep_WS.root -P %s '%(poi,poi)
+        print(basecommand + '-n nominal_%s  ttHmultilep_WS.root --task-name nominal_%s -P %s %s'%(poi,poi,poi,",".join(cumulative)))
+        print(basecommand.replace('--algo grid','--algo none').replace("--points 100","").replace("--job-mode SGE","")+ '-n bestfit_%s --saveWorkspace ttHmultilep_WS.root -P %s '%(poi,poi))
         for group in groupList:
             cumulative += systsGroup[group]
-            print basecommand + ' -P %s '%poi + '-n ' + group + '_%s'%poi + ' higgsCombinebestfit_%s.MultiDimFit.mH125.root --snapshotName MultiDimFit  --freezeParameters %s'%(poi,",".join(cumulative)) + ' --task-name %s_%s'%(group,poi)
+            print(basecommand + ' -P %s '%poi + '-n ' + group + '_%s'%poi + ' higgsCombinebestfit_%s.MultiDimFit.mH125.root --snapshotName MultiDimFit  --freezeParameters %s'%(poi,",".join(cumulative)) + ' --task-name %s_%s'%(group,poi))
 if dowhat=='step2':
     for poi in POIs:
         fileList        = [ ]
-        print 'hadd higgsCombinenominal_%s.MultiDimFit.mH125.root higgsCombinenominal_%s.POINTS.*.MultiDimFit.mH125.root'%(poi,poi)
+        print('hadd higgsCombinenominal_%s.MultiDimFit.mH125.root higgsCombinenominal_%s.POINTS.*.MultiDimFit.mH125.root'%(poi,poi))
         for gr in groupList: 
-            print 'hadd higgsCombine%s.MultiDimFit.mH125.root higgsCombine%s.POINTS.*.MultiDimFit.mH125.root'%(gr+'_'+poi,gr+'_'+poi)
+            print('hadd higgsCombine%s.MultiDimFit.mH125.root higgsCombine%s.POINTS.*.MultiDimFit.mH125.root'%(gr+'_'+poi,gr+'_'+poi))
             fileList.append( "'higgsCombine%s.MultiDimFit.mH125.root:Freeze += %s:%d'"%(gr+'_'+poi,gr,groupList.index(gr)))
     
-        print 'plot1DScan.py higgsCombinenominal_%s.MultiDimFit.mH125.root --others '%poi +' '.join( fileList ) +' --breakdown '  + ','.join(groupList) +',stat'  + " --POI %s "%poi
-        print 'mv scan.pdf scan_%s.pdf'%poi
-        print 'mv scan.png scan_%s.png'%poi
+        print('plot1DScan.py higgsCombinenominal_%s.MultiDimFit.mH125.root --others '%poi +' '.join( fileList ) +' --breakdown '  + ','.join(groupList) +',stat'  + " --POI %s "%poi)
+        print('mv scan.pdf scan_%s.pdf'%poi)
+        print('mv scan.png scan_%s.png'%poi)
 
         
 

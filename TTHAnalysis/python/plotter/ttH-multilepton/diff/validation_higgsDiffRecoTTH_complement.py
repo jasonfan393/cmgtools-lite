@@ -17,18 +17,18 @@ t_new_nocons = f_new_nocons.Get('Friends')
 t_old_constr = f_old_constr.Get('Friends')
 t_old_derekk = f_old_derekk.Get('Friends')
 
-print('t_new_constr ', t_new_constr.GetEntries())
-print('t_new_nocons ', t_new_nocons.GetEntries())
-print('t_old_constr ', t_old_constr.GetEntries())
-print('t_old_derekk ', t_old_derekk.GetEntries())
+print(('t_new_constr ', t_new_constr.GetEntries()))
+print(('t_new_nocons ', t_new_nocons.GetEntries()))
+print(('t_old_constr ', t_old_constr.GetEntries()))
+print(('t_old_derekk ', t_old_derekk.GetEntries()))
 
 
 t_new_diff = f_new_constr.Get('Friends')
 t_new_diff.AddFriend('alt=Friends', '/home/ucl/cp3/dcransha/ttHdiff/attempt1/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/macros/diff/2lss_diff_Top-tagged/fullSuite/2016/TTHnobb_fxfx_Friend_DefaultModule_NoTopMediumBottomVeto_2016.root')
 
-for var, ranges in thevars.items():
+for var, ranges in list(thevars.items()):
     nbins, xlow, xhigh = ranges
-    print(var, nbins, xlow, xhigh)
+    print((var, nbins, xlow, xhigh))
     c = TCanvas(var,var)
     c.cd()
     h_new_constr = TH1F('h%s_new_constr'%var, var, nbins, xlow, xhigh)

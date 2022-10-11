@@ -11,7 +11,7 @@ def fillROOTHistoWithStupidHisto(roothist, stupid_hist):
     bins2 = stupid_hist.axis(axis2).edges()
     
     thehist=r.TH2F(roothist, '', len(bins1)-1, bins1, len(bins2)-1, bins2 )
-    matrix=stupid_hist.values()[()]
+    matrix=list(stupid_hist.values())[()]
     for iy, ix in np.ndindex(matrix.shape):
         thebin=thehist.GetBin(iy+1,ix+1)
         thehist.SetBinContent(thebin, matrix[iy,ix])

@@ -7,11 +7,11 @@ class Validation_HiggsDiffGenTTH():
         gROOT.SetBatch()
         self.f = TFile.Open(fname, 'read')
         if not self.f:
-            print('Cannot open file %s. Exiting'%fname)
+            print(('Cannot open file %s. Exiting'%fname))
             return
         self.t = self.f.Get(tname)
         if not self.t:
-            print('Cannot open tree %s. Exiting'%tname)
+            print(('Cannot open tree %s. Exiting'%tname))
             return
         self.label=label
         self.outdir=outdir
@@ -21,7 +21,7 @@ class Validation_HiggsDiffGenTTH():
 
     def printPlotList(self):
         for plot in self.p:
-            print('Plotting:', plot)
+            print(('Plotting:', plot))
 
     def plotList(self):
         for plot in self.p:

@@ -108,9 +108,9 @@ class TH_weights( Module ):
             sys.path[-1] =self.tmpdirs[-1]
             self.mods.append(imp.load_module('allmatrix2py',*imp.find_module('allmatrix2py')))
             del sys.modules['allmatrix2py']
-            print 'initializing', card
+            print('initializing', card)
             self.mods[-1].initialise(card)
-        print self.mods
+        print(self.mods)
         
         self.pdgOrderSorted = [SortPDGs(x.tolist()) for x in self.mods[-1].get_pdg_order()]
         self.pdgOrder = [x.tolist() for x in self.mods[-1].get_pdg_order()]
@@ -154,7 +154,7 @@ class TH_weights( Module ):
         try:
             idx = self.pdgOrderSorted.index(evt_sorted_pdgs)
         except ValueError:
-            print '>> Event with PDGs %s does not match any known process' % pdgs
+            print('>> Event with PDGs %s does not match any known process' % pdgs)
             return res
 
         target_pdgs=self.pdgOrder[idx]
@@ -190,15 +190,15 @@ class TH_weights( Module ):
         if t_final_hels in hel_dict:
             nhel = hel_dict[t_final_hels]
         else:
-            print "Available helicities are"
-            print hel_dict
-            print "tried", t_final_hels
+            print("Available helicities are")
+            print(hel_dict)
+            print("tried", t_final_hels)
             raise RuntimeError("Helicity configuration not found")
         
         com_final_parts = []
 
 
-        pboost = [final_parts[0][i] + final_parts[1][i] for i in xrange(4)]
+        pboost = [final_parts[0][i] + final_parts[1][i] for i in range(4)]
 
         for part in final_parts:
             com_final_parts.append(zboost(part, pboost))

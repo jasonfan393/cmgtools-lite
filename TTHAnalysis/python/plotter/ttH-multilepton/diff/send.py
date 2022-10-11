@@ -18,7 +18,7 @@ userdict = {
 
 user = os.environ['USER']
 
-secureCopy, server, outdir = userdict[user] if ( user in userdict.keys() and not options.force) else [options.secureCopy, options.server, options.outdir] 
+secureCopy, server, outdir = userdict[user] if ( user in list(userdict.keys()) and not options.force) else [options.secureCopy, options.server, options.outdir] 
 
 
 cmd = '{copycommand} *.png {serverstring}{outdir}/'.format(copycommand='scp' if secureCopy else 'cp', serverstring='{user}@{server}:'.format(user=user,server=server) if secureCopy else '', outdir=outdir)

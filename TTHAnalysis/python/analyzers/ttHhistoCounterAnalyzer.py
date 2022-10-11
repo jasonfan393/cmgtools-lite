@@ -43,7 +43,7 @@ class ttHhistoCounterAnalyzer( Analyzer ):
 
 
     def initSMS(self,event):
-        if self.isInitSMS or (not self.cfg_comp.isMC): raise RuntimeError, 'Trying to initSMS twice or to call it on data!'
+        if self.isInitSMS or (not self.cfg_comp.isMC): raise RuntimeError('Trying to initSMS twice or to call it on data!')
         self.maxSMSmass = getattr(self.cfg_ana, 'SMS_max_mass', 3000)
         self.inputCounterSMS = ROOT.TH3D("CountSMS","CountSMS",int(self.maxSMSmass+1),-0.5,self.maxSMSmass+0.5,int(self.maxSMSmass+1),-0.5,self.maxSMSmass+0.5,1,0,2)
 #        if self.doLHE: self.inputLHESMS = ROOT.TH3D("CountLHESMS","CountLHESMS",int(self.maxSMSmass+1),-0.5,self.maxSMSmass+0.5,int(self.maxSMSmass+1),-0.5,self.maxSMSmass+0.5,10001,-0.5,10000.5) ### too big!
@@ -62,19 +62,19 @@ class ttHhistoCounterAnalyzer( Analyzer ):
             self.allmasses[name]=-1
         self.susyModel = event.susyModel
         for trkM in self.masses_to_track:
-            if trkM not in self.allmasses: raise RuntimeError, 'Trying to track a SUSY SMS gen mass that does not exist in the event: %s'%trkM
+            if trkM not in self.allmasses: raise RuntimeError('Trying to track a SUSY SMS gen mass that does not exist in the event: %s'%trkM)
         for mass in self.allmasses:
             self.allmasses[mass] = getattr(event,mass)
         self.bypass_trackMass_check = getattr(self.cfg_ana, 'bypass_trackMass_check', False)
         self.isInitSMS=True
-        print 'SUSY SMS: the first event looks like this:'
-        for mass,val in self.allmasses.iteritems():
+        print('SUSY SMS: the first event looks like this:')
+        for mass,val in self.allmasses.items():
             tag = '???'
             if mass == self.massfill1: tag = 'used as first tracked mass'
             elif mass == self.massfill2: tag = 'used as second tracked mass'
             elif mass in self.masses_to_track: tag = 'allowed to change between different events'
             else: tag = 'not allowed to change between different events unless bypass_trackMass_check is set to True'
-            print '%s = %.1f, %s'%(mass,val,tag)
+            print('%s = %.1f, %s'%(mass,val,tag))
 
     def process(self, event):
         self.readCollections( event.input )
@@ -86,15 +86,15 @@ class ttHhistoCounterAnalyzer( Analyzer ):
 
             if not self.isInitSMS: self.initSMS(event)
             
-            if event.susyModel!=self.susyModel: raise RuntimeError, 'The SMS model changed in the middle of the run, from %s to %s!'%(self.susyModel,event.susyModel)
+            if event.susyModel!=self.susyModel: raise RuntimeError('The SMS model changed in the middle of the run, from %s to %s!'%(self.susyModel,event.susyModel))
             if not self.bypass_trackMass_check:
-                for mass,val in self.allmasses.iteritems():
+                for mass,val in self.allmasses.items():
                     if mass in self.masses_to_track: continue
-                    if val!=getattr(event,mass): raise RuntimeError, 'An untracked SMS mass (%s) changed in the middle of the run! If expected, add it to the SMS_varying_masses list.'%mass
+                    if val!=getattr(event,mass): raise RuntimeError('An untracked SMS mass (%s) changed in the middle of the run! If expected, add it to the SMS_varying_masses list.'%mass)
 
             m1 = getattr(event,self.massfill1)
             m2 = getattr(event,self.massfill2)
-            if max(m1,m2)>self.maxSMSmass: raise RuntimeError, 'SMS mass found too large to be contained in the histogram: %f. Adapt the SMS_regexp_evtGenMass parameter.'%max(m1,m2)
+            if max(m1,m2)>self.maxSMSmass: raise RuntimeError('SMS mass found too large to be contained in the histogram: %f. Adapt the SMS_regexp_evtGenMass parameter.'%max(m1,m2))
             self.inputCounterSMS.Fill(m1,m2,1)
 
         if self.cfg_comp.isMC:

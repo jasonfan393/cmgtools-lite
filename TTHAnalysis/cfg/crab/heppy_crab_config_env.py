@@ -7,7 +7,7 @@ file = open( "heppy_crab_config.py", 'r' )
 cfg = imp.load_source( 'cfg', "heppy_crab_config.py", file)
 config = cfg.config
 
-print "Will send dataset", os.environ["DATASET"], "with", os.environ["NJOBS"], "jobs"
+print("Will send dataset", os.environ["DATASET"], "with", os.environ["NJOBS"], "jobs")
 
 config.General.requestName = os.environ["DATASET"] + "_" + os.environ["CMG_VERSION"] # task name
 config.General.workArea = 'crab_' + os.environ["DATASET"] + "_" + os.environ["PROD_LABEL"] # crab dir name

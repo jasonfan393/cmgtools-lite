@@ -13,7 +13,7 @@ def solveWlv(lW,met,metphi):
     c      = met**2 - brk**2
     delta   = b**2 - a*c
     sqdelta = sqrt(delta)    if delta    > 0 else 0
-    return [ (b + s*sqdelta)/a for s in +1,-1 ]
+    return [ (b + s*sqdelta)/a for s in (+1,-1) ]
 
 class TTEventReco_MC:
     def __init__(self):
@@ -248,7 +248,7 @@ class TTEventReco_MC:
                 ret["RecTT2LSSW1_pdgId" ] = 0 # -24 if  > 0 else +24
 
         # --------------------------------------------------------------------------
-        return dict([("mc_"+name,val) for (name,val) in ret.iteritems() if name in self.branches])
+        return dict([("mc_"+name,val) for (name,val) in ret.items() if name in self.branches])
 
 
 def jetEtResolution(jet):
@@ -290,7 +290,7 @@ class TTLikelihood:
         self._file = ROOT.TFile(filename)
     def __call__(self,histname,val,proc="TT",eps=0.0002):
         hist = self._file.Get(histname+"_"+proc)
-        if not bool(hist): raise RuntimeError, "Could not find %s " % (histname+"_"+proc)
+        if not bool(hist): raise RuntimeError("Could not find %s " % (histname+"_"+proc))
         norm = hist.Integral()
         val  = hist.GetBinContent( min(max(hist.GetXaxis().FindBin(val), 1),hist.GetNbinsX()) )
         return - 2 * log ( max(val/norm, eps) )
@@ -446,7 +446,7 @@ class TTEventReco:
         self.scores = dict([(k,0) for k,s in self.sorters])
         self.scores["IDEAL"] = 0
         self.retbranches = []
-        for s,postfix in self.sortersToUse.iteritems():
+        for s,postfix in self.sortersToUse.items():
             self.retbranches += [ x+postfix for x in self.branches ]
     def listBranches(self):
         return self.retbranches
@@ -500,7 +500,7 @@ class TTEventReco:
                                     #bingo = info["good_Wjj"]  and (info["good_tjjb"] or info["good_tjjlb"])
                                     if bingo: ibingo.append(info["n_cands"])
                                     YN={ True:"Y", False:"n" }
-                                    if self._debug: print "candidate %3d:  ib %d (%.3f, %1s) ilW %d (%1s) tjjb %1s   m(Wjj%d%d) =%6.1f (%5.1f, %1s)    mT(Wlv) =%6.1f (%5.1f, %1s)   m(tjjb) =%6.1f (%5.1f, %1s)   m(tlvb) =%6.1f (%5.1f, %1s) %s " % ( info["n_cands"],
+                                    if self._debug: print("candidate %3d:  ib %d (%.3f, %1s) ilW %d (%1s) tjjb %1s   m(Wjj%d%d) =%6.1f (%5.1f, %1s)    mT(Wlv) =%6.1f (%5.1f, %1s)   m(tjjb) =%6.1f (%5.1f, %1s)   m(tlvb) =%6.1f (%5.1f, %1s) %s " % ( info["n_cands"],
                                             ib, bj.btagCSV, YN[info["good_b"]],
                                             ilW, YN[info["good_Wlv"]],
                                             YN[tjjb], 
@@ -508,11 +508,11 @@ class TTEventReco:
                                             ttc.mtWlv, abs(ttc.mtWlv-80.4), YN[info["good_Wlv"]],
                                             ttc.p4tjjb.M(), abs(ttc.p4tjjb.M()-172.5), YN[info["good_tjjb"] or info["good_tjjlb"]],
                                             ttc.p4tlvb.M(), abs(ttc.p4tlvb.M()-172.5), YN[info["good_tlvb"] or info["good_tlvlb"]],
-                                            "<<<<=== BINGO " if bingo else "")
+                                            "<<<<=== BINGO " if bingo else ""))
         if ibingo != []: self.scores['IDEAL'] += 1
         for sn,s in self.sorters:
             best = s(ttcands)
-            if self._debug: print "Sorter %-20s selects candidate %d (%1s)" % (sn, best.idx, YN[best.idx in ibingo])
+            if self._debug: print("Sorter %-20s selects candidate %d (%1s)" % (sn, best.idx, YN[best.idx in ibingo]))
             self.scores[sn] += (best.idx in ibingo)
             if sn not in self.sortersToUse: continue
             postfix = self.sortersToUse[sn]
@@ -579,25 +579,25 @@ if __name__ == '__main__':
             #self._acc[2] += ret['mc_has_b']
             #self._acc[2] += ret['mc_has_Wjj_gen'] and ret['mc_has_drjj_gen'] > 0.5
             #self._acc[3] += ret['mc_has_Wjj']
-            print self._acc
+            print(self._acc)
             #return False
             #if not ret["mc_has_Wjj"]: return False
             if not ret["mc_has_Wlv"]: return False
             #if ret["mc_mt_Wlv"] < 40: return False
             #if not ret["mc_has_tjjlb"]: return False
             #if not ret["mc_has_tlvb"]: return False
-            for k,v in ret.iteritems(): setattr(ev,k,v)
+            for k,v in ret.items(): setattr(ev,k,v)
             if self._acc[0] < 200:
-                print "\nrun %6d lumi %4d event %d: leps %d, bjets %d, jets %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood, ev.nBJetMedium25, ev.nJet25)
+                print("\nrun %6d lumi %4d event %d: leps %d, bjets %d, jets %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood, ev.nBJetMedium25, ev.nJet25))
                 for k in sorted(ret.keys()):
-                    print "\t%-20s: %9.3f" % (k,float(ret[k]))
+                    print("\t%-20s: %9.3f" % (k,float(ret[k])))
             ret = self.r(ev)
             if self._acc[0] < 200:
                 for k in sorted(ret.keys()):
-                    print "\t%-20s: %9.3f" % (k,float(ret[k]))
+                    print("\t%-20s: %9.3f" % (k,float(ret[k])))
     test = Tester("tester")              
     el = EventLoop([ test ])
     el.loop([tree], maxEvents = 100000)
-    for k,v in test.r.scores.iteritems():
-        print "%-20s: %7d" % (k,v) 
+    for k,v in test.r.scores.items():
+        print("%-20s: %7d" % (k,v)) 
         

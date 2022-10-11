@@ -5,7 +5,7 @@ def autoAAA(selectedComponents,quiet=False,redirectorAAA="cms-xrd-global.cern.ch
     tier2CheckerMini = LocalityChecker(site, datasets="/*/*/MINIAOD*", verbose=not(quiet))
     tier2CheckerNano = LocalityChecker(site, datasets="/*/*/NANOAOD*", verbose=not(quiet))
     for comp in selectedComponents:
-        if len(comp.files) == 0: print "ERROR, comp %s (dataset %s) has no files!" % (comp.name, getattr(comp,'dataset',None)); continue
+        if len(comp.files) == 0: print("ERROR, comp %s (dataset %s) has no files!" % (comp.name, getattr(comp,'dataset',None))); continue
         if not hasattr(comp,'dataset'): continue
         if "/store/" not in comp.files[0]: continue
         if re.search("/store/(group|user|cmst3)/", comp.files[0]): continue
@@ -17,7 +17,7 @@ def autoAAA(selectedComponents,quiet=False,redirectorAAA="cms-xrd-global.cern.ch
         else:
             continue
         if True: # not tier2Checker.available(comp.dataset):
-            if not quiet: print "Dataset %s is not available, will use AAA" % comp.dataset
+            if not quiet: print("Dataset %s is not available, will use AAA" % comp.dataset)
             changeComponentAccessMode.convertComponent(comp, "root://%s/%%s"%redirectorAAA)
             if 'X509_USER_PROXY' not in os.environ or ( ("/afs/" not in os.environ['X509_USER_PROXY'] and "/t3home/" not in os.environ['X509_USER_PROXY'])):
-                raise RuntimeError, "X509_USER_PROXY not defined or not pointing to /afs"
+                raise RuntimeError("X509_USER_PROXY not defined or not pointing to /afs")

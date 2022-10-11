@@ -82,7 +82,7 @@ class ttH_2lss1tau_ptregression(Module):
         all_leps = [l for l in Collection(event,"LepGood")]
         nFO = getattr(event,"nLepFO_Recl")
         chosen = getattr(event,"iLepFO_Recl")
-        leps = [all_leps[chosen[i]] for i in xrange(nFO)]
+        leps = [all_leps[chosen[i]] for i in range(nFO)]
         jets = [j for j in Collection(event,"JetSel_Recl")]
 
         if event.thetau and len(leps)>1:
@@ -116,7 +116,7 @@ class ttH_2lss1tau_ptregression(Module):
             scale = 0.00125436
             mini = -0.8
             data_min = 0.26197815
-            ret.extend( [(x,(y - mini)/scale + data_min) for x,y in worker(event).iteritems()])
+            ret.extend( [(x,(y - mini)/scale + data_min) for x,y in worker(event).items()])
 #            if event.event == 5704300:
 #                print kk 
         writeOutput( self,  dict(ret))

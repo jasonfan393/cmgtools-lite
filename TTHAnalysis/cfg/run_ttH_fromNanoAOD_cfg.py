@@ -76,7 +76,7 @@ if analysis == "main":
     # DatasetsAndTriggers.append( ("MET", triggerGroups_dict["Trigger_MET"][theyear]) )
 
 elif analysis == "frqcd":
-    print [x.name for x in mcSamples_]
+    print([x.name for x in mcSamples_])
     mcSamples = byCompName(mcSamples_, [
         "QCD_Pt20to30_EMEnriched",
         "QCD_Mu15", "QCD_Pt(20|30|50|80|120|170)to.*_Mu5", 

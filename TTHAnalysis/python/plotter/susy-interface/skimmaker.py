@@ -1,7 +1,7 @@
 import datetime, sys
 from optparse import OptionParser
-from lib import maker
-from lib import functions as func
+from .lib import maker
+from .lib import functions as func
 
 def makeDummyMCA(m, samples, allSamples):
 	path = m.tmpdir+"/"+func.timestamp(False)+".txt"

@@ -177,8 +177,8 @@ def draw_plot(var,suffix,cut,fname,nbins,lowbin, highbin):
 
 def draw_comparison(args): #TODO the hist title is always the first var--> confusing when comparing two different vars
     gStyle.SetOptStat(0)
-    fname = args['pars'].keys()[0]
-    nbins, lowbin, highbin = args['pars'].values()[0]
+    fname = list(args['pars'].keys())[0]
+    nbins, lowbin, highbin = list(args['pars'].values())[0]
     c   = TCanvas('c', 'c', 800, 800)
     leg = TLegend(0.5,0.6,0.9,0.9)
     c.cd()
@@ -188,7 +188,7 @@ def draw_comparison(args): #TODO the hist title is always the first var--> confu
     h.SetTitle("")
     ip=0
     ymax=0
-    for var, val in args['vars'].items():
+    for var, val in list(args['vars'].items()):
         ps.append(TH1F(var, var, nbins, lowbin, highbin))
         tr.Draw("%s>>%s"%(var,var),val)
         ps[ip].GetXaxis().SetTitle("%s"%fname)
@@ -212,7 +212,7 @@ def draw_comparison(args): #TODO the hist title is always the first var--> confu
     c.Print("%s/%s_comp.png"%(options.outputDir,fname)) # Avoid overwriting single var plots
 
 def draw_scatter(args):
-    for var, pars in args.items():
+    for var, pars in list(args.items()):
         var1, var2 = var
         suffix, cut1, cut2, fname, nbinsx, lowbinx, highbinx, nbinsy, lowbiny, highbiny = pars
         c   = TCanvas()

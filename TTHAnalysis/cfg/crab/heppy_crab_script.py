@@ -23,7 +23,7 @@ def XrootdRedirector():
     return  "xrootd-cms.infn.it/" if region in oldcontinent else "cmsxrootd.fnal.gov/" if region in americas else "cms-xrd-global.cern.ch/" 
 
 # arguments of scriptExe
-print "ARGV:",sys.argv
+print("ARGV:",sys.argv)
 JobNumber=sys.argv[1] # 1st crab argument is jobID
 job = int(JobNumber)
 # if one wants to include more options to be passed to the crab scriptExe add a corresponding argument below
@@ -35,7 +35,7 @@ for arg in sys.argv[2:]:
         total = int(arg.split("=")[1])
     elif arg.split("=")[0] == "nevents":
         nevents = int(arg.split("=")[1])
-        print "selected to run over", nevents, "events"
+        print("selected to run over", nevents, "events")
     elif arg.split("=")[0] == "useAAA":
         useAAA = arg.split("=")[1]
     elif arg.split("=")[0] == "cfgfile":
@@ -43,13 +43,13 @@ for arg in sys.argv[2:]:
     elif arg.split("=")[0] == "filestounpack":
         _filestounpack = arg.split("=")[1]
 
-if useAAA=="full": print 'Chosen free usage of AAA to access remote files'
-elif useAAA=="eos": print 'Forcing usage of AAA to access data from EOS'
-elif useAAA=="local": print 'Using local file access on the remote site without AAA'
-else: raise RuntimeError, 'Unknown or unspecified AAA configuration parameter'
+if useAAA=="full": print('Chosen free usage of AAA to access remote files')
+elif useAAA=="eos": print('Forcing usage of AAA to access data from EOS')
+elif useAAA=="local": print('Using local file access on the remote site without AAA')
+else: raise RuntimeError('Unknown or unspecified AAA configuration parameter')
 
-print "dataset:", dataset
-print "job", job , " out of", total
+print("dataset:", dataset)
+print("job", job , " out of", total)
 
 # fetch config file
 import imp
@@ -57,7 +57,7 @@ import json
 from PhysicsTools.HeppyCore.framework.heppy_loop import _heppyGlobalOptions
 jfile = open ('options.json', 'r')
 opts=json.loads(jfile.readline())
-for k,v in opts.iteritems():
+for k,v in opts.items():
     _heppyGlobalOptions[k]=v
 jfile.close()
 handle = open(cfgfile, 'r')
@@ -80,24 +80,24 @@ for comp in config.components:
                 mycheck = subprocess.check_output(["edmFileUtil","-d",myfile]).split('\n')[0] # == root://storage/store/....root?...
                 if len(mycheck)>0:
                     localPrefix = mycheck.split('?')[0].replace(myfile,"") # == root://storage
-                    print 'Will use %s as local file prefix'%localPrefix
+                    print('Will use %s as local file prefix'%localPrefix)
             newComp.files = [x.replace("root://eoscms.cern.ch//eos/cms",localPrefix) for x in newComp.files]
         elif useAAA=="eos": pass
         selectedComponents.append(newComp)
 
 # check selectedComponents
 if len(selectedComponents) == 0:
-    print "No selected components found!!"
-    print "   - dataset:", dataset
-    print "   - components:", config.components
+    print("No selected components found!!")
+    print("   - dataset:", dataset)
+    print("   - components:", config.components)
 if len(selectedComponents)>1:
-    print "More than one selected component:"
+    print("More than one selected component:")
     from PhysicsTools.HeppyCore.framework.config import printComps
     printComps(selectedComponents)
 else:
-    print "Selected component:"
-    print selectedComponents[0]
-    print "files: ", selectedComponents[0].files
+    print("Selected component:")
+    print(selectedComponents[0])
+    print("files: ", selectedComponents[0].files)
 
 # set component to run
 config.components = selectedComponents
@@ -111,8 +111,8 @@ looper.write()
 #os.system("ls -lR") # for debugging
 
 # print in crab log file the content of the job log files, so one can see it from 'crab getlog'
-print "-"*25
-print "printing output txt and log files"
+print("-"*25)
+print("printing output txt and log files")
 os.system('for i in Output/*.txt; do echo $i; cat $i; echo "---------"; done')
 os.system('for i in Output/*.log; do echo $i; cat $i; echo "---------"; done')
 
@@ -123,4 +123,4 @@ for mytree in filestounpack:
     os.rename("Output/"+mytree, './'+mytree.replace('/','_'))
 os.system("tar czf heppyOutput.tgz Output/")
 
-print "---> job successful <---"
+print("---> job successful <---")

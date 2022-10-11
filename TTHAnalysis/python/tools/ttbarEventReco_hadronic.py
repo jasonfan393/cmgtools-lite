@@ -78,7 +78,7 @@ class TTHadEventReco_MC:
             elif wj.quark.pdgId in [-2,-4,-6]: # anti-up or anti-charm
                 wm_j[1] = wj; ret["i_w2_j2"] = ij
             else:
-                print "WTF? %s" %  [ij,wj,wj.quark.pdgId]
+                print("WTF? %s" %  [ij,wj,wj.quark.pdgId])
         def mswap(m,k1,k2):
             v1 = m[k1]; v2 = m[k2]
             m[k1] = v2; m[k2] = v1
@@ -99,7 +99,7 @@ class TTHadEventReco_MC:
                 ret["n_t_jjb"] += 1
                 t2 = [ bjets[ret["i_b2"]], wm_j ]
         # --------------------------------------------------------------------------
-        return dict([("mc_"+name,val) for (name,val) in ret.iteritems() if name in self.branches])
+        return dict([("mc_"+name,val) for (name,val) in ret.items() if name in self.branches])
 
 
 class TTHadCandidate:
@@ -125,7 +125,7 @@ class TTHadEventReco:
         self.scores = dict([(k,0) for k,s in self.sorters])
         self.scores["IDEAL"] = 0
         self.retbranches = []
-        for s,postfix in self.sortersToUse.iteritems():
+        for s,postfix in self.sortersToUse.items():
             self.retbranches += [ x+postfix for x in self.branches ]
     def listBranches(self):
         return self.retbranches
@@ -164,32 +164,32 @@ class TTHadEventReco:
                 bingo = (info["good_t1"] or info["good_t2"]) and (info["good_w1"] and info["good_w2"]) 
                 if bingo: ibingo.append(info["n_cands"])
                 YN={ True:"Y", False:"n", 1:'Y', 2:'Y', 0:'n' }
-                if self._debug: print "candidate %3d:  b1 %d (csv %.3f, pt %6.1f) w1 %d,%d (m = %6.1f, dm = %5.1f, %1s; mt = %6.1f, dm = %5.1f, %1s)   b2 %d (csv %.3f, pt %6.1f) w2 %d,%d (m = %6.1f, dm = %5.1f, %1s; mt = %6.1f, dm = %5.1f, %1s)  %s " % ( info["n_cands"], 
+                if self._debug: print("candidate %3d:  b1 %d (csv %.3f, pt %6.1f) w1 %d,%d (m = %6.1f, dm = %5.1f, %1s; mt = %6.1f, dm = %5.1f, %1s)   b2 %d (csv %.3f, pt %6.1f) w2 %d,%d (m = %6.1f, dm = %5.1f, %1s; mt = %6.1f, dm = %5.1f, %1s)  %s " % ( info["n_cands"], 
                         ib1, bjets[ib1].btagCSV, bjets[ib1].pt,
                         ij11,ij12, ttc.w1p4.M(), abs(ttc.w1p4.M()-80.4), YN[info["good_w1"]],
                         ttc.t1p4.M(), abs(ttc.t1p4.M()-173), YN[info["good_t1"]],
                         ib2, bjets[ib2].btagCSV, bjets[ib2].pt,
                         ij21,ij22, ttc.w2p4.M(), abs(ttc.w2p4.M()-80.4), YN[info["good_w2"]],
                         ttc.t2p4.M(), abs(ttc.t2p4.M()-173), YN[info["good_t2"]],
-                        "<<<<=== BINGO " if bingo else "")
+                        "<<<<=== BINGO " if bingo else ""))
         # --------------------------------------------------------------------------
-        for ib1 in xrange(nbjet-1):
-          for ib2 in xrange(ib1+1,nbjet):
+        for ib1 in range(nbjet-1):
+          for ib2 in range(ib1+1,nbjet):
             b1 = bjets[ib1]
             b2 = bjets[ib2]
             mask = [ (min(deltaR(j,b1),deltaR(j,b2)) < 0.01) for j in jets ]
             # first pair
-            for ij11 in xrange(njet-1):  
+            for ij11 in range(njet-1):  
               if mask[ij11]: continue
               mask[ij11] = True
-              for ij12 in xrange(ij11+1, njet):  
+              for ij12 in range(ij11+1, njet):  
                 if mask[ij12]: continue
                 mask[ij12] = True
                 # second pair
-                for ij21 in xrange(njet-1):  
+                for ij21 in range(njet-1):  
                   if mask[ij21]: continue
                   mask[ij21] = True
-                  for ij22 in xrange(ij21+1, njet):  
+                  for ij22 in range(ij21+1, njet):  
                     if mask[ij22]: continue
                     # process the combinaiton, with the two possible pairings of b-jets and w's
                     doit(ib1,ib2,ij11,ij12,ij21,ij22)
@@ -203,7 +203,7 @@ class TTHadEventReco:
         if ibingo != []: self.scores['IDEAL'] += 1
         for sn,s in self.sorters:
             best = s(ttcands)
-            if self._debug: print "Sorter %-20s selects candidate %d (%1s)" % (sn, best.idx, "Y" if best.idx in ibingo else "n")
+            if self._debug: print("Sorter %-20s selects candidate %d (%1s)" % (sn, best.idx, "Y" if best.idx in ibingo else "n"))
             self.scores[sn] += (best.idx in ibingo)
         ret["n_cands"] = info["n_cands"] 
         # --------------------------------------------------------------------------
@@ -229,20 +229,20 @@ if __name__ == '__main__':
             self._acc[2] += (ret['mc_n_w_jj'] >= 2)
             self._acc[3] += (ret['mc_n_t_jjb'] >= 1)
             self._acc[4] += (ret['mc_n_t_jjb'] >= 2)
-            print self._acc
+            print(self._acc)
             if ret["mc_n_w_jj"] < 2 or ret['mc_n_t_jjb'] < 1: return False
-            for k,v in ret.iteritems(): setattr(ev,k,v)
+            for k,v in ret.items(): setattr(ev,k,v)
             if self._acc[0] < 200:
-                print "\nrun %6d lumi %4d event %d: leps %d, bjets %d, jets %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood, ev.nBJetMedium25, ev.nJet25)
+                print("\nrun %6d lumi %4d event %d: leps %d, bjets %d, jets %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood, ev.nBJetMedium25, ev.nJet25))
                 for k in sorted(ret.keys()):
-                    print "\t%-20s: %9.3f" % (k,float(ret[k]))
+                    print("\t%-20s: %9.3f" % (k,float(ret[k])))
             ret = self.r(ev)
             if self._acc[0] < 200:
                 for k in sorted(ret.keys()):
-                    print "\t%-20s: %9.3f" % (k,float(ret[k]))
+                    print("\t%-20s: %9.3f" % (k,float(ret[k])))
     test = Tester("tester")              
     el = EventLoop([ test ])
     el.loop([tree], maxEvents = 20000)
-    for k,v in test.r.scores.iteritems():
-        print "%-20s: %7d" % (k,v) 
+    for k,v in test.r.scores.items():
+        print("%-20s: %7d" % (k,v)) 
         

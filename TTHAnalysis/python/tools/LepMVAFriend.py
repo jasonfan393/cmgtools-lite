@@ -287,7 +287,7 @@ class LeptonMVA:
         global _CommonVars, _CommonSpect, _ElectronVars, _MuonVars, _SVVars
         if type(basepath) == tuple: basepathmu, basepathel  = basepath
         else:                       basepathmu, basepathel  = basepath, basepath
-        print "Booking %s %s" % (training, basepath)
+        print("Booking %s %s" % (training, basepath))
         muVars = _CommonVars[training][:] + _MuonVars[training][:]
         elVars = _CommonVars[training][:] + _ElectronVars[training][:]
         if not muVars:
@@ -312,7 +312,7 @@ class LepMVAFriend:
         self.mva = LeptonMVA(path+"/%s_BDTG.weights.xml" if type(path) == str else path, training=training)
         self.fast = fast
         self.label = label
-        print 'done init',training
+        print('done init',training)
     def listBranches(self):
         return [ ("nLepGood","I"), ("LepGood_mva"+self.label,"F",8,"nLepGood") ]
     def __call__(self,event):
@@ -342,10 +342,10 @@ if __name__ == '__main__':
                                                   training="forMoriond_eleGP", label="FriendSUSY"),
             }
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
+            print("\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood))
             lep = Collection(ev,"LepGood","nLepGood",8)
-            for l,m in self.mvas.iteritems():
-                print "%-10s: %s %s %s" % (l, m(ev), [ x.mvaTTH for x in lep ], [ x.mvaSUSY for x in lep ] )
+            for l,m in self.mvas.items():
+                print("%-10s: %s %s %s" % (l, m(ev), [ x.mvaTTH for x in lep ], [ x.mvaSUSY for x in lep ] ))
     el = EventLoop([ Tester("tester", "new") ])
     el.loop([tree], maxEvents = 50)
 

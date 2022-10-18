@@ -48,20 +48,20 @@ theyear=int(year) if year != '2016APV' else 2016
 if analysis == "main":
     mcSamples =  byCompName(mcSamples_, [
         # single boson
-        #"DYJetsToLL_M50", "DYJetsToLL_M10to50_LO",
-        # # Ttbar + single top + tW
-        #"TT(Lep|Semi)_pow"
-        #"T_tch", "TBar_tch", "T_tWch_noFullyHad", "TBar_tWch_noFullyHad",
-        #  # conversions
-        "TTGJets", "WGToLNuG", "ZGTo2LG", # , "TGJets_lep"
+        "DYJetsToLL_M50", "DYJetsToLL_M10to50_LO", 
+        # Ttbar + single top + tW
+        "TT(Lep|Semi)_pow",
+        "T_tch", "TBar_tch", "T_tWch_noFullyHad", "TBar_tWch_noFullyHad",
+        # conversions
+        "TTGJets",# "WGToLNuG", "ZGTo2LG", # , "TGJets_lep",
         #  # ttV
-        "TTWToLNu_fxfx", "TTZToLLNuNu_amc", "TTZToLLNuNu_m1to10", "TTW_LO", "TTZ_LO"
+        "TTZToLLNuNu_m1to10", #"TTWToLNu_fxfx", "TTZToLLNuNu_amc", "TTW_LO", "TTZ_LO"
         #  # ttH + tHq/tHW
-        "TTHnobb_fxfx", "TTHnobb_pow", # faltan cpcvct "THQ_ctcvcp", "THW_ctcvcp", "TTH_ctcvcp",
+        "TTHnobb_fxfx",# "TTHnobb_pow", # faltan cpcvct "THQ_ctcvcp", "THW_ctcvcp", "TTH_ctcvcp",
         #  # top + V rare processes
         "TZQToLL", "TTTT", "TTWW", #  "tWll", <- mirar que pasa con twll
         #  # diboson + DPS + WWss
-        #"WWTo2L2Nu",  "WZTo3LNu_fxfx", "ZZTo4L",  # "WW_DPS", falta dps y wpwp "WWTo2L2Nu_DPS", "WpWpJJ", # "WZTo3LNu_pow",
+        "ZZTo4L", #"WWTo2L2Nu",  "WZTo3LNu_fxfx",   # "WW_DPS", falta dps y wpwp "WWTo2L2Nu_DPS", "WpWpJJ", # "WZTo3LNu_pow",
         #  # triboson
         "WWW",  "WWZ", "WZG", "WZZ", "ZZZ", # "WWW_ll", <- not there, but its just a leptonic filter
         #  # other Higgs processes
@@ -79,12 +79,12 @@ elif analysis == "frqcd":
     print [x.name for x in mcSamples_]
     mcSamples = byCompName(mcSamples_, [
         "QCD_Pt20to30_EMEnriched",
-        #"QCD_Mu15", "QCD_Pt(20|30|50|80|120|170)to.*_Mu5", 
-        #"QCD_Pt(20|30|50|80|120|170)to.*_EMEn.*", 
-        #"QCD_Pt(20|30|50|80|120|170)to.*_bcToE.*",
-        #"DYJetsToLL_M50_LO", "DYJetsToLL_M10to50_LO",
-        #"TT(Lep|Semi)_pow",
-        #"WJetsToLNu_012JetsNLO_34JetsLO"
+        "QCD_Mu15", "QCD_Pt(20|30|50|80|120|170)to.*_Mu5", 
+        "QCD_Pt(20|30|50|80|120|170)to.*_EMEn.*", 
+        "QCD_Pt(20|30|50|80|120|170)to.*_bcToE.*",
+        "DYJetsToLL_M50_LO", "DYJetsToLL_M10to50_LO",
+        "TT(Lep|Semi)_pow",
+        "WJetsToLNu_012JetsNLO_34JetsLO"
     ])
     egfrpd = {2016:"DoubleEG", 2017:"SingleElectron", 2018:"EGamma"}[theyear]
     DatasetsAndTriggers.append( ("DoubleMuon", triggers["FR_1mu_noiso"] + triggers["FR_1mu_iso"]) )
@@ -185,6 +185,10 @@ if test == "94X-MC":
     lepSkim.minJets = 0
     lepSkim.minMET = 0
     lepSkim.prescaleFactor = 0
+    selectedComponents = [TTLep_pow]
+if test == "synch-2016":
+    TTLep_pow = kreator.makeMCComponent("TTLep_pow", "/TTTo2L2Nu_TuneCP5up_PSweights_13TeV-powheg-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM", "CMS", ".*root", 831.76*((3*0.108)**2) )
+    TTLep_pow.files = ["/pnfs/psi.ch/cms/trivcat/store/user/sesanche/ttH_synch/input/NANO_RunIISummer16MiniAODv3_NANO.root"]
     selectedComponents = [TTLep_pow]
 elif test == "94X-MC-miniAOD":
     TTLep_pow = kreator.makeMCComponent("TTLep_pow", "/TTTo2L2Nu_mtop166p5_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM", "CMS", ".*root", 831.76*((3*0.108)**2) )

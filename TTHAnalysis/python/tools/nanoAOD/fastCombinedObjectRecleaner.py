@@ -9,7 +9,6 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.constants import _btagWPs
 class fastCombinedObjectRecleaner(Module):
     def __init__(self,label,inlabel,cleanTausWithLooseLeptons,cleanJetsWithFOTaus,doVetoZ,doVetoLMf,doVetoLMt,jetPts,jetPtsFwd,btagL_thr,btagM_thr,jetCollection='Jet',jetBTag='btagDeepFlavB',tauCollection='Tau',isMC=None, 
                  variations=[]):
-
         self.label = "" if (label in ["",None]) else ("_"+label)
         self.inlabel = inlabel
         self.tauc = tauCollection
@@ -29,6 +28,7 @@ class fastCombinedObjectRecleaner(Module):
             self.isMC = isMC
         self.variations = variations
 
+
     def initComponent(self, component):
         self.isMC = component.isMC
 
@@ -36,9 +36,10 @@ class fastCombinedObjectRecleaner(Module):
         self.vars = ["eta","phi","mass"]
         self.vars_leptons = ["pdgId",'jetIdx','pt']
         self.vars_taus = ["pt"]
-        self.vars_taus_int = ['jetIdx']
-        self.vars_taus_uchar = ['idDeepTau2017v2p1VSjet']
-        self.vars_jets = [("pt","pt_nom") if self.isMC and len(self.variations) else 'pt',"btagDeepB","qgl",'btagDeepFlavB'] + [ 'pt_%s%s'%(x,y) for x in self.variations for y in ["Up","Down"]] #"btagCSVV2",,"btagDeepC"]#"btagCSV","btagDeepCSV",,"btagDeepCSVCvsL","btagDeepCSVCvsB","ptd","axis1"] # FIXME recover
+
+        self.vars_taus_int = ['jetIdx','decayMode','charge'] + (['genPartIdx'] if self.isMC else [])
+        self.vars_taus_uchar = ['idDeepTau2017v2p1VSjet', 'idDeepTau2017v2p1VSjet','idDeepTau2017v2p1VSe','idDeepTau2017v2p1VSmu']
+        self.vars_jets = [("pt","pt_nom") if self.isMC and len(self.variations) else 'pt',"btagDeepB","qgl",'btagDeepFlavB'] + [ 'pt_%s%s'%(x,y) for x in self.variations for y in ["Up","Down"]] 
         self.vars_jets_int = (["hadronFlavour"] if self.isMC else [])
         self.vars_jets_nooutput = []
         self.systsJEC = {0:""}

@@ -31,7 +31,7 @@ if 'gae' in os.environ['HOSTNAME']:
     P0     = "/pool/ciencias/HeppyTrees/EdgeZ/TTH/"
 
 if 'cism.ucl.ac.be' in os.environ['HOSTNAME']:
-    P0   = "/nfs/user/pvischia/tth/v6" 
+    P0   = "/nfs/user/pvischia/tth/ul/" 
 
 if ".psi.ch" in os.environ['HOSTNAME']:
     P0 = "/pnfs/psi.ch/cms/trivcat/store/user/sesanche"
@@ -55,20 +55,20 @@ def base(selection):
 
     if selection=='2lss':
         GO="%s ttH-multilepton/mca-2lss-mc.txt ttH-multilepton/2lss_tight.txt "%CORE
-        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_2lss'"%GO
+        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_ttH(LepGood1_pdgId,LepGood1_conePt,LepGood2_pdgId,LepGood2_conePt,2,year)'"%GO
         if dowhat in ["plots","ntuple"]: GO+=" ttH-multilepton/2lss_3l_plots.txt --xP '^lep(3|4)_.*' --xP '^(3|4)lep_.*' --xP 'kinMVA_3l_.*' "
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.52 ")
         if dowhat == "plots": GO=GO.replace(RATIO,  " --maxRatioRange 0.6  1.99 --ratioYNDiv 210 ")
         GO += " --binname 2lss "
     elif selection=='3l':
         GO="%s ttH-multilepton/mca-3l-mc.txt ttH-multilepton/3l_tight.txt "%CORE
-        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_3l*triggerSF_3l'"%GO
+        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_3l*triggerSF_ttH(LepGood1_pdgId,LepGood1_conePt,LepGood2_pdgId,LepGood2_conePt,3,year)'"%GO
         if dowhat in ["plots","ntuple"]: GO+=" ttH-multilepton/2lss_3l_plots.txt --xP '^(2|4)lep_.*' --xP '^lep4_.*' --xP 'kinMVA_2lss_.*' "
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.42 ")
         GO += " --binname 3l "
     elif selection=='4l':
         GO="%s ttH-multilepton/mca-4l-mc.txt ttH-multilepton/4l_tight.txt "%CORE
-        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_4l*triggerSF_4l'"%GO
+        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_4l*triggerSF_ttH(LepGood1_pdgId,LepGood1_conePt,LepGood2_pdgId,LepGood2_conePt,3,year)'"%GO
         if dowhat in ["plots","ntuple"]: GO+=" ttH-multilepton/2lss_3l_plots.txt --xP '^(2|3)lep_.*' --xP '^lep(1|2|3|4)_.*' --xP 'kinMVA_.*' "
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 2 --legendWidth 0.3 ")
         if dowhat == "plots": GO=GO.replace(RATIO,  " --maxRatioRange 0.0  2.99 --ratioYNDiv 505 ")

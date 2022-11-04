@@ -115,7 +115,7 @@ recleaner_step2_mc_allvariations = lambda : fastCombinedObjectRecleaner(label="R
                                                                         cleanJetsWithFOTaus=True,
                                                                         doVetoZ=False, doVetoLMf=False, doVetoLMt=False,
                                                                         jetPts=[25,30],
-                                                                        jetPtsFwd=[25,60], # second number for 2.7 < abseta < 3, the first for the rest
+                                                                        jetPtsFwd=[40,40], # second number for 2.7 < abseta < 3, the first for the rest
                                                                         btagL_thr=99, # they are set at runtime 
                                                                         btagM_thr=99,
                                                                         isMC = True,

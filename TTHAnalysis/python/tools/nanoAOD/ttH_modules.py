@@ -185,12 +185,12 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 impor
 jetmetUncertainties2016APVAll = createJMECorrector(dataYear='UL2016_preVFP', jesUncert="Merged", splitJER=True)
 jetmetUncertainties2016All = createJMECorrector(dataYear='UL2016', jesUncert="Merged", splitJER=True)
 jetmetUncertainties2017All = createJMECorrector(dataYear='UL2017', jesUncert="Merged", splitJER=True)
-jetmetUncertainties2018All = createJMECorrector(dataYear='UL2018', jesUncert="Merged", splitJER=True)
+jetmetUncertainties2018All = createJMECorrector(dataYear='UL2018', jesUncert="Merged", splitJER=True, applyHEMfix=True)
 
 jetmetUncertainties2016APVTotal = createJMECorrector(dataYear='UL2016_preVFP', jesUncert="Total")
 jetmetUncertainties2016Total = createJMECorrector(dataYear='UL2016', jesUncert="Total")
 jetmetUncertainties2017Total = createJMECorrector(dataYear='UL2017', jesUncert="Total")
-jetmetUncertainties2018Total = createJMECorrector(dataYear='UL2018', jesUncert="Total")
+jetmetUncertainties2018Total = createJMECorrector(dataYear='UL2018', jesUncert="Total", applyHEMfix=True)
 
 
 

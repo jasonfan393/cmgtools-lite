@@ -526,5 +526,10 @@ MVAcp_2lss1tau_allvars = lambda : mvaCP_2lss1tau(variations = [ 'jes%s'%v for v 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.selectParticleAndPartonInfo import selectParticleAndPartonInfo
 ttW_diff_gen_info = lambda : selectParticleAndPartonInfo( dresslepSel_ = lambda x : x.pt>20 and abs(x.eta) < 2.4,
-                                                          dressjetSel_ = lambda x : x.pt>25 and abs(x.eta) < 2.4 ) 
+                                                          dressjetSel_ = lambda x : x.pt>25 and abs(x.eta) < 2.4 ,
+                                                          dressfwdSel_ = lambda x : x.pt>40 and abs(x.eta) < 4.7 and abs(x.eta) > 2.4, 
+
+) 
                                                
+from CMGTools.TTHAnalysis.tools.nanoAOD.topRecoSemiLept import TopRecoSemiLept
+topRecoModule = lambda : TopRecoSemiLept(constraints=['kWHadMass','kWLepMass','kTopLepMass','kTopHadMass'])

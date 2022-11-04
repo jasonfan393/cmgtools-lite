@@ -5,6 +5,7 @@
 #include "CMGTools/TTHAnalysis/interface/CollectionSkimmer.h"
 #include "CMGTools/TTHAnalysis/interface/CombinedObjectTags.h"
 #include "CMGTools/TTHAnalysis/interface/TensorFlowInterface.h"
+#include "TopQuarkAnalysis/TopKinFitter/interface/TtSemiLepKinFitter.h"
 
 namespace {
     struct dictionary {

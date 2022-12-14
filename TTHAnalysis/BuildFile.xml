@@ -10,6 +10,7 @@
 <use name="rootminuit2"/>
 <use name="lhapdf"/>
 <use name="tensorflow-cc" />
+<use name="TopQuarkAnalysis/TopKinFitter"/>
 <export>
   <lib   name="1"/>
 </export>

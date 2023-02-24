@@ -10,3 +10,7 @@ ntau: nTauSel_Recl_FO>=1
 #eta bins
 eta_central : Tau_eta <= 1.479; Disable=True
 eta_fwd     : Tau_eta > 1.479; Disable=True
+
+#alt b-tag
+g1B: nBJetMedium25 >= 1; Disable=True 
+g2b: nBJetLoose25 >= 2; Disable=True

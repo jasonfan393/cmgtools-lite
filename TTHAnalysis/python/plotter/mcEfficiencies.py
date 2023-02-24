@@ -28,6 +28,7 @@ def addMCEfficiencyOptions(parser):
     parser.add_option("--legendWidth", dest="legendWidth", type="float", default=0.35, help="Width of the legend")
     parser.add_option("--compare", dest="compare", default="", help="Samples to compare (by default, all except the totals)")
     parser.add_option("--showRatio", dest="showRatio", action="store_true", default=False, help="Add a data/sim ratio plot at the bottom")
+    parser.add_option("--showRatioalt", dest="showRatioalt", action="store_true", default=False, help="Add a data/sim ratio plot at the bottom")
     parser.add_option("--shiftPoints", dest="shiftPoints", type="float", default=0, help="Shift x coordinates of points by this fraction of the error bar in thew plot to make them more visible when stacking.")
     parser.add_option("--rr", "--ratioRange", dest="ratioRange", type="float", nargs=2, default=(-1,-1), help="Min and max for the ratio")
     parser.add_option("--normEffUncToLumi", dest="normEffUncToLumi", action="store_true", default=False, help="Normalize the dataset to the given lumi for the uncertainties on the calculated efficiency")
@@ -159,15 +160,16 @@ def stackEffs(outname,x,effs,options,legHeader=None):
     frame.GetYaxis().SetTitle(options.ytitle)
 
     doRatio = options.showRatio and len(effs) > 1
+    doRatio_alt = options.showRatioalt and len(effs) > 1
     # define aspect ratio
-    if doRatio: ROOT.gStyle.SetPaperSize(20.,25.)
+    if doRatio or doRatio_alt: ROOT.gStyle.SetPaperSize(20.,25.)
     else:       ROOT.gStyle.SetPaperSize(20.,20.)
     # create canvas
-    c1 = ROOT.TCanvas(outname+"_canvas", outname, 600, (750 if doRatio else 600))
+    c1 = ROOT.TCanvas(outname+"_canvas", outname, 600, (750 if (doRatio or doRatio_alt) else 600))
     c1.Draw()
     p1, p2 = c1, None # high and low panes
     # set borders, if necessary create subpads
-    if doRatio:
+    if doRatio or doRatio_alt:
         c1.SetWindowSize(600 + (600 - c1.GetWw()), (750 + (750 - c1.GetWh())));
         p1 = ROOT.TPad("pad1","pad1",0,0.31,1,1);
         p1.SetBottomMargin(0);
@@ -202,6 +204,12 @@ def stackEffs(outname,x,effs,options,legHeader=None):
     if doRatio:
         p2.cd()
         keepme = doEffRatio(x,effs,frame,options)
+        frame.GetXaxis().SetLabelOffset(999) ## send them away
+        frame.GetXaxis().SetTitleOffset(999) ## in outer space
+        frame.GetYaxis().SetLabelSize(0.05)
+    if doRatio_alt:
+        p2.cd()
+        keepme = doEffRatio_alt(x,effs,frame,options)
         frame.GetXaxis().SetLabelOffset(999) ## send them away
         frame.GetXaxis().SetTitleOffset(999) ## in outer space
         frame.GetYaxis().SetLabelSize(0.05)
@@ -313,6 +321,71 @@ def doEffRatio(x,effs,frame,options):
 
     return (cframe,line,effrels)
 
+def doEffRatio_alt(x,effs,frame,options):
+    cframe = frame.Clone("frame_ratio"); cframe.Reset()
+    cframe.Draw()
+    print(effs)
+    effrels = [ e.Clone(n+"_rel") for (n,e) in effs ]
+    unity   = effrels[0]; ref = effs[0][1]
+    rmin, rmax = 1,1
+    def find(graph, x):
+        for i in xrange(graph.GetN()):
+            if graph.GetX()[i]-graph.GetErrorYlow(i) <= x:
+                if x <= graph.GetX()[i]+graph.GetErrorYhigh(i):
+                    return i
+        return -1
+    for ie,eff in enumerate(effrels):
+        points = []
+        for b in xrange(eff.GetN()):
+            xv = eff.GetX()[b]
+            b2 = find(ref, xv)
+            if b2 == -1: continue
+            if ref.GetY()[b2] == 0: continue
+            points.append((b, b2))
+        eff.Set(len(points))
+        for i,(b, b2) in enumerate(points):
+            scale = ref.GetY()[b2]
+            src = effs[ie][1]
+            eff.SetPoint(i, src.GetX()[b], (src.GetY()[b]-scale)/scale)
+            eff.SetPointError(i, src.GetErrorXlow(b), src.GetErrorXhigh(b), 
+                                 src.GetErrorYlow(b)/scale, src.GetErrorYhigh(b)/scale)
+            if ie == 0:
+                eff.SetFillStyle(3013)
+                eff.SetFillColor(src.GetLineColor())
+                eff.SetMarkerStyle(0)
+            else:
+                eff.SetLineColor(src.GetLineColor())
+                eff.SetLineWidth(src.GetLineWidth())
+                eff.SetMarkerColor(src.GetMarkerColor())
+                eff.SetMarkerStyle(src.GetMarkerStyle())
+            rmax = max(rmax, eff.GetY()[i]+2*eff.GetErrorYhigh(i))
+            rmin = min(rmin, max(0,eff.GetY()[i]-2*eff.GetErrorYlow(i)))
+    if options.ratioRange != (-1,-1):
+        rmin,rmax = options.ratioRange
+    cframe.Draw()
+    cframe.GetYaxis().SetRangeUser(rmin,rmax);
+    cframe.GetXaxis().SetTitleSize(0.14)
+    cframe.GetYaxis().SetTitleSize(0.14)
+    cframe.GetXaxis().SetLabelSize(0.11)
+    cframe.GetYaxis().SetLabelSize(0.11)
+    cframe.GetYaxis().SetNdivisions(505)
+    cframe.GetYaxis().SetDecimals(True)
+    cframe.GetYaxis().SetTitle("(f^{data}-f^{MC})/f^{MC}")
+    cframe.GetYaxis().SetTitleOffset(0.4);
+    line = ROOT.TLine(cframe.GetXaxis().GetXmin(),1,cframe.GetXaxis().GetXmax(),1)
+    line.SetLineWidth(3);
+    line.SetLineColor(effs[0][1].GetLineColor());
+    line.DrawLine(cframe.GetXaxis().GetXmin(),1,cframe.GetXaxis().GetXmax(),1)
+    unity.Draw("E2 SAME");
+    for _, ratio in shiftEffsX([(None,r) for r in effrels[1:]], options.shiftPoints): 
+        ratio.Draw("P0Z SAME");
+
+    liner = ROOT.TLine(); liner.SetLineStyle(2)
+    for x in options.xlines: liner.DrawLine(x, rmin, x, rmax)
+
+    return (cframe,line,effrels)
+
+
     
 def makeDataSub(report,mca):
     data_sub      = report['data'].Clone(report['data'].GetName()+'_sub')
@@ -357,7 +430,7 @@ def makeEff(mca,cut,idplot,xvarplot,returnSeparatePassFail=False,notDoProfile="a
                      "%s:%s" % (idplot.expr,xvarplot.expr),
                      mybins,
                      options) 
-    report = mca.getPlots(pspec,cut,makeSummary=True)
+    report = mca.getPlots(pspec,cut,makeSummary=True,closeTreeAfter=True)
     if mainOptions.weightNumerator:
         pspec_num = PlotSpec("%s_vs_%s_fornum"  % (idplot.name, xvarplot.name), 
                              "%s:%s" % (idplot.expr,xvarplot.expr),

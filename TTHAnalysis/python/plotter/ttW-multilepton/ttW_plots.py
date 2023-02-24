@@ -18,7 +18,7 @@ submit = '{command}'
 dowhat = "plots" 
 #dowhat = "dumps" 
 #dowhat = "yields" 
-#dowhat = "ntuple" # syntax: python ttH-multilepton/ttH_plots.py no 2lss_SR_extr outfile_{cname}.root --sP var1,var2,...
+#dowhat = "ntuple" # syntax: python ttW-multilepton/ttW_plots.py no 2lss_SR_extr outfile_{cname}.root --sP var1,var2,...
 dojeccomps=True
 P0="/eos/cms/store/cmst3/group/tthlep/peruzzi/"
 #if 'cmsco01'   in os.environ['HOSTNAME']: P0="/data1/peruzzi"
@@ -26,17 +26,18 @@ nCores = 8
 if 'fanae' in os.environ['HOSTNAME']:
     nCores = 32
     #submit = 'sbatch -c %d -p cpupower  --wrap "{command}"'%nCores
-    P0     = "/beegfs/data/nanoAODv9/ttH_differential/"
+    P0     = "/pool/ciencias/HeppyTrees/EdgeZ/TTH/"
 if 'gae' in os.environ['HOSTNAME']: 
-    P0     = "/beegfs/data/nanoAODv9/ttH_differential/"
+    P0     = "/pool/ciencias/HeppyTrees/EdgeZ/TTH/"
 
 if 'cism.ucl.ac.be' in os.environ['HOSTNAME']:
-    P0   = "/nfs/user/pvischia/tth/ul/" 
+    P0   = "/nfs/user/pvischia/tth/v6" 
 
 if ".psi.ch" in os.environ['HOSTNAME']:
     P0 = "/pnfs/psi.ch/cms/trivcat/store/user/sesanche"
+    submit = 'sbatch -c %d  --wrap "{command}"'%nCores
 
-TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,tWll,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW --FMCs {P}/0_jmeUnc_v1 --FMCs {P}/2_btagSF_newSFs_withsysts --FMCs {P}/2_scalefactors_lep/ --Fs {P}/3_tauCount " 
+TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,tWll,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW --FMCs {P}/0_jmeUnc_v1  --FMCs {P}/2_btagSF_newSFs/ --FMCs {P}/2_scalefactors_lep/   " 
 YEARDIR=YEAR if YEAR != 'all' else ''
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_UL_v2_060422/%s          --Fs  {P}/1_recl_new "%(YEARDIR,)         
 TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_skim2lss/%s  --FDs {P}/1_recl_new --FMCs {P}/1_recl_allvars_new "%(YEARDIR,)
@@ -45,7 +46,7 @@ TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_skim2lss/%s  --FDs {P}/1_r
 def base(selection):
     THETREES = TREESALL
     CORE=' '.join([THETREES,TREESONLYSKIM])
-    CORE+=" -f -j %d -l %s -L ttH-multilepton/functionsTTH.cc --tree NanoAOD --mcc ttH-multilepton/lepchoice-ttH-FO.txt --split-factor=-1 --WA prescaleFromSkim --year %s  --mcc ttH-multilepton/mcc-METFixEE2017.txt"%(nCores, lumis[YEAR],YEAR if YEAR!='all' else '2016APV,2016,2017,2018')# --neg" --s2v 
+    CORE+=" -f -j %d -l %s  --tree NanoAOD --mcc ttW-multilepton/lepchoice-ttW-FO.txt --split-factor=-1 --WA prescaleFromSkim --year %s  --mcc ttW-multilepton/mcc-METFixEE2017.txt"%(nCores, lumis[YEAR],YEAR if YEAR!='all' else '2016APV,2016,2017,2018')# --neg" --s2v 
     RATIO= " --maxRatioRange 0.0  1.99 --ratioYNDiv 505 "
     RATIO2=" --showRatio --attachRatioPanel --fixRatioRange "
     LEGEND=" --legendColumns 2 --legendWidth 0.25 "
@@ -54,25 +55,18 @@ def base(selection):
     if dowhat == "plots": CORE+=RATIO+RATIO2+LEGEND+LEGEND2+SPAM+"  --showMCError --rebin 4 --xP 'nT_.*' --xP 'debug_.*'"
 
     if selection=='2lss':
-        GO="%s ttH-multilepton/mca-2lss-mc.txt ttH-multilepton/2lss_tight.txt "%CORE
-        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_ttH(LepGood1_pdgId,LepGood1_conePt,LepGood2_pdgId,LepGood2_conePt,2,year,suberaId)'"%GO
-        if dowhat in ["plots","ntuple"]: GO+=" ttH-multilepton/2lss_3l_plots.txt --xP '^lep(3|4)_.*' --xP '^(3|4)lep_.*' --xP 'kinMVA_3l_.*' "
+        GO="%s ttW-multilepton/mca-2lss-mc.txt ttW-multilepton/2lss_tight.txt "%CORE
+        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_2lss'"%GO
+        if dowhat in ["plots","ntuple"]: GO+=" ttW-multilepton/2lss_3l_plots.txt --xP '^lep(3|4)_.*' --xP '^(3|4)lep_.*' --xP 'kinMVA_3l_.*' "
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.52 ")
         if dowhat == "plots": GO=GO.replace(RATIO,  " --maxRatioRange 0.6  1.99 --ratioYNDiv 210 ")
         GO += " --binname 2lss "
     elif selection=='3l':
-        GO="%s ttH-multilepton/mca-3l-mc.txt ttH-multilepton/3l_tight.txt "%CORE
-        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_3l*triggerSF_ttH(LepGood1_pdgId,LepGood1_conePt,LepGood2_pdgId,LepGood2_conePt,3,year,suberaId)'"%GO
-        if dowhat in ["plots","ntuple"]: GO+=" ttH-multilepton/2lss_3l_plots.txt --xP '^(2|4)lep_.*' --xP '^lep4_.*' --xP 'kinMVA_2lss_.*' "
+        GO="%s ttW-multilepton/mca-3l-mc.txt ttW-multilepton/3l_tight.txt "%CORE
+        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_3l*triggerSF_3l'"%GO
+        if dowhat in ["plots","ntuple"]: GO+=" ttW-multilepton/2lss_3l_plots.txt --xP '^(2|4)lep_.*' --xP '^lep4_.*' --xP 'kinMVA_2lss_.*' "
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.42 ")
         GO += " --binname 3l "
-    elif selection=='4l':
-        GO="%s ttH-multilepton/mca-4l-mc.txt ttH-multilepton/4l_tight.txt "%CORE
-        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_4l*triggerSF_ttH(LepGood1_pdgId,LepGood1_conePt,LepGood2_pdgId,LepGood2_conePt,3,year,suberaId)'"%GO
-        if dowhat in ["plots","ntuple"]: GO+=" ttH-multilepton/2lss_3l_plots.txt --xP '^(2|3)lep_.*' --xP '^lep(1|2|3|4)_.*' --xP 'kinMVA_.*' "
-        if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 2 --legendWidth 0.3 ")
-        if dowhat == "plots": GO=GO.replace(RATIO,  " --maxRatioRange 0.0  2.99 --ratioYNDiv 505 ")
-        GO += " --binname 4l "
     else:
         raise RuntimeError, 'Unknown selection'
 
@@ -122,7 +116,7 @@ if __name__ == '__main__':
             x = x.replace('2lss_3l_plots.txt', '2lss_3l_plots_diff.txt').replace('--showMCError', '-X --showMCError')
         if '_norebin' in torun: x = x.replace('--rebin 4','')
         if '_appl' in torun: x = add(x,'-I ^TT ')
-        if '_legacy' in torun: x = x.replace('ttH-multilepton/2lss_tight.txt',"ttH-multilepton/2lss_tight_legacy.txt")
+        if '_legacy' in torun: x = x.replace('ttW-multilepton/2lss_tight.txt',"ttW-multilepton/2lss_tight_legacy.txt")
         if '_1fo' in torun:
             x = add(x,"-A alwaystrue 1FO 'LepGood1_isLepTight+LepGood2_isLepTight==1'")
             x = x.replace("--xP 'nT_.*'","")
@@ -169,12 +163,12 @@ if __name__ == '__main__':
                 x = x.replace("--ratioNums TT_fake,TT_FR_TT","--ratioNums TT_fake")
                 x = add(x,"--fitRatio 1")
                 if '_unc' in torun:
-                    x = add(x,"--su CMS_ttHl_Clos_[em]_norm")
+                    x = add(x,"--su CMS_ttWl_Clos_[em]_norm")
             else:
                 if '_uncfull' in torun:
-                    x = add(x,"--su 'CMS_ttHl_FR.*' ")
+                    x = add(x,"--su 'CMS_ttWl_FR.*' ")
                 elif '_unc' in torun:
-                    x = add(x,"--su 'CMS_ttHl_Clos_[em].*_norm' ")
+                    x = add(x,"--su 'CMS_ttWl_Clos_[em].*_norm' ")
             if '_elfakecentral' in torun: x = add(x,"-A alwaystrue elfake '(abs(LepGood1_pdgId)==11 && (LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0 && abs(LepGood1_eta) < 1.5)) || (abs(LepGood2_pdgId)==11 && (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0  && abs(LepGood2_eta) < 1.5))'")
             if '_elfakeforward' in torun: x = add(x,"-A alwaystrue elfake '(abs(LepGood1_pdgId)==11 && (LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0 && abs(LepGood1_eta) > 1.5)) || (abs(LepGood2_pdgId)==11 && (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0  && abs(LepGood2_eta) > 1.5))'")
             if '_elfakeheavy' in torun: x = add(x,"-A alwaystrue elfake '(abs(LepGood1_pdgId)==11 && LepGood1_genPartFlav==5 ) || (abs(LepGood2_pdgId)==11 && LepGood2_genPartFlav==5 )'")
@@ -191,7 +185,7 @@ if __name__ == '__main__':
             if '_notrigger' in torun: x = add(x,'-X ^trigger ' )
 
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
+            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
 
         if '_varsFR' in torun:
             x = x.replace('mca-2lss-mc.txt','mca-2lss-data-frdata-vars.txt')
@@ -237,7 +231,7 @@ if __name__ == '__main__':
         x = base('3l')
         if '_norebin' in torun: x = x.replace('--rebin 4','')
         if '_appl' in torun: x = add(x,'-I ^TTT ')
-        if '_legacy' in torun: x = x.replace('ttH-multilepton/3l_tight.txt',"ttH-multilepton/3l_tight_legacy.txt")
+        if '_legacy' in torun: x = x.replace('ttW-multilepton/3l_tight.txt',"ttW-multilepton/3l_tight_legacy.txt")
         if '_1fo' in torun:
             x = add(x,"-A alwaystrue 1FO 'LepGood1_isLepTight+LepGood2_isLepTight+LepGood3_isLepTight==2'")
             x = x.replace("--xP 'nT_.*'","")
@@ -274,12 +268,12 @@ if __name__ == '__main__':
                 if '_parabola' in torun: 
                     x = x.replace("--fitRatio 1","--fitRatio 2")
                 if '_unc' in torun:
-                    x = add(x,"--su CMS_ttHl_Clos_[em]_norm")
+                    x = add(x,"--su CMS_ttWl_Clos_[em]_norm")
             else:
                 if '_uncfull' in torun:
-                    x = add(x,"--su 'CMS_ttHl_FR.*' ")
+                    x = add(x,"--su 'CMS_ttWl_FR.*' ")
                 elif '_unc' in torun:
-                    x = add(x,"--su 'CMS_ttHl_Clos_[em].*_norm' ")
+                    x = add(x,"--su 'CMS_ttWl_Clos_[em].*_norm' ")
             if '_mufake' in torun: x = add(x,"-A alwaystrue mufake '(abs(LepGood1_pdgId)==13 && LepGood1_mcMatchId==0) || (abs(LepGood2_pdgId)==13 && LepGood2_mcMatchId==0) || (abs(LepGood3_pdgId)==13 && LepGood3_mcMatchId==0)'")
             if '_elfake' in torun: x = add(x,"-A alwaystrue elfake '(abs(LepGood1_pdgId)==11 && LepGood1_mcMatchId==0) || (abs(LepGood2_pdgId)==11 && LepGood2_mcMatchId==0) || (abs(LepGood3_pdgId)==11 && LepGood3_mcMatchId==0)'")
             if '_bloose' in torun: x = add(x,'-E ^BLoose ')
@@ -288,7 +282,7 @@ if __name__ == '__main__':
             if '_notrigger' in torun: x = add(x,'-X ^trigger ')
 
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
+            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
 
 
         if '_varsFR' in torun:
@@ -323,12 +317,12 @@ if __name__ == '__main__':
             x = promptsub(x)
             raise RuntimeError, 'Fakes estimation not implemented for 4l'
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
+            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
         runIt(x,'%s'%torun)
 
     if 'cr_3j' in torun:
         x = base('2lss')
-        x = add(x, ' --Fs  {P}/A_HjDummy/ ')
+
         if '_data' in torun: x = x.replace('mca-2lss-mc.txt','mca-2lss-mcdata.txt')
         if '_appl' in torun: x = add(x,'-I ^TT ')
         if '_frdata' in torun:
@@ -340,13 +334,13 @@ if __name__ == '__main__':
         else: 
             x = add(x,"-R ^4j 3j 'nJet25+nFwdJet==3'")
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
+            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
         if '_1fwd' in torun:
             x = add(x, "-A ^alwaystrue fwdjet1 'nFwdJet>0'")
 
-        plots = ['kinMVA_2lss_input.*', 'kinMVA_2lss_score.*']
+        plots = ['lep1_.*','lep2_.*', 'lep2_.*'] #['kinMVA_2lss_input.*', 'kinMVA_2lss_score.*']
         runIt(x,'%s'%torun,plots)
         if '_flav' in torun:
             for flav in ['mm','ee','em']:
@@ -366,7 +360,7 @@ if __name__ == '__main__':
         if '_highMetNoBCut' in torun: x = add(x,"-A 'entry point' highMET 'met_pt>60'")
         else: x = add(x,"-E ^1B ")
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
+            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
         plots = ['2lep_.*','met','metLD','nVert','nJet25','nBJetMedium25','nBJetLoose25','nBJetLoose40','nBJetMedium40','era']
         runIt(x,'%s'%torun)#,plots)
 
@@ -375,7 +369,7 @@ if __name__ == '__main__':
         x = fulltrees(x) # for mc same-sign
         x = x.replace('mca-2lss-mc.txt','mca-2lss-mcdata-ttbar.txt')
         x = x.replace('2lss_tight.txt', 'trigger-eff/cuts_trigger_eff.txt')
-        x = x.replace("-W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_ttH(LepGood1_pdgId,LepGood1_conePt,LepGood2_pdgId,LepGood2_conePt,2,year,suberaId)'", '')
+        x = x.replace("-W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_ttW(LepGood1_pdgId, LepGood1_conePt, LepGood2_pdgId, LepGood2_conePt, 2, year)'", '')
         x = x.replace("--FMCs {P}/2_scalefactors_jecAllVars --FMCs {P}/2_scalefactors_lep --Fs {P}/3_tauCount  --Fs {P}/6_mva2lss --Fs {P}/6_mva3l --Fs {P}/6_mva4l --FMCs {P}/4_evtVars_allVars --FDs {P}/4_evtVars --FDs {P}/5_BDThtt_reco --FMCs {P}/5_BDThtt_reco_allVars", "")
         x = x.replace("--FMCs {P}/0_jmeUnc_v1_sources --FMCs {P}/1_recl_sources --FDs {P}/1_recl","")
         x = add(x,"-I same-sign -X ^4j -X ^2b1B ")
@@ -400,10 +394,9 @@ if __name__ == '__main__':
         if '_data' not in torun: x = add(x,'--xp data')
         x = add(x,"-X ^2b1B -X ^Zee_veto -X ^Z_veto -X ^metLDee -A alwaystrue mllonZ 'mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass,LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass)>60 && mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass,LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass)<120' -X ^tauveto")
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
-        for flav in ['mm','ee','em']:
-            plots = ['nJet25_from0','nJet40_from0', 'lep1_pt', 'lep2_pt','2lep_.*', 'met.*','tot_weight','era']
-            runIt(add(x,'-E ^%s -X ^4j'%flav),'%s/%s'%(torun,flav),plots)
+            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
+        plots = ['nJet25_from0','nJet40_from0', 'lep1_pt', 'lep2_pt','2lep_.*', 'met.*','tot_weight','era']
+        runIt(add(x,' -X ^4j'),'%s'%(torun),plots)
     if 'cr_dilep' in torun:
         x = base('2lss')
         x = x.replace('mca-2lss-mc.txt','mca-2lss-mcdata-ttbar.txt')
@@ -435,14 +428,14 @@ if __name__ == '__main__':
         else: 
             print "ERROR: cr_wz with MC backgrounds does not work."
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
+            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
 
         if '_fit' in torun:
             if not '_data' in torun: raise RuntimeError
             x = add(x,"--sP tot_weight --preFitData tot_weight --sp WZ ")
-            x = add(x,"--xu CMS_ttHl_ZZ_lnU ") # otherwise here we fit as ZZ
+            x = add(x,"--xu CMS_ttWl_ZZ_lnU ") # otherwise here we fit as ZZ
             if '_unc' not in torun:
                 print "Will just float WZ freely"
                 x = add(x,"--flp WZ")
@@ -468,7 +461,7 @@ if __name__ == '__main__':
         if '_1fwd' in torun:
             x = add(x, "-A ^alwaystrue fwdjet1 'nFwdJet>0'")
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
+            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
 
@@ -484,7 +477,7 @@ if __name__ == '__main__':
             x = promptsub(x)
             raise RuntimeError, 'Fakes estimation not implemented for 4l'
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
+            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
         x = add(x,"-I ^Zveto")
         plots = ['lep4_pt','met','mZ1','4lep_m4l_noRecl','4lep_mZ2_noRecl','minMllAFAS','tot_weight','4lep_nJet25','nBJetMedium25']
         runIt(x,'%s'%torun,plots)
@@ -498,11 +491,11 @@ if __name__ == '__main__':
             x = promptsub(x)
             raise RuntimeError, 'Fakes estimation not implemented for 4l'
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
+            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
         if '_fit' in torun:
             if not '_data' in torun: raise RuntimeError
             x = add(x,"--sP tot_weight --preFitData tot_weight --sp ZZ ")
-            x = add(x,"--xu CMS_ttHl_WZ_lnU ") # otherwise here we fit as WZ
+            x = add(x,"--xu CMS_ttWl_WZ_lnU ") # otherwise here we fit as WZ
             if '_unc' not in torun:
                 print "Will just float WZ freely"
                 x = add(x,"--flp WZ")
@@ -520,7 +513,7 @@ if __name__ == '__main__':
             x = x.replace('mca-3l-mcdata.txt','mca-3l-mcdata-frdata.txt')
         plots = ['cr_3l']
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
+            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
 
@@ -534,7 +527,7 @@ if __name__ == '__main__':
             x = promptsub(x)
             raise RuntimeError, 'Fakes estimation not implemented for 4l'
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
+            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
 

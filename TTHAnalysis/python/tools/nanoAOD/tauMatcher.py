@@ -74,13 +74,13 @@ class tauSFs(Module):
         match=matchObjectCollection( taus, genvistau, filter = lambda x,y : deltaR(x,y)<0.3 and (abs(x.pt-y.pt)/y.pt ) < 0.5 )
         thetau = taus[int(event.Tau_tight2lss1tau_idx)]
 
-        self.wrappedOutputTree.fillBranch('TauSel_2lss1tau_SF', r.tauSF( thetau.pt, thetau.eta, event.year, bool(match[thetau])))
-        self.wrappedOutputTree.fillBranch('TauSel_2lss1tau_SF_effUp', r.tauSF( thetau.pt, thetau.eta, event.year, bool(match[thetau]), 1))
-        self.wrappedOutputTree.fillBranch('TauSel_2lss1tau_SF_effDown', r.tauSF( thetau.pt, thetau.eta, event.year, bool(match[thetau]), -1))
-        self.wrappedOutputTree.fillBranch('TauSel_2lss1tau_SF_frNormUp', r.tauSF( thetau.pt, thetau.eta, event.year, bool(match[thetau]), 0,1))
-        self.wrappedOutputTree.fillBranch('TauSel_2lss1tau_SF_frNormDown', r.tauSF( thetau.pt, thetau.eta, event.year, bool(match[thetau]), 0,-1))
-        self.wrappedOutputTree.fillBranch('TauSel_2lss1tau_SF_frShapeUp', r.tauSF( thetau.pt, thetau.eta, event.year, bool(match[thetau]), 0,0,1))
-        self.wrappedOutputTree.fillBranch('TauSel_2lss1tau_SF_frShapeDown', r.tauSF( thetau.pt, thetau.eta, event.year, bool(match[thetau]), 0,0,-1))
+        self.wrappedOutputTree.fillBranch('TauSel_2lss1tau_SF', r.tauSF( thetau.pt, thetau.eta, event.year, event.suberaId, bool(match[thetau])))
+        self.wrappedOutputTree.fillBranch('TauSel_2lss1tau_SF_effUp', r.tauSF( thetau.pt, thetau.eta, event.year, event.suberaId, bool(match[thetau]), 1))
+        self.wrappedOutputTree.fillBranch('TauSel_2lss1tau_SF_effDown', r.tauSF( thetau.pt, thetau.eta, event.year, event.suberaId, bool(match[thetau]), -1))
+        self.wrappedOutputTree.fillBranch('TauSel_2lss1tau_SF_frNormUp', r.tauSF( thetau.pt, thetau.eta, event.year, event.suberaId, bool(match[thetau]), 0,1))
+        self.wrappedOutputTree.fillBranch('TauSel_2lss1tau_SF_frNormDown', r.tauSF( thetau.pt, thetau.eta, event.year, event.suberaId, bool(match[thetau]), 0,-1))
+        self.wrappedOutputTree.fillBranch('TauSel_2lss1tau_SF_frShapeUp', r.tauSF( thetau.pt, thetau.eta, event.year, event.suberaId, bool(match[thetau]), 0,0,1))
+        self.wrappedOutputTree.fillBranch('TauSel_2lss1tau_SF_frShapeDown', r.tauSF( thetau.pt, thetau.eta, event.year, event.suberaId, bool(match[thetau]), 0,0,-1))
     
         
         return True

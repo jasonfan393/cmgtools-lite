@@ -60,6 +60,9 @@ CMS_eff_ttHl_etight : $PromptFromMC : .*3l.* : templateAsymm ; AddWeights=['lept
 CMS_eff_ttHl_etight : $PromptFromMC : .*4l.* : templateAsymm ; AddWeights=['leptonSF_4l_el_loosetotight_up/leptonSF_4l'\,'leptonSF_4l_el_loosetotight_dn/leptonSF_4l']
 
 # tau efficiencies and frs
+CMS_eff_t_2016APV        : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_effUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_effDown/TauSel_2lss1tau_SF'], year="2016APV"
+CMS_ttHl16APV_FRjt_shape : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_frShapeUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_frShapeDown/TauSel_2lss1tau_SF'], year="2016APV"
+CMS_ttHl16APV_FRjt_norm  : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_effUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_effDown/TauSel_2lss1tau_SF'], year="2016APV"
 CMS_eff_t_2016        : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_effUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_effDown/TauSel_2lss1tau_SF'], year="2016"
 CMS_ttHl16_FRjt_shape : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_frShapeUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_frShapeDown/TauSel_2lss1tau_SF'], year="2016"
 CMS_ttHl16_FRjt_norm  : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_effUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_effDown/TauSel_2lss1tau_SF'], year="2016"

@@ -26,7 +26,7 @@ nCores = 8
 if 'fanae' in os.environ['HOSTNAME']:
     nCores = 32
     #submit = 'sbatch -c %d -p cpupower  --wrap "{command}"'%nCores
-    P0     = "/pool/ciencias/HeppyTrees/EdgeZ/TTH/"
+    P0     = "/beegfs/data/nanoAODv9/ttH_differential/"
 if 'gae' in os.environ['HOSTNAME']: 
     P0     = "/beegfs/data/nanoAODv9/ttH_differential/"
 

@@ -438,7 +438,7 @@ float tauSF( float taupt, float taueta, int year, int suberaid, int isMatch, int
     fTauSFFiles[1]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauID_SF_pt_DeepTau2017v2p1VSjet_UL2016_postVFP.root");
     fTauSFFiles[2]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauID_SF_pt_DeepTau2017v2p1VSjet_UL2017.root");
     fTauSFFiles[3]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauID_SF_pt_DeepTau2017v2p1VSjet_UL2018.root");
-    for (int i =0; i < 3; ++i){
+    for (int i =0; i < 4; ++i){
       fTauSFs[i][0]=(TF1*) fTauSFFiles[i]->Get("VLoose_down");
       fTauSFs[i][1]=(TF1*) fTauSFFiles[i]->Get("VLoose_cent");
       fTauSFs[i][2]=(TF1*) fTauSFFiles[i]->Get("VLoose_up");
@@ -447,7 +447,7 @@ float tauSF( float taupt, float taueta, int year, int suberaid, int isMatch, int
     fTauFRFiles[1]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauSF_2016_fit.root");
     fTauFRFiles[2]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauSF_2017_fit.root");
     fTauFRFiles[3]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauSF_2018_fit.root ");
-    for (int i =0; i < 3; ++i){
+    for (int i =0; i < 4; ++i){
       fTauFRs[i][0][0]=(TF1*) fTauFRFiles[i]->Get("nominal_central");
       fTauFRs[i][1][0]=(TF1*) fTauFRFiles[i]->Get("nominal_fwd");
       fTauFRs[i][0][1]=(TF1*) fTauFRFiles[i]->Get("down_1st_central");

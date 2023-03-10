@@ -36,10 +36,10 @@ if 'cism.ucl.ac.be' in os.environ['HOSTNAME']:
 if ".psi.ch" in os.environ['HOSTNAME']:
     P0 = "/pnfs/psi.ch/cms/trivcat/store/user/sesanche"
 
-TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,tWll,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW --FMCs {P}/0_jmeUnc_v1 --FMCs {P}/2_btagSF_newSFs_withsysts --FMCs {P}/2_scalefactors_lep/ --Fs {P}/3_tauCount " 
+TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW --FMCs {P}/0_jmeUnc_v1 --FMCs {P}/2_btagSF_newSFs_withsysts --FMCs {P}/2_scalefactors_lep/ --Fs {P}/3_tauCount " 
 YEARDIR=YEAR if YEAR != 'all' else ''
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_UL_v2_060422/%s          --Fs  {P}/1_recl_new "%(YEARDIR,)         
-TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_skim2lss/%s  --FDs {P}/1_recl_new --FMCs {P}/1_recl_allvars_new "%(YEARDIR,)
+TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_newfts_skim2lss/%s  --Fs {P}/1_recl "%(YEARDIR,) #--FDs {P}/1_recl_new --FMCs {P}/1_recl_allvars_new
 
 
 def base(selection):
@@ -328,7 +328,7 @@ if __name__ == '__main__':
 
     if 'cr_3j' in torun:
         x = base('2lss')
-        x = add(x, ' --Fs  {P}/A_HjDummy/ ')
+        
         if '_data' in torun: x = x.replace('mca-2lss-mc.txt','mca-2lss-mcdata.txt')
         if '_appl' in torun: x = add(x,'-I ^TT ')
         if '_frdata' in torun:

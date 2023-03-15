@@ -17,34 +17,23 @@ $alias : FRAll  : data_fakes|.*_promptsub|TT_FR_QCD
 
 ### Uncertainties
 # lumi from https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM#LumiComb
-lumi_13TeV_2016		: $PromptFromMC : .* : normSymm : 1.022; year="2016\,2016APV"
-lumi_13TeV_2017		: $PromptFromMC : .* : normSymm : 1.020; year="2017"
-lumi_13TeV_2018		: $PromptFromMC : .* : normSymm : 1.015; year="2018"
 
-lumi_13TeV_XY		: $PromptFromMC : .* : normSymm : 1.009; year="2016\,2016APV"
-lumi_13TeV_XY		: $PromptFromMC : .* : normSymm : 1.008; year="2017"
-lumi_13TeV_XY		: $PromptFromMC : .* : normSymm : 1.020; year="2018"
+lumi_13TeV_2016		: $PromptFromMC : .* : normSymm : 1.010; year="2016\,2016APV"
+lumi_13TeV_2017		  : $PromptFromMC : .* : normSymm : 1.020; year="2017"
+lumi_13TeV_2018		    : $PromptFromMC : .* : normSymm : 1.015; year="2018"
 
-lumi_13TeV_LS		: $PromptFromMC : .* : normSymm : 1.003; year="2017"
-lumi_13TeV_LS		: $PromptFromMC : .* : normSymm : 1.002; year="2018"
+lumi_13TeV_correlated   : $PromptFromMC : .* : normSymm : 1.006; year="2016\,2016APV"
+lumi_13TeV_correlated   : $PromptFromMC : .* : normSymm : 1.009; year="2017"
+lumi_13TeV_correlated   : $PromptFromMC : .* : normSymm : 1.020; year="2018"
 
-lumi_13TeV_BBD		: $PromptFromMC : .* : normSymm : 1.004; year="2016\,2016APV" 
-lumi_13TeV_BBD		: $PromptFromMC : .* : normSymm : 1.004; year="2017" 
-
-lumi_13TeV_DB 		: $PromptFromMC : .* : normSymm : 1.005; year="2016\,2016APV"
-lumi_13TeV_DB 		: $PromptFromMC : .* : normSymm : 1.005; year="2017" 
-
-lumi_13TeV_BCC 		: $PromptFromMC : .* : normSymm : 1.003; year="2017"
-lumi_13TeV_BCC 		: $PromptFromMC : .* : normSymm : 1.002; year="2018" 
-
-lumi_13TeV_GS 		: $PromptFromMC : .* : normSymm : 1.004; year="2016\,2016APV"
-lumi_13TeV_GS 		: $PromptFromMC : .* : normSymm : 1.001; year="2017"
+lumi_13TeV_1718         : $PromptFromMC : .* : normSymm : 1.006; year="2017"
+lumi_13TeV_1718         : $PromptFromMC : .* : normSymm : 1.002; year="2018"
 
 
 # lepton efficiencies
-CMS_eff_ttWl_mloose : $PromptFromMC : .*2lss.* : templateAsymm ; AddWeights=['leptonSF_2lss_mu_up/leptonSF_2lss'\,'leptonSF_2lss_mu_dn/leptonSF_2lss']
-CMS_eff_ttWl_mloose : $PromptFromMC : .*3l.*    : templateAsymm ; AddWeights=['leptonSF_3l_mu_up/leptonSF_3l'\,'leptonSF_3l_mu_dn/leptonSF_3l']
-CMS_eff_ttWl_mloose : $PromptFromMC : .*4l.*    : templateAsymm ; AddWeights=['leptonSF_4l_mu_up/leptonSF_4l'\,'leptonSF_4l_mu_dn/leptonSF_4l']            
+CMS_eff_ttWl_m : $PromptFromMC : .*2lss.* : templateAsymm ; AddWeights=['leptonSF_2lss_mu_up/leptonSF_2lss'\,'leptonSF_2lss_mu_dn/leptonSF_2lss']
+CMS_eff_ttWl_m : $PromptFromMC : .*3l.*    : templateAsymm ; AddWeights=['leptonSF_3l_mu_up/leptonSF_3l'\,'leptonSF_3l_mu_dn/leptonSF_3l']
+CMS_eff_ttWl_m : $PromptFromMC : .*4l.*    : templateAsymm ; AddWeights=['leptonSF_4l_mu_up/leptonSF_4l'\,'leptonSF_4l_mu_dn/leptonSF_4l']            
 
 CMS_eff_ttWl_e : $PromptFromMC : .*2lss.* : templateAsymm ; AddWeights=['leptonSF_2lss_el_up/leptonSF_2lss'\,'leptonSF_2lss_el_dn/leptonSF_2lss']   
 CMS_eff_ttWl_e : $PromptFromMC : .*3l.*    : templateAsymm ; AddWeights=['leptonSF_3l_el_up/leptonSF_3l'\,'leptonSF_3l_el_dn/leptonSF_3l']	     

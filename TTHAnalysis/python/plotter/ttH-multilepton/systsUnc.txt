@@ -18,28 +18,16 @@ $alias : FRAll  : data_fakes|.*_promptsub|TT_FR_QCD
 
 ### Uncertainties
 # lumi from https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM#LumiComb
-lumi_13TeV_2016		: $PromptFromMC : .* : normSymm : 1.022; year="2016"
-lumi_13TeV_2017		: $PromptFromMC : .* : normSymm : 1.020; year="2017"
-lumi_13TeV_2018		: $PromptFromMC : .* : normSymm : 1.015; year="2018"
+lumi_13TeV_2016		: $PromptFromMC : .* : normSymm : 1.010; year="2016\,2016APV"
+lumi_13TeV_2017		  : $PromptFromMC : .* : normSymm : 1.020; year="2017"
+lumi_13TeV_2018		    : $PromptFromMC : .* : normSymm : 1.015; year="2018"
 
-lumi_13TeV_XY		: $PromptFromMC : .* : normSymm : 1.009; year="2016"
-lumi_13TeV_XY		: $PromptFromMC : .* : normSymm : 1.008; year="2017"
-lumi_13TeV_XY		: $PromptFromMC : .* : normSymm : 1.020; year="2018"
+lumi_13TeV_correlated   : $PromptFromMC : .* : normSymm : 1.006; year="2016\,2016APV"
+lumi_13TeV_correlated   : $PromptFromMC : .* : normSymm : 1.009; year="2017"
+lumi_13TeV_correlated   : $PromptFromMC : .* : normSymm : 1.020; year="2018"
 
-lumi_13TeV_LS		: $PromptFromMC : .* : normSymm : 1.003; year="2017"
-lumi_13TeV_LS		: $PromptFromMC : .* : normSymm : 1.002; year="2018"
-
-lumi_13TeV_BBD		: $PromptFromMC : .* : normSymm : 1.004; year="2016" 
-lumi_13TeV_BBD		: $PromptFromMC : .* : normSymm : 1.004; year="2017" 
-
-lumi_13TeV_DB 		: $PromptFromMC : .* : normSymm : 1.005; year="2016"
-lumi_13TeV_DB 		: $PromptFromMC : .* : normSymm : 1.005; year="2017" 
-
-lumi_13TeV_BCC 		: $PromptFromMC : .* : normSymm : 1.003; year="2017"
-lumi_13TeV_BCC 		: $PromptFromMC : .* : normSymm : 1.002; year="2018" 
-
-lumi_13TeV_GS 		: $PromptFromMC : .* : normSymm : 1.004; year="2016"
-lumi_13TeV_GS 		: $PromptFromMC : .* : normSymm : 1.001; year="2017"
+lumi_13TeV_1718         : $PromptFromMC : .* : normSymm : 1.006; year="2017"
+lumi_13TeV_1718         : $PromptFromMC : .* : normSymm : 1.002; year="2018"
 
 
 # lepton efficiencies

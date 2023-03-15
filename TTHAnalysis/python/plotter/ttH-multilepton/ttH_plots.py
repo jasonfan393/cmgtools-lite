@@ -45,7 +45,7 @@ TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_newfts_skim2lss/%s  --Fs {
 def base(selection):
     THETREES = TREESALL
     CORE=' '.join([THETREES,TREESONLYSKIM])
-    CORE+=" -f -j %d -l %s -L ttH-multilepton/functionsTTH.cc --tree NanoAOD --mcc ttH-multilepton/lepchoice-ttH-FO.txt --split-factor=-1 --WA prescaleFromSkim --year %s  --mcc ttH-multilepton/mcc-METFixEE2017.txt"%(nCores, lumis[YEAR],YEAR if YEAR!='all' else '2016APV,2016,2017,2018')# --neg" --s2v 
+    CORE+=" -f -j %d -l %s -L ttH-multilepton/functionsTTH.cc --tree NanoAOD --mcc ttH-multilepton/lepchoice-ttH-FO.txt --split-factor=-1 --WA prescaleFromSkim --year %s  --mcc ttH-multilepton/mcc-METchoice-prefiring.txt"%(nCores, lumis[YEAR],YEAR if YEAR!='all' else '2016APV,2016,2017,2018')# --neg" --s2v 
     RATIO= " --maxRatioRange 0.0  1.99 --ratioYNDiv 505 "
     RATIO2=" --showRatio --attachRatioPanel --fixRatioRange "
     LEGEND=" --legendColumns 2 --legendWidth 0.25 "

@@ -245,7 +245,6 @@ CMS_jesHEMIssue      : $PromptFromMC : .* : templateAsymm; \
 
 CMS_ttHl_UnclusteredEn : $PromptFromMC : .* : templateAsymm; \
         FakeRates=['ttH-multilepton/fr-unclUp.txt'\,'ttH-multilepton/fr-unclDn.txt']
-CMS_ttHl_HEM      : $PromptFromMC : .* : templateSymm; Normalize=False, FakeRate='ttH-multilepton/frs-jecs/fr-HEM-up.txt', year="2018"
 
 CMS_ttHl_btag_LF    : $PromptFromMC : .* : templateAsymm; AddWeights=['btagSFup_lf/btagSF'\,'btagSFdown_lf/btagSF']
 CMS_ttHl_btag_HF    : $PromptFromMC : .* : templateAsymm; AddWeights=['btagSFup_hf/btagSF'\,'btagSFdown_hf/btagSF']

@@ -26,7 +26,7 @@ nCores = 8
 if 'fanae' in os.environ['HOSTNAME']:
     nCores = 32
     #submit = 'sbatch -c %d -p cpupower  --wrap "{command}"'%nCores
-    P0     = "/pool/ciencias/HeppyTrees/EdgeZ/TTH/"
+    P0     = "/beegfs/data/nanoAODv9/ttH_differential/"
 if 'gae' in os.environ['HOSTNAME']: 
     P0     = "/beegfs/data/nanoAODv9/ttH_differential/"
 
@@ -36,16 +36,16 @@ if 'cism.ucl.ac.be' in os.environ['HOSTNAME']:
 if ".psi.ch" in os.environ['HOSTNAME']:
     P0 = "/pnfs/psi.ch/cms/trivcat/store/user/sesanche"
 
-TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,tWll,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW --FMCs {P}/0_jmeUnc_v1 --FMCs {P}/2_btagSF_newSFs_withsysts --FMCs {P}/2_scalefactors_lep/ --Fs {P}/3_tauCount " 
+TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW --FMCs {P}/0_jmeUnc_v1 --FMCs {P}/2_btagSF_newSFs_withsysts --FMCs {P}/2_scalefactors_lep/ --Fs {P}/3_tauCount " 
 YEARDIR=YEAR if YEAR != 'all' else ''
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_UL_v2_060422/%s          --Fs  {P}/1_recl_new "%(YEARDIR,)         
-TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_skim2lss/%s  --FDs {P}/1_recl_new --FMCs {P}/1_recl_allvars_new "%(YEARDIR,)
+TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_newfts_skim2lss/%s  --Fs {P}/1_recl "%(YEARDIR,) #--FDs {P}/1_recl_new --FMCs {P}/1_recl_allvars_new
 
 
 def base(selection):
     THETREES = TREESALL
     CORE=' '.join([THETREES,TREESONLYSKIM])
-    CORE+=" -f -j %d -l %s -L ttH-multilepton/functionsTTH.cc --tree NanoAOD --mcc ttH-multilepton/lepchoice-ttH-FO.txt --split-factor=-1 --WA prescaleFromSkim --year %s  --mcc ttH-multilepton/mcc-METFixEE2017.txt"%(nCores, lumis[YEAR],YEAR if YEAR!='all' else '2016APV,2016,2017,2018')# --neg" --s2v 
+    CORE+=" -f -j %d -l %s -L ttH-multilepton/functionsTTH.cc --tree NanoAOD --mcc ttH-multilepton/lepchoice-ttH-FO.txt --split-factor=-1 --WA prescaleFromSkim --year %s  --mcc ttH-multilepton/mcc-METchoice-prefiring.txt"%(nCores, lumis[YEAR],YEAR if YEAR!='all' else '2016APV,2016,2017,2018')# --neg" --s2v 
     RATIO= " --maxRatioRange 0.0  1.99 --ratioYNDiv 505 "
     RATIO2=" --showRatio --attachRatioPanel --fixRatioRange "
     LEGEND=" --legendColumns 2 --legendWidth 0.25 "
@@ -328,7 +328,7 @@ if __name__ == '__main__':
 
     if 'cr_3j' in torun:
         x = base('2lss')
-        x = add(x, ' --Fs  {P}/A_HjDummy/ ')
+        
         if '_data' in torun: x = x.replace('mca-2lss-mc.txt','mca-2lss-mcdata.txt')
         if '_appl' in torun: x = add(x,'-I ^TT ')
         if '_frdata' in torun:

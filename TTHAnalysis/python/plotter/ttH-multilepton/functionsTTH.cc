@@ -420,50 +420,54 @@ float ttH_catIndex_2lss1tau_CP( float tth, float thq, float bkg, float cp)
 }
 
 
-TF1* fTauSFs[3][3];
-TFile* fTauSFFiles[3];
+TF1* fTauSFs[4][3];
+TFile* fTauSFFiles[4];
 
-TF1* fTauFRs[3][2][5]; // year, eta range, (nom, par1Down, par1Up, par2Down, par2Up)
-TFile* fTauFRFiles[3];
+TF1* fTauFRs[4][2][5]; // year, eta range, (nom, par1Down, par1Up, par2Down, par2Up)
+TFile* fTauFRFiles[4];
 
 bool isTauSFInit=false;
-float tauSF( float taupt, float taueta, int year, int isMatch, int var=0, int varFRNorm=0, int varFRShape=0){  // var is -1,0,1
+float tauSF( float taupt, float taueta, int year, int suberaid, int isMatch, int var=0, int varFRNorm=0, int varFRShape=0){  // var is -1,0,1
 
   assert( (abs(var)+abs(varFRShape)+abs(varFRNorm) != 0 && abs(var)+abs(varFRShape)+abs(varFRNorm) != 1) );
 
   // to add the fr uncertainty
   if (!isTauSFInit){
     isTauSFInit=true;
-    fTauSFFiles[0]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauID_SF_pt_DeepTau2017v2p1VSjet_2016Legacy.root");
-    fTauSFFiles[1]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauID_SF_pt_DeepTau2017v2p1VSjet_2017ReReco.root");
-    fTauSFFiles[2]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauID_SF_pt_DeepTau2017v2p1VSjet_2018ReReco.root");
-    for (int i =0; i < 3; ++i){
+    fTauSFFiles[0]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauID_SF_pt_DeepTau2017v2p1VSjet_UL2016_preVFP.root");
+    fTauSFFiles[1]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauID_SF_pt_DeepTau2017v2p1VSjet_UL2016_postVFP.root");
+    fTauSFFiles[2]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauID_SF_pt_DeepTau2017v2p1VSjet_UL2017.root");
+    fTauSFFiles[3]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauID_SF_pt_DeepTau2017v2p1VSjet_UL2018.root");
+    for (int i =0; i < 4; ++i){
       fTauSFs[i][0]=(TF1*) fTauSFFiles[i]->Get("VLoose_down");
       fTauSFs[i][1]=(TF1*) fTauSFFiles[i]->Get("VLoose_cent");
       fTauSFs[i][2]=(TF1*) fTauSFFiles[i]->Get("VLoose_up");
     }
-    fTauFRFiles[0]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/FR_deeptau_2016_v6.root");
-    fTauFRFiles[1]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/FR_deeptau_2017_v6.root");
-    fTauFRFiles[2]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/FR_deeptau_2018_v6.root");
-    for (int i =0; i < 3; ++i){
-      fTauFRs[i][0][0]=(TF1*) fTauFRFiles[i]->Get("jetToTauFakeRate_withoutTriggerMatching/deepVSjVLoose/absEtaLt1_5/fitFunction_data_div_mc_hadTaus_pt");
-      fTauFRs[i][1][0]=(TF1*) fTauFRFiles[i]->Get("jetToTauFakeRate_withoutTriggerMatching/deepVSjVLoose/absEta1_5to9_9/fitFunction_data_div_mc_hadTaus_pt");
-      fTauFRs[i][0][1]=(TF1*) fTauFRFiles[i]->Get("jetToTauFakeRate_withoutTriggerMatching/deepVSjVLoose/absEtaLt1_5/fitFunction_data_div_mc_hadTaus_pt_par1Down");
-      fTauFRs[i][1][1]=(TF1*) fTauFRFiles[i]->Get("jetToTauFakeRate_withoutTriggerMatching/deepVSjVLoose/absEta1_5to9_9/fitFunction_data_div_mc_hadTaus_pt_par1Down");
-      fTauFRs[i][0][2]=(TF1*) fTauFRFiles[i]->Get("jetToTauFakeRate_withoutTriggerMatching/deepVSjVLoose/absEtaLt1_5/fitFunction_data_div_mc_hadTaus_pt_par1Up");
-      fTauFRs[i][1][2]=(TF1*) fTauFRFiles[i]->Get("jetToTauFakeRate_withoutTriggerMatching/deepVSjVLoose/absEta1_5to9_9/fitFunction_data_div_mc_hadTaus_pt_par1Up");
-      fTauFRs[i][0][3]=(TF1*) fTauFRFiles[i]->Get("jetToTauFakeRate_withoutTriggerMatching/deepVSjVLoose/absEtaLt1_5/fitFunction_data_div_mc_hadTaus_pt_par2Down");
-      fTauFRs[i][1][3]=(TF1*) fTauFRFiles[i]->Get("jetToTauFakeRate_withoutTriggerMatching/deepVSjVLoose/absEta1_5to9_9/fitFunction_data_div_mc_hadTaus_pt_par2Down");
-      fTauFRs[i][0][4]=(TF1*) fTauFRFiles[i]->Get("jetToTauFakeRate_withoutTriggerMatching/deepVSjVLoose/absEtaLt1_5/fitFunction_data_div_mc_hadTaus_pt_par2Up");
-      fTauFRs[i][1][4]=(TF1*) fTauFRFiles[i]->Get("jetToTauFakeRate_withoutTriggerMatching/deepVSjVLoose/absEta1_5to9_9/fitFunction_data_div_mc_hadTaus_pt_par2Up");
+    fTauFRFiles[0]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauSF_2016APV_fit.root");
+    fTauFRFiles[1]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauSF_2016_fit.root");
+    fTauFRFiles[2]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauSF_2017_fit.root");
+    fTauFRFiles[3]=TFile::Open("$CMSSW_BASE/src/CMGTools/TTHAnalysis/data/tauSF/TauSF_2018_fit.root ");
+    for (int i =0; i < 4; ++i){
+      fTauFRs[i][0][0]=(TF1*) fTauFRFiles[i]->Get("nominal_central");
+      fTauFRs[i][1][0]=(TF1*) fTauFRFiles[i]->Get("nominal_fwd");
+      fTauFRs[i][0][1]=(TF1*) fTauFRFiles[i]->Get("down_1st_central");
+      fTauFRs[i][1][1]=(TF1*) fTauFRFiles[i]->Get("down_1st_fwd");
+      fTauFRs[i][0][2]=(TF1*) fTauFRFiles[i]->Get("up_1st_central");
+      fTauFRs[i][1][2]=(TF1*) fTauFRFiles[i]->Get("up_1st_fwd");
+      fTauFRs[i][0][3]=(TF1*) fTauFRFiles[i]->Get("down_2nd_central");
+      fTauFRs[i][1][3]=(TF1*) fTauFRFiles[i]->Get("down_2nd_fwd");
+      fTauFRs[i][0][4]=(TF1*) fTauFRFiles[i]->Get("up_2nd_central");
+      fTauFRs[i][1][4]=(TF1*) fTauFRFiles[i]->Get("down_2nd_fwd");
     }
   }
   
-
+  int yearIdx = 0;
+  if (year == 2016)  yearIdx = suberaid;  // suberaid == 0 for 2016APV and 1 for 2016
+  if (year != 2016)  yearIdx = (year-2016)+1;
 
   if (isMatch){
-    float varSF=fTauSFs[year-2016][var+1]->Eval(taupt);
-    float nomSF=fTauSFs[year-2016][1]->Eval(taupt);
+    float varSF=fTauSFs[yearIdx][var+1]->Eval(taupt);
+    float nomSF=fTauSFs[yearIdx][1]->Eval(taupt);
     return  (1 + var*std::sqrt( (varSF/nomSF-1)*(varSF/nomSF-1) + 0.03*0.03))*nomSF;
   }
 
@@ -475,7 +479,7 @@ float tauSF( float taupt, float taueta, int year, int isMatch, int var=0, int va
     if (varFRNorm==-1) varIdx=1;
     if (varFRShape==1) varIdx=4;
     if (varFRShape==-1) varIdx=3;
-    return fTauFRs[year-2016][etaindx][varIdx]->Eval(taupt);
+    return fTauFRs[yearIdx][etaindx][varIdx]->Eval(taupt);
   }
   
 

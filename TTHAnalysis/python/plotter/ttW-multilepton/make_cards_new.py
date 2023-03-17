@@ -5,6 +5,12 @@ submit = '''sbatch -c %d -p short  --wrap '{command}' '''%nCores
 
 
 if 'psi' in os.environ['HOSTNAME']:       ORIGIN="/pnfs/psi.ch/cms/trivcat/store/user/sesanche/"; 
+elif 'fanae' in os.environ['HOSTNAME']:
+    ORIGIN     = "/beegfs/data/nanoAODv9/ttH_differential/"
+elif 'gae' in os.environ['HOSTNAME']: 
+    ORIGIN    = "/beegfs/data/nanoAODv9/ttH_differential/"
+
+
 else: 
     raise RuntimeError("You need ntuples to run the analysis :)")
 

@@ -1,0 +1,15 @@
+# Produce datacards with the proper differential variable
+# add the variable you want to measure in mca-includes/mca-2lss-sigprompt.txt. Add one process per gen-level bin
+# Do not forget to add out-of-acceptance signal as well! This is signal that doesnt pass our fiducial selection but somehow makes it to our signal region
+# For the commands below we'll assume we want to measure lep1_pt 
+# Add this variable to availableObservables in make_cards_new . There you also set which reco-level bins you are using.
+# Then produce the cards
+for year in 2016 2016APV 2017 2018; do python ttW-multilepton/make_cards_new.py outputname ${year} 2lss lep1_pt | bash; done
+
+# Then create the workspace with one POI per gen-level bin
+text2workspace.py combined_lep1_pt.dat -o wsp.root -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel --PO verbose --PO 'map=.*/TTW_lep1_pt_bin1:r_TTW_lep1_pt_bin1[1,-5,10]' --PO 'map=.*/TTW_lep1_pt_bin2:r_TTW_lep1_pt_bin2[1,-5,10]' --PO 'map=.*/TTW_lep1_pt_bin3:r_TTW_lep1_pt_bin3[1,-5,10]' --PO 'map=.*/TTW_lep1_pt_bin4:r_TTW_lep1_pt_bin4[1,-5,10]' --PO 'map=.*/TTW_lep1_pt_bin5:r_TTW_lep1_pt_bin5[1,-5,10]'
+
+# then you fit as usual 
+# that gives you the signal strength for each bin of the differential distribution. Then you have to convert that to an absolute cross section. In practice you can do it by 
+# 1) getting the gen level distribution. For that you need an unskimmed sample
+# 2) scale each of the bins of the gen level distribution by the mu you have measured in the fit. Make sure the ttW normalization uncertainty doesnt make it to this result!

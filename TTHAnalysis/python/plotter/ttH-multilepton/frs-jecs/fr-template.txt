@@ -2,6 +2,9 @@ change: MET_pt\b: MET_pt_template
 change: nJet25_Recl\b: nJet25_template_Recl
 change: htJet25j_Recl\b: htJet25j_template_Recl
 change: mhtJet25_Recl\b: mhtJet25_template_Recl
+change: nJet30_Recl\b: nJet30_template_Recl
+change: htJet30j_Recl\b: htJet30j_template_Recl
+change: mhtJet30_Recl\b: mhtJet30_template_Recl
 change: nJet40_Recl\b: nJet40_template_Recl
 change: htJet40j_Recl\b: htJet40j_template_Recl
 change: mhtJet40_Recl\b: mhtJet40_template_Recl

@@ -7,6 +7,7 @@ tHW	: THW_ctcvcp :0.01561*LHEReweightingWeight[11] : LepGood1_mcMatchId!=0 && Le
 TTWW	: TTWW : 0.006981 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kGreen
 
 TTW     : TTWToLNu_fxfx : 0.1960 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kGreen-5, Label="ttW   "
+TTW     : TTWToLNu_fxfx+TTWToLNu_fxfx_PS : 0.1960 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kGreen-5, Label="ttW   ", years="2017"
 TTZ     : TTZToLLNuNu_amc : 0.281 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kSpring+2, Label="ttZ "
 TTZ     : TTZToLLNuNu_m1to10 : 0.082 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kSpring+2
 TTZ	: TTLep_pow : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring+2

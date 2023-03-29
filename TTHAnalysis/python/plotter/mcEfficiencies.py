@@ -18,6 +18,7 @@ def addMCEfficiencyOptions(parser):
     parser.add_option("--xrange", dest="xrange", default=None, nargs=2, type='float', help="X axis range");
     parser.add_option("--xcut", dest="xcut", default=None, nargs=2, type='float', help="X axis cut");
     parser.add_option("--xline", dest="xlines", default=[], action="append", type='float', help="Lines to draw at given X axis values");
+    parser.add_option("--eta", dest="eta", default=None, action="append", type='string', help="central or fwd region label");
     if not parser.has_option("--yrange"): parser.add_option("--yrange", dest="yrange", default=None, nargs=2, type='float', help="Y axis range");
     parser.add_option("--logy", dest="logy", default=False, action='store_true', help="Do y axis in log scale");
     parser.add_option("--ytitle", dest="ytitle", default="Efficiency", type='string', help="Y axis title");
@@ -158,6 +159,18 @@ def stackEffs(outname,x,effs,options,legHeader=None):
     frame.GetYaxis().SetRangeUser(0,ymax)
     frame.GetYaxis().SetDecimals()
     frame.GetYaxis().SetTitle(options.ytitle)
+    lumitext = "%s fb^{-1} (13 TeV)" % options.lumi
+    if options.eta[0] == "central":
+       etatext = "| \eta | \leq 1.479 "
+       texte = doSpam(etatext, .28, .96, .4, .99, align=32, textSize=0.045 ) 
+    elif options.eta[0] == "fwd":
+       etatext = "| \eta | > 1.479  " 
+       texte = doSpam(etatext, .28, .96, .4, .99, align=32, textSize=0.045 ) 
+    else:
+       texte = doSpam("", .3, .855, .9, .895, align=32, textSize=0.045)
+
+    text = doSpam(lumitext, .76, .96, .99, .99, align=32, textSize=0.045 )
+   
 
     doRatio = options.showRatio and len(effs) > 1
     doRatio_alt = options.showRatioalt and len(effs) > 1
@@ -186,7 +199,6 @@ def stackEffs(outname,x,effs,options,legHeader=None):
     p1.SetGridx(options.showGrid)
     p1.SetLogx(x.getOption('Logx',False) if x else False)
     p1.SetLogy(options.logy)
-
     frame.Draw()
     for title, eff in shiftEffsX(effs,options.shiftPoints): 
         eff.Draw("P0 SAME")
@@ -201,6 +213,8 @@ def stackEffs(outname,x,effs,options,legHeader=None):
         liner.DrawLine(x, frame.GetYaxis().GetXmin(), x, frame.GetYaxis().GetXmax())
 
     leg = doLegend(effs,options,textSize=options.fontsize,header=legHeader)
+    text.Draw("same")
+    texte.Draw("same")
     if doRatio:
         p2.cd()
         keepme = doEffRatio(x,effs,frame,options)
@@ -217,6 +231,7 @@ def stackEffs(outname,x,effs,options,legHeader=None):
     c1.Print(outname.replace(".root","")+".eps")
     c1.Print(outname.replace(".root","")+".pdf")
     dump = open(outname.replace(".root","")+".txt","w")
+
     for n,e in effs:
         dump.write(" ===  %s === \n" % n)
         dump.write("  x min    x max      eff   -err   +err  \n")

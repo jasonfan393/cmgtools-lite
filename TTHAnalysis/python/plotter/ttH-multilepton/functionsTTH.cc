@@ -427,9 +427,9 @@ TF1* fTauFRs[4][2][5]; // year, eta range, (nom, par1Down, par1Up, par2Down, par
 TFile* fTauFRFiles[4];
 
 bool isTauSFInit=false;
-float tauSF( float taupt, float taueta, int year, int suberaid, int isMatch, int var=0, int varFRNorm=0, int varFRShape=0){  // var is -1,0,1
+float tauSF( float taupt, float taueta, int year, int suberaid, int isMatch, int var=0, int varFRNorm=0, int varFRShape=0, int varFRAdd=0){  // var is -1,0,1
 
-  assert( (abs(var)+abs(varFRShape)+abs(varFRNorm) != 0 && abs(var)+abs(varFRShape)+abs(varFRNorm) != 1) );
+  assert( (abs(var)+abs(varFRShape)+abs(varFRNorm)+abs(varFRAdd) != 0 && abs(var)+abs(varFRShape)+abs(varFRNorm)+abs(varFRAdd) != 1) );
 
   // to add the fr uncertainty
   if (!isTauSFInit){
@@ -479,8 +479,15 @@ float tauSF( float taupt, float taueta, int year, int suberaid, int isMatch, int
     if (varFRNorm==-1) varIdx=1;
     if (varFRShape==1) varIdx=4;
     if (varFRShape==-1) varIdx=3;
-    return fTauFRs[yearIdx][etaindx][varIdx]->Eval(taupt);
-  }
+    if (varFRAdd==1) varIdx=5;
+    if (varFRAdd==-1) varIdx=6;
+    if (varIdx < 5)
+       return fTauFRs[yearIdx][etaindx][varIdx]->Eval(taupt);
+    else if  (varIdx == 5)
+       return 1.3*fTauFRs[yearIdx][etaindx][0]->Eval(taupt);
+    else if (varIdx == 6)
+       return 0.7*fTauFRs[yearIdx][etaindx][0]->Eval(taupt);
+}
   
 
 }

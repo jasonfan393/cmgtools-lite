@@ -25,6 +25,8 @@ parser.add_argument( '--eta', dest="etareg",default='central')  #fwd
 
 args = parser.parse_args()
 
+lumidic = {'2016APV':'19.5','2016':'16.8','2017':'41.5','2018':'59.7'}
+
 def getPoints(name,sample):
     f = rt.TFile.Open(name,"read")
     g = f.Get("tight_tau_pt_tau_"+sample)
@@ -153,18 +155,35 @@ if args.year == 'all':
         x,SF,SF_err,y_fit,systunc1_up,systunc1_dn,systunc2_up,systunc2_dn,functions = Get_Fitted_SF(y,eta)
 
         plt.errorbar(x, SF,yerr=SF_err,marker='s', ls ='' )
-        plt.plot(x, y_fit, '--k' )
-        plt.plot(x, systunc1_up, '-.r' )
+        plt.plot(x, y_fit, '--k', label = "Nominal Fit" )
+        plt.plot(x, systunc1_up, '-.r', label = "1st Eigenvalue" )
         plt.plot(x, systunc1_dn, '-.r' )
-        plt.plot(x, systunc2_up, '-.b' )
+        plt.plot(x, systunc2_up, '-.b', label = "2nd Eigenvalue" )
         plt.plot(x, systunc2_dn, '-.b' ) 
-        plt.xlabel('pT tau')
+
+        plt.gca().set_ylim(0.55,1.8)   
+
+
+        ylo,yhi = plt.gca().get_ylim()
+        xlo,xhi = plt.gca().get_xlim()        
+        print("limits ACIS", ylo,yhi,xlo,xhi)
+        plt.text(xlo+3, yhi+0.02, 'CMS', dict(size=15),weight='bold')
+        plt.text(xlo+3+18, yhi+0.02, 'Preliminary', dict(size=15),style='italic')
+
+        if eta == "central":
+           plt.text(xlo+3, yhi-0.08, r'$|\eta| \leq 1.479$', dict(size=15))
+        elif eta == "fwd":
+           plt.text(xlo+3, yhi-0.08, r'$|\eta| > 1.479$', dict(size=15))
+        lumi = lumidic[y]
+        plt.text(xhi-50, yhi+0.02, r'%s $fb^{-1}$ (13 TeV)'%lumi, dict(size=15))
+        plt.xlabel(r'$p_T^{\tau_h}$')
         plt.ylabel('SF')
+        plt.legend()
         if  not os.path.isdir(args.dir+'/SF_fit/'):
            os.mkdir(args.dir+'/SF_fit/')
-        plt.savefig(args.dir+'/SF_fit/'+y+'_'+eta+'.png')
+        plt.savefig(args.dir+'/SF_fit/'+y+'_'+eta+'.pdf')
         plt.clf()
-        print('Plot created: '+args.dir+'/SF_fit/'+y+'_'+eta+'.png')
+        print('Plot created: '+args.dir+'/SF_fit/'+y+'_'+eta+'.pdf')
 
         for fun in functions:
             function.append(fun)
@@ -178,12 +197,12 @@ else:
    print('sf',y_fit)
    print('var2',systunc2_up)
    plt.errorbar(x, SF,yerr=SF_err,marker='s', ls ='' )
-   plt.plot(x, y_fit, '--k' )
-   plt.plot(x, systunc1_up, '-.r' )
+   plt.plot(x, y_fit, '--k', label = "Nominal Fit")
+   plt.plot(x, systunc1_up, '-.r', label = "1st Eigenvalue" )
    plt.plot(x, systunc1_dn, '-.r' )
-   plt.plot(x, systunc2_up, '-.b' )
+   plt.plot(x, systunc2_up, '-.b', label = "2nd Eigenvalue" )
    plt.plot(x, systunc2_dn, '-.b' ) 
-   plt.xlabel('pT tau')
+   plt.xlabel(r'$p_T^\tau_h$')
    plt.ylabel('SF')
    if not os.path.isdir(args.dir+'/SF_fit/'):
       os.mkdir(args.dir+'/SF_fit/')

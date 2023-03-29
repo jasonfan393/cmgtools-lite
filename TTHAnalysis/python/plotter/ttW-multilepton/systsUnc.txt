@@ -18,11 +18,13 @@ $alias : FRAll  : data_fakes|.*_promptsub|TT_FR_QCD
 ### Uncertainties
 # lumi from https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM#LumiComb
 
-lumi_13TeV_2016		: $PromptFromMC : .* : normSymm : 1.010; year="2016\,2016APV"
+lumi_13TeV_2016		: $PromptFromMC : .* : normSymm : 1.010; year="2016"
+lumi_13TeV_2016		: $PromptFromMC : .* : normSymm : 1.010; year="2016APV"
 lumi_13TeV_2017		  : $PromptFromMC : .* : normSymm : 1.020; year="2017"
 lumi_13TeV_2018		    : $PromptFromMC : .* : normSymm : 1.015; year="2018"
 
-lumi_13TeV_correlated   : $PromptFromMC : .* : normSymm : 1.006; year="2016\,2016APV"
+lumi_13TeV_correlated   : $PromptFromMC : .* : normSymm : 1.006; year="2016"
+lumi_13TeV_correlated   : $PromptFromMC : .* : normSymm : 1.006; year="2016APV"
 lumi_13TeV_correlated   : $PromptFromMC : .* : normSymm : 1.009; year="2017"
 lumi_13TeV_correlated   : $PromptFromMC : .* : normSymm : 1.020; year="2018"
 
@@ -53,7 +55,8 @@ CMS_ttWl18_FRjt_norm  : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeigh
 
 
 ## L1 ECAL prefiring
-CMS_ttWl16_L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['L1PreFiringWeight_Up/L1PreFiringWeight_Nom'\,'L1PreFiringWeight_Dn/L1PreFiringWeight_Nom'], year="2016\,2016APV"
+CMS_ttWl16_L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['L1PreFiringWeight_Up/L1PreFiringWeight_Nom'\,'L1PreFiringWeight_Dn/L1PreFiringWeight_Nom'], year="2016"
+CMS_ttWl16_L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['L1PreFiringWeight_Up/L1PreFiringWeight_Nom'\,'L1PreFiringWeight_Dn/L1PreFiringWeight_Nom'], year="2016APV"
 CMS_ttWl17_L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['L1PreFiringWeight_Up/L1PreFiringWeight_Nom'\,'L1PreFiringWeight_Dn/L1PreFiringWeight_Nom'], year="2017"
 
 
@@ -240,7 +243,7 @@ CMS_jesHEMIssue      : $PromptFromMC : .* : templateAsymm; \
 		    FakeRates=['ttH-multilepton/frs-jecs/fr_jesHEMIssueUp.txt'\,'ttH-multilepton/frs-jecs/fr_jesHEMIssueDown.txt'], \
                     year="2018"
 
-CMS_ttHl_UnclusteredEn : $PromptFromMC : .* : templateAsymm; \
+CMS_ttWl_UnclusteredEn : $PromptFromMC : .* : templateAsymm; \
         FakeRates=['ttH-multilepton/fr-unclUp.txt'\,'ttH-multilepton/fr-unclDn.txt']
 
 CMS_ttWl_btag_LF    : $PromptFromMC : .* : templateAsymm; AddWeights=['btagSF_light_up_correlated/btagSF'\,'btagSF_light_down_correlated/btagSF']
@@ -376,7 +379,7 @@ CMS_ttWl18_Clos_e_shape : $FRAll  : .*3l.*    : templateSymm ; Normalize=False, 
 CMS_ttWl_thu_shape_WZ : WZ : .* : envelope ; FakeRates=['ttW-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttW-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']
 CMS_ttWl_thu_shape_ZZ : ZZ : .* : envelope ; FakeRates=['ttW-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttW-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']
 
-CMS_ttHl_thu_shape_ttH : $ttH : .* : envelope; FakeRates=['ttH-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttH-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']
+CMS_ttWl_thu_shape_ttH : $ttH : .* : envelope; FakeRates=['ttH-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttH-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']
 CMS_ttWl_thu_shape_ttZ : TTZ  : .* : envelope; FakeRates=['ttW-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttW-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt'] 
 CMS_ttWl_thu_shape_ttW : $TTW  : .* : envelope; FakeRates=['ttW-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttW-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt'] 
 CMS_ttWl_thu_shape_tHW : $tHW : .* : envelope; FakeRates=['ttW-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttW-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttW-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']

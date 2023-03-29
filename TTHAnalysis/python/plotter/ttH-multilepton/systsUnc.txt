@@ -42,17 +42,20 @@ CMS_eff_ttHl_e : $PromptFromMC : .*4l.*    : templateAsymm ; AddWeights=['lepton
 # tau efficiencies and frs
 CMS_eff_t_2016APV        : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_effUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_effDown/TauSel_2lss1tau_SF'], year="2016APV"
 CMS_ttHl16APV_FRjt_shape : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_frShapeUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_frShapeDown/TauSel_2lss1tau_SF'], year="2016APV"
-CMS_ttHl16APV_FRjt_norm  : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_effUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_effDown/TauSel_2lss1tau_SF'], year="2016APV"
+CMS_ttHl16APV_FRjt_norm  : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_frNormUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_frNormDown/TauSel_2lss1tau_SF'], year="2016APV"
+CMS_ttHl16APV_FRjt_Add   : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_frAddUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_frAddDown/TauSel_2lss1tau_SF'], year="2016APV"
 CMS_eff_t_2016        : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_effUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_effDown/TauSel_2lss1tau_SF'], year="2016"
 CMS_ttHl16_FRjt_shape : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_frShapeUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_frShapeDown/TauSel_2lss1tau_SF'], year="2016"
-CMS_ttHl16_FRjt_norm  : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_effUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_effDown/TauSel_2lss1tau_SF'], year="2016"
+CMS_ttHl16_FRjt_norm  : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_frNormUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_frNormDown/TauSel_2lss1tau_SF'], year="2016"
+CMS_ttHl16_FRjt_Add   : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_frAddUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_frAddDown/TauSel_2lss1tau_SF'], year="2016"
 CMS_eff_t_2017        : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_effUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_effDown/TauSel_2lss1tau_SF'], year="2017"
 CMS_ttHl17_FRjt_shape : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_frShapeUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_frShapeDown/TauSel_2lss1tau_SF'], year="2017"
-CMS_ttHl17_FRjt_norm  : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_effUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_effDown/TauSel_2lss1tau_SF'], year="2017"
+CMS_ttHl17_FRjt_norm  : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_frNormUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_frNormDown/TauSel_2lss1tau_SF'], year="2017"
+CMS_ttHl17_FRjt_Add   : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_frAddUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_frAddDown/TauSel_2lss1tau_SF'], year="2017"
 CMS_eff_t_2018        : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_effUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_effDown/TauSel_2lss1tau_SF'], year="2018"
 CMS_ttHl18_FRjt_shape : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_frShapeUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_frShapeDown/TauSel_2lss1tau_SF'], year="2018"
-CMS_ttHl18_FRjt_norm  : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_effUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_effDown/TauSel_2lss1tau_SF'], year="2018"
-
+CMS_ttHl18_FRjt_norm  : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_frNormUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_frNormDown/TauSel_2lss1tau_SF'], year="2018"
+CMS_ttHl18_FRjt_Add   : $PromptFromMC : .*2lss_1tau.* : templateAsymm ; AddWeights=['TauSel_2lss1tau_SF_frAddUp/TauSel_2lss1tau_SF'\,'TauSel_2lss1tau_SF_frAddDown/TauSel_2lss1tau_SF'], year="2018"
 
 
 ## L1 ECAL prefiring
@@ -617,4 +620,5 @@ QCDscale_tHq : tHq_ct_-1p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.027 : 0.961
 #floating ttZ and ttW, for scan only!!
 CMS_ttHl_TTZ_lnU  : TTZ   : .*     : normSymm : 3.0 ; lnU=True
 CMS_ttHl_TTW_lnU  : TTW   : .*     : normSymm : 3.0 ; lnU=True
+
 

@@ -162,81 +162,81 @@ CMS_scale_j_Absolute        : $PromptFromMC : .* : templateAsymm; \
                          FakeRates=['ttH-multilepton/frs-jecs/fr-jesAbsoluteUp.txt'\,'ttH-multilepton/frs-jecs/fr-jesAbsoluteDown.txt']
 
 CMS_res_j_barrel_2016        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer0Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer0Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer0Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer0Down.txt'], \
                              year="2016"
 CMS_res_j_barrel_2016APV        : $PromptFromMC : .* : templateAsymm; \
-                                  FakeRates=['ttH-multilepton/frs-jecs/fr_jer0Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer0Down.txt'], \
+                                  FakeRates=['ttH-multilepton/frs-jecs/fr-jer0Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer0Down.txt'], \
                                   year="2016APV"
 CMS_res_j_barrel_2017        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer0Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer0Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer0Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer0Down.txt'], \
                              year="2017"
 CMS_res_j_barrel_2018        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer0Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer0Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer0Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer0Down.txt'], \
                              year="2018"
 
 CMS_res_j_endcap1_2016        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer1Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer1Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer1Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer1Down.txt'], \
                              year="2016"
 CMS_res_j_endcap1_2016APV        : $PromptFromMC : .* : templateAsymm; \
-                                  FakeRates=['ttH-multilepton/frs-jecs/fr_jer1Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer1Down.txt'], \
+                                  FakeRates=['ttH-multilepton/frs-jecs/fr-jer1Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer1Down.txt'], \
                                   year="2016APV"
 CMS_res_j_endcap1_2017        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer1Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer1Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer1Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer1Down.txt'], \
                              year="2017"
 CMS_res_j_endcap1_2018        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer1Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer1Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer1Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer1Down.txt'], \
                              year="2018"
 
 CMS_res_j_endcap2highpt_2016        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer2Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer2Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer2Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer2Down.txt'], \
                              year="2016"
 CMS_res_j_endcap2highpt_2016APV        : $PromptFromMC : .* : templateAsymm; \
-                                  FakeRates=['ttH-multilepton/frs-jecs/fr_jer2Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer2Down.txt'], \
+                                  FakeRates=['ttH-multilepton/frs-jecs/fr-jer2Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer2Down.txt'], \
                                   year="2016APV"
 CMS_res_j_endcap2highpt_2017        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer2Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer2Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer2Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer2Down.txt'], \
                              year="2017"
 CMS_res_j_endcap2highpt_2018        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer2Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer2Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer2Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer2Down.txt'], \
                              year="2018"
 
 CMS_res_j_endcap2lowpt_2016        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer3Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer3Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer3Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer3Down.txt'], \
                              year="2016"
 CMS_res_j_endcap2lowpt_2016APV        : $PromptFromMC : .* : templateAsymm; \
-                                  FakeRates=['ttH-multilepton/frs-jecs/fr_jer3Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer3Down.txt'], \
+                                  FakeRates=['ttH-multilepton/frs-jecs/fr-jer3Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer3Down.txt'], \
                                   year="2016APV"
 CMS_res_j_endcap2lowpt_2017        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer3Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer3Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer3Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer3Down.txt'], \
                              year="2017"
 CMS_res_j_endcap2lowpt_2018        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer3Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer3Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer3Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer3Down.txt'], \
                              year="2018"
 
 CMS_res_j_forwardlowpt_2016        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer4Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer4Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer4Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer4Down.txt'], \
                              year="2016"
 CMS_res_j_forwardlowpt_2016APV        : $PromptFromMC : .* : templateAsymm; \
-                                  FakeRates=['ttH-multilepton/frs-jecs/fr_jer4Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer4Down.txt'], \
+                                  FakeRates=['ttH-multilepton/frs-jecs/fr-jer4Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer4Down.txt'], \
                                   year="2016APV"
 CMS_res_j_forwardlowpt_2017        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer4Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer4Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer4Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer4Down.txt'], \
                              year="2017"
 CMS_res_j_forwardlowpt_2018        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer4Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer4Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer4Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer4Down.txt'], \
                              year="2018"
 
 CMS_res_j_forwardhighpt_2016        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer5Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer5Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer5Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer5Down.txt'], \
                              year="2016"
 CMS_res_j_forwardhighpt_2016APV        : $PromptFromMC : .* : templateAsymm; \
-                                  FakeRates=['ttH-multilepton/frs-jecs/fr_jer5Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer5Down.txt'], \
+                                  FakeRates=['ttH-multilepton/frs-jecs/fr-jer5Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer5Down.txt'], \
                                   year="2016APV"
 CMS_res_j_forwardhighpt_2017        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer5Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer5Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer5Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer5Down.txt'], \
                              year="2017"
 CMS_res_j_forwardhighpt_2018        : $PromptFromMC : .* : templateAsymm; \
-                             FakeRates=['ttH-multilepton/frs-jecs/fr_jer5Up.txt'\,'ttH-multilepton/frs-jecs/fr_jer5Down.txt'], \
+                             FakeRates=['ttH-multilepton/frs-jecs/fr-jer5Up.txt'\,'ttH-multilepton/frs-jecs/fr-jer5Down.txt'], \
                              year="2018"
 
 CMS_jesHEMIssue      : $PromptFromMC : .* : templateAsymm; \
@@ -245,7 +245,6 @@ CMS_jesHEMIssue      : $PromptFromMC : .* : templateAsymm; \
 
 CMS_ttWl_UnclusteredEn : $PromptFromMC : .* : templateAsymm; \
         FakeRates=['ttH-multilepton/fr-unclUp.txt'\,'ttH-multilepton/fr-unclDn.txt']
-# CMS_ttHl_HEM      : $PromptFromMC : .* : templateSymm; Normalize=False, FakeRate='ttH-multilepton/frs-jecs/fr-HEM-up.txt', year="2018"
 
 CMS_ttWl_btag_LF    : $PromptFromMC : .* : templateAsymm; AddWeights=['btagSF_light_up_correlated/btagSF'\,'btagSF_light_down_correlated/btagSF']
 CMS_ttWl_btag_HF    : $PromptFromMC : .* : templateAsymm; AddWeights=['btagSF_heavy_up_correlated/btagSF'\,'btagSF_heavy_down_correlated/btagSF']

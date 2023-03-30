@@ -380,15 +380,11 @@ finalMVA_4l = lambda : FinalMVA_4L()
 
 from PhysicsTools.NanoAODTools.postprocessing.modules.btv.btagSFProducer import btagSFProducer
 
-
-
-
 from CMGTools.TTHAnalysis.tools.nanoAOD.btagSF import btagSF
 bTagSFs = lambda : btagSF()
 
-# bTagSFs_allvars = lambda : BtagSFs("JetSel_Recl",
-#                                    corrs=jecGroups,
-#                        )
+from CMGTools.TTHAnalysis.tools.nanoAOD.btagSF_fixedWP import btagSF_fixedWP
+bTagSFs_fixedWP = lambda : btagSF_fixedWP()
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors import lepScaleFactors
 leptonSFs = lambda : lepScaleFactors()

@@ -119,6 +119,7 @@ minMllAFAS:	minMllAFAS				: 20,0,200; XTitle="min M_{ll} (GeV)", Legend='TR'
 minMllAFOS:     minMllAFOS                              : 20,0,200; XTitle="min M_{ll} (GeV)", Legend='TR'
 minMllSFOS:     minMllSFOS                              : 20,0,200; XTitle="min M_{ll} (GeV)", Legend='TR'
 mZ1:		mZ1					: 80,50,130; XTitle="Best Z candidate mass (GeV)"
+mZ1_from0:		mZ1					: 100,0,200; XTitle="Best Z candidate mass (GeV)"
 mH1mm:		mH1mm					: 60,110,140; XTitle="Best H #rightarrow #mu #mu candidate mass (GeV)", IncludeOverflows=False, MoreY=2.0
 nVert:		PV_npvsGood				: 240,0.5,60.5; XTitle="N_{vtx}"
 PV_score:		PV_score         		: 50,0.,60.5; XTitle="Sum pt2 (GeV)"
@@ -386,3 +387,13 @@ cferrup : btagSFup_cferr1/btagSF : 40,0.4,1.6
 
 gen_lep1_pt : GenDressedLepton_pt[iDressSelLep[0]] : [0,50,100,150,225,300]; XTitle="Leading gen lepton p_{T} (GeV)", CutString="nDressSelLep > 1"
 gen_lep1_pt_recolevel : LepGood1_conePt : [0.,25.,50,75,100,125,150,187.5,250,300,500]; XTitle="Leading gen lepton p_{T} (GeV)", Legend='TR'
+lepton_asymmetry : abs(positive_lepton_eta)-abs(negative_lepton_eta) : 50,-3.,3
+lepton_score : even_lepton_1_score-even_lepton_2_score : 50,0.,0.8
+hasOSSF : hasOSSF : 2,-0.5,1.5
+mZ_OSSF : mZ_OSSF : 20,0,200
+full_asymmetry : ttW_charge_asymmetry(hasOSSF,nJet30, LepGood1_charge+LepGood2_charge+LepGood3_charge, even_lepton_1_score-even_lepton_2_score, abs(positive_lepton_eta)-abs(negative_lepton_eta)) : 64,-0.5,63.5; Wide=True
+atlas_sr : ttW_ATLAS_selection( nJet30, nBJetMedium30, MET_pt ) : [-1.5,-0.5,0.5,1.5,2.5,3.5]; XTitle="Regions"
+simple_asymmetry : ttW_charge_asymmetry_simple(hasOSSF,nJet30, LepGood1_charge+LepGood2_charge+LepGood3_charge, abs(positive_lepton_eta)-abs(negative_lepton_eta)) : 32,-0.5,31.5; Wide=True
+simple_asymmetry_bees : ttW_charge_asymmetry_simple_withbees(hasOSSF,nJet30, LepGood1_charge+LepGood2_charge+LepGood3_charge, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30) : 40,-0.5,39.5; Wide=True
+smart_strategy_nocharge : ttW_charge_asymmetry_simple_withbees_nocharge(hasOSSF,nJet30, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30) : 20,-0.5,19.5; Wide=True, Legend="TL"
+ttW_charge_asymmetry_v4 : ttW_charge_asymmetry_v4(hasOSSF,nJet30, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30, mZ_OSSF) : 32,-0.5,31.5; Wide=True

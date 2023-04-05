@@ -59,7 +59,7 @@ MCASUFFIX="mcdata-frdata"
 
 DOFILE = ""
 
-availableObservables = ['inclusive', 'njets','lep1_pt','asymmetry']
+availableObservables = ['inclusive', 'njets','lep1_pt',"asymmetry_withbees","asymmetry_smart_nocharge","asymmetry_v4"]
 
 if OBSERVABLE == "inclusive":
     FUNCTION_2L="0"
@@ -74,9 +74,18 @@ elif OBSERVABLE == "lep1_pt":
     FUNCTION_2L="LepGood1_conePt"
     CATBINS    ="[0.,25.,50,75,100,125,150,187.5,250,300,10000]"
 
-elif OBSERVABLE == "asymmetry":
-    FUNCTION_3L="ttW_charge_asymmetry(hasOSSF,nJet30, LepGood1_charge+LepGood2_charge+LepGood3_charge, even_lepton_1_score-even_lepton_2_score, abs(positive_lepton_eta)-abs(negative_lepton_eta))"
-    CATBINS    ="[-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.5,25.5,26.5,27.5,28.5,29.5,30.5,31.5,32.5,33.5,34.5,35.5,36.5,37.5,38.5,39.5,40.5,41.5,42.5,43.5,44.5,45.5,46.5,47.5,48.5,49.5,50.5,51.5,52.5,53.5,54.5,55.5,56.5,57.5,58.5,59.5,60.5,61.5,62.5,63.5]"
+elif OBSERVABLE == "asymmetry_withbees":
+    FUNCTION_3L="ttW_charge_asymmetry_simple_withbees(hasOSSF,nJet30, LepGood1_charge+LepGood2_charge+LepGood3_charge, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30)"
+    CATBINS    ="[-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.5,25.5,26.5,27.5,28.5,29.5,30.5,31.5,32.5,33.5,34.5,35.5,36.5,37.5,38.5,39.5]"
+    CATPOSTFIX=" -E ^met "
+elif OBSERVABLE == "asymmetry_smart_nocharge":
+    FUNCTION_3L="ttW_charge_asymmetry_simple_withbees_nocharge(hasOSSF,nJet30, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30)"
+    CATBINS    ="[-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5]"
+    CATPOSTFIX=" -E ^met "
+elif OBSERVABLE == "asymmetry_v4":
+    FUNCTION_3L="ttW_charge_asymmetry_v4(hasOSSF,nJet30, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30, mZ_OSSF)"
+    CATBINS    ="[-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.5,25.5,26.5,27.5,28.5,29.5,30.5,31.5]"
+    CATPOSTFIX=" -E ^met "
 
 signals_remove = [ 'TTW_%s.*'%s for s in availableObservables if s!= OBSERVABLE]     
 
@@ -91,5 +100,5 @@ if REGION == "2lss":
 
 if REGION == "3l":
     OPT_3L='{T2L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_3l*triggerSF_3l"'.format(T2L=T2L, OPTIONS=OPTIONS, YEAR=YEAR)
-    TORUN='''python {SCRIPT} {DOFILE} ttW-multilepton/mca-3l-mcdata-frdata-leptoncharge.txt ttW-multilepton/3l_tight.txt "{FUNCTION_3L}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttW_3l_{OBS}_{YEAR} --year {YEAR} --xp {signals_remove} '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_3L=FUNCTION_3L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_3L=OPT_3L, signals_remove=','.join(signals_remove), YEAR=YEAR, OBS=OBSERVABLE)
+    TORUN='''python {SCRIPT} {DOFILE} ttW-multilepton/mca-3l-mcdata-frdata-leptoncharge.txt ttW-multilepton/3l_tight.txt "{FUNCTION_3L}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttW_3l_{OBS}_{YEAR} --year {YEAR} --xp {signals_remove} {CATPOSTFIX} '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_3L=FUNCTION_3L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_3L=OPT_3L, signals_remove=','.join(signals_remove), YEAR=YEAR, OBS=OBSERVABLE, CATPOSTFIX=CATPOSTFIX)
     print submit.format(command=TORUN)

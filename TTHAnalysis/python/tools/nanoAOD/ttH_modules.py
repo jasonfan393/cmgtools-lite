@@ -381,10 +381,12 @@ finalMVA_input = lambda : finalMVA_DNN(doSystJEC=False, fillInputs=True) # use t
 from CMGTools.TTHAnalysis.tools.finalMVA_DNN_3l import finalMVA_DNN_3l
 finalMVA3L = lambda : finalMVA_DNN_3l() # use this for data
 finalMVA3L_allVars = lambda : finalMVA_DNN_3l(variations = jevariations )
+finalMVA3L_input = lambda : finalMVA_DNN_3l(doSystJEC=False, fillInputs=True)
 
 from CMGTools.TTHAnalysis.tools.finalMVA_DNN_2lss1tau import finalMVA_DNN_2lss1tau
 finalMVA2lss1tau = lambda : finalMVA_DNN_2lss1tau() # use this for data
 finalMVA2lss1tau_allVars = lambda : finalMVA_DNN_2lss1tau(variations = jevariations)
+finalMVA2lss1tau_input = lambda : finalMVA_DNN_2lss1tau(doSystJEC=False, fillInputs=True)
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.finalMVA_4l import FinalMVA_4L
 finalMVA_4l = lambda : FinalMVA_4L()
@@ -530,6 +532,8 @@ ttW_diff_gen_info = lambda : selectParticleAndPartonInfo( dresslepSel_ = lambda 
                                                           dressfwdSel_ = lambda x : x.pt>40 and abs(x.eta) < 4.7 and abs(x.eta) > 2.4, 
 
 ) 
+
+from CMGTools.TTHAnalysis.tools.nanoAOD.chargeAsymmetry import ChargeAsymmetry
                                                
 from CMGTools.TTHAnalysis.tools.nanoAOD.topRecoSemiLept import TopRecoSemiLept
 topRecoModule = lambda : TopRecoSemiLept(constraints=['kWHadMass','kWLepMass','kTopLepMass','kTopHadMass'])

@@ -11,130 +11,129 @@
 #include <numeric>
 #include <map>
 
+float ttW_charge_asymmetry(int hasOSSF, int nJet, int sign_charge, float lepton_score, float lepton_eta )
+{
+  int iJet = (nJet < 4) ? 0 : 1;
 
-float triggerSF_ttH(int pdgid1, float pt1, int pdgid2, float pt2, int nlep, int year, int suberaid, int var=0){
+  // 2 hasOSSF bins 
+  // 2 sign_charge_bins
 
-  TString yearString= TString::Format("%d",year) + (( year == 2016 && suberaid == 0) ? "APV" : "");
-
-  if (nlep == 2){
-    if (abs(pdgid1*pdgid2) == 121){
-
-      if (yearString == "2016APV"){
-        if (pt2 < 20){
-          return 0.96*(1 + var*0.02);
-        }
-        else if (pt2 > 20 && pt2 < 55){
-          return 0.99*(1 + var*0.01);
-        }
-        else return 1.*(1 + var*0.01);
-      }
-
-      if (yearString == "2016"){
-        if (pt2 < 40){
-          return 0.98*(1 + var*0.02);
-        }
-        else return 0.99*(1 + var*0.01);
-      }
-
-      if (yearString == "2017"){
-        if (pt2<25) return 0.96*(1 + var*0.02);
-	else return 0.985*(1 + var*0.01);
-      }
-
-      if (yearString == "2018"){
-        if (pt2<20){
-	  return 0.98*(1 + var*0.01);
-        }
-        else if (pt2 > 20 && pt2 < 70){
-          return 1.*(1 + var*0.01);
-        }
-        else return 1.01*(1 + var*0.005);
-      }
-    }
-
-    else if ( abs(pdgid1*pdgid2) == 143){
-
-      if (yearString == "2016APV"){
-        if (pt2 < 25){
-          return 0.98*(1 + var*0.01);
-        }
-        else if (pt2 > 25 && pt2 < 70){
-          return 0.99*(1 + var*0.005);
-        }
-        else return 1.*(1 + var*0.005);
-      }
-
-      if (yearString == "2016"){
-        if (pt2 < 20){
-          return 0.98*(1 + var*0.02);
-        }
-        else return 0.99*(1 + var*0.01);
-      }
-
-      if (yearString == "2017"){
-	if (pt2<20) return 0.99*(1 + var*0.01);
-        else if (pt2 > 20 && pt2 < 40){
-          return 0.98*(1 + var*0.01);
-        }
-        else return 0.995*(1 + var*0.005);
-      }
-
-      if (yearString == "2018"){
-        if (pt2<20) return 0.98*(1 + var*0.01);
-        else if (pt2 > 20 && pt2 < 55){
-          return 0.99*(1 + var*0.005);
-        }
-        else  return 1.*(1 + var*0.005);
-      }
-    }
-
-    else{
-      if (yearString == "2016APV"){
-        if (pt2 < 25){
-          return 0.98*(1 + var*0.01);
-        }
-        else return 0.99*(1 + var*0.01);
-      }
-
-      if (yearString == "2016"){
-        if (pt2 < 20){
-          return 0.97*(1 + var*0.01);
-        }
-        else return 0.99*(1 + var*0.01);
-      }
-
-      if (yearString == "2017"){
-        if (pt2 < 25){
-          return 0.97*(1 + var*0.01);
-        }
-        else return 0.99*(1 + var*0.01);
-      }
-
-      if (yearString == "2018"){
-        return 0.99*(1 + var*0.01);
-      }
-    }
-
-  }
-  else {
-    
-    if (yearString == "2016APV" || yearString == "2016"){
-      return 1.*(1 + var*0.02);
-    }
-    if (yearString == "2017" || yearString == "2018"){
-      return 1.*(1 + var*0.01);
-    }
-
-  }
-
+  // 2 lepton score bins
+  int iLeptonScore=0;
+  if (lepton_score < 0.1) iLeptonScore=0;
+  else
+                    iLeptonScore=1;
+  // 4 lepton_eta bins
+  int iLeptonEta=0;
+  if      (lepton_eta < -0.5) iLeptonEta=0;
+  else if (lepton_eta < 0.  ) iLeptonEta=1;
+  else if (lepton_eta < 0.5 ) iLeptonEta=2;
+  else                        iLeptonEta=3;
+   
+  return iLeptonEta+iLeptonScore*4+iJet*8+hasOSSF*16+(sign_charge < 0)*32;
 }
 
+float ttW_charge_asymmetry_simple(int hasOSSF, int nJet, int sign_charge, float lepton_eta )
+{
+  int iJet = (nJet < 4) ? 0 : 1;
 
-float ttH_2lss_ifflav(int LepGood1_pdgId, int LepGood2_pdgId, float ret_ee, float ret_em, float ret_mm){
-  if (abs(LepGood1_pdgId)==11 && abs(LepGood2_pdgId)==11) return ret_ee;
-  if ((abs(LepGood1_pdgId) != abs(LepGood2_pdgId)))       return ret_em;
-  if (abs(LepGood1_pdgId)==13 && abs(LepGood2_pdgId)==13) return ret_mm;
-  std::cerr << "ERROR: invalid input " << abs(LepGood1_pdgId) << ", " << abs(LepGood1_pdgId) << std::endl;
-  assert(0);
-  return 0; // avoid warning
+  // 2 hasOSSF bins 
+  // 2 sign_charge_bins
+
+  // 4 lepton_eta bins
+  int iLeptonEta=0;
+  if      (lepton_eta < -0.5) iLeptonEta=0;
+  else if (lepton_eta < 0.  ) iLeptonEta=1;
+  else if (lepton_eta < 0.5 ) iLeptonEta=2;
+  else                        iLeptonEta=3;
+   
+  return iLeptonEta+iJet*4+hasOSSF*8+(sign_charge < 0)*16;
+}
+
+float ttW_charge_asymmetry_simple_withbees(int hasOSSF, int nJet, int sign_charge, float lepton_eta, int nb )
+{
+  int iJet = (nJet < 4) ? 0 : 1;
+
+  // 2 hasOSSF bins 
+  // 2 sign_charge_bins
+
+  // 4 lepton_eta bins
+  int iLeptonEta=0;
+  if      (lepton_eta < -0.5) iLeptonEta=0;
+  else if (lepton_eta < 0.  ) iLeptonEta=1;
+  else if (lepton_eta < 0.5 ) iLeptonEta=2;
+  else                        iLeptonEta=3;
+
+  // we have double the bins in hasOSSF
+  int iBJet = 0;
+  if (hasOSSF && iJet==0 && nb > 1){
+    iBJet=2;
+  }
+   
+  return iLeptonEta+(iJet+iBJet)*4+hasOSSF*8+(sign_charge < 0)*20;
+}
+
+float ttW_charge_asymmetry_simple_withbees_nocharge(int hasOSSF, int nJet, float lepton_eta, int nb )
+{
+  int iJet = (nJet < 4) ? 0 : 1;
+
+  // 2 hasOSSF bins 
+  // 2 sign_charge_bins
+
+  // 4 lepton_eta bins
+  int iLeptonEta=0;
+  if      (lepton_eta < -0.5) iLeptonEta=0;
+  else if (lepton_eta < 0.  ) iLeptonEta=1;
+  else if (lepton_eta < 0.5 ) iLeptonEta=2;
+  else                        iLeptonEta=3;
+
+  // we have double the bins in hasOSSF
+  int iBJet = 0;
+  if (hasOSSF && iJet==0 && nb > 1){
+    iBJet=2;
+  }
+   
+  return iLeptonEta+(iJet+iBJet)*4+hasOSSF*8;
+}
+
+float ttW_charge_asymmetry_v4(int hasOSSF, int nJet, float lepton_eta, int nb, float mZ )
+{
+  int iJet = (nJet < 4) ? 0 : 1;
+
+  // 2 hasOSSF bins 
+  // 2 sign_charge_bins
+
+  // 4 lepton_eta bins
+  int iLeptonEta=0;
+  if      (lepton_eta < -0.5) iLeptonEta=0;
+  else if (lepton_eta < 0.  ) iLeptonEta=1;
+  else if (lepton_eta < 0.5 ) iLeptonEta=2;
+  else                        iLeptonEta=3;
+
+  // we have double the bins in hasOSSF
+  int iBJet = 0;
+  if (hasOSSF && iJet==0 && nb > 1){
+    iBJet=2;
+  }
+  int imZ=0;
+  if (hasOSSF){
+    if (mZ  > 110) imZ=1;
+  }
+   
+  return iLeptonEta+(iJet+iBJet)*4+hasOSSF*8 + 12*imZ;
+}
+
+float ttW_ATLAS_selection( int nJet, int nbjets, float met )
+{
+
+  if (nbjets == 1){
+    if (met < 50) return -1;
+    if (nJet < 4) return 0;
+    else return 1;
+  }
+  else{
+    if (nJet < 4) return 2;
+    else return 3;
+  }
+  
 }

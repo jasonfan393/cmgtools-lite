@@ -17,7 +17,7 @@ muTightCharge: (abs(LepGood1_pdgId)!=13 || LepGood1_tightCharge>=1) && (abs(LepG
 3j: nJet30>=3
 #2b1B: nBJetLoose30 >= 2 || nBJetMedium30 >= 1
 #2b1B: nBJetMedium30 >= 2
-2b1B: nBJetLoose30 >= 2
+2b1B: nBJetLoose30 >= 1
 
 ee: abs(LepGood1_pdgId)==11 && abs(LepGood2_pdgId)==11; Disable=True
 em: abs(LepGood1_pdgId) != abs(LepGood2_pdgId);         Disable=True

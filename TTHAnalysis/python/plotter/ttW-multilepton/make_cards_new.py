@@ -67,7 +67,7 @@ MCASUFFIX="mcdata-frdata"
 
 DOFILE = ""
 
-availableObservables = ['inclusive', 'njets','nbjets','lep1_pt','jet1_pt','deta_llss',"asymmetry_withbees","asymmetry_smart_nocharge","asymmetry_v4"]
+availableObservables = ['inclusive', 'njets','nbjets','lep1_pt','jet1_pt','deta_llss', "asymmetry"] # the one used in the last presentation
 
 if OBSERVABLE == "inclusive":
     FUNCTION_2L="0"
@@ -113,15 +113,7 @@ elif OBSERVABLE == "deta_llss":
         CATBINS    ="[0.0,0.4,0.8,1.2,1.6,2.0,2.4]"
         SYSTS = ""
 
-elif OBSERVABLE == "asymmetry_withbees":
-    FUNCTION_3L="ttW_charge_asymmetry_simple_withbees(hasOSSF,nJet30, LepGood1_charge+LepGood2_charge+LepGood3_charge, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30)"
-    CATBINS    ="[-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.5,25.5,26.5,27.5,28.5,29.5,30.5,31.5,32.5,33.5,34.5,35.5,36.5,37.5,38.5,39.5]"
-    CATPOSTFIX=" -E ^met "
-elif OBSERVABLE == "asymmetry_smart_nocharge":
-    FUNCTION_3L="ttW_charge_asymmetry_simple_withbees_nocharge(hasOSSF,nJet30, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30)"
-    CATBINS    ="[-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5]"
-    CATPOSTFIX=" -E ^met "
-elif OBSERVABLE == "asymmetry_v4":
+elif OBSERVABLE == "asymmetry":
     FUNCTION_3L="ttW_charge_asymmetry_v4(hasOSSF,nJet30, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30, mZ_OSSF)"
     CATBINS    ="[-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.5,25.5,26.5,27.5,28.5,29.5,30.5,31.5]"
     CATPOSTFIX=" -E ^met "

@@ -9,6 +9,7 @@ from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collect
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection
 from PhysicsTools.NanoAODTools.postprocessing.tools import deltaR,deltaPhi
 from CMGTools.TTHAnalysis.tools.collectionSkimmer import CollectionSkimmer
+from PhysicsTools.NanoAODTools.postprocessing.tools import deltaR, deltaPhi
 
 from CMGTools.TTHAnalysis.treeReAnalyzer import Collection as CMGCollection
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput, writeOutput
@@ -22,7 +23,7 @@ class selectParticleAndPartonInfo(Module):
 
         self.branches = ["Top1_pt", "Top1_eta", "Top1_phi","Top1_mass", ("Top1_charge", "I"),
                          "Top2_pt", "Top2_eta", "Top2_phi","Top2_mass", ("Top2_charge", "I"),
-                         ("nDressBSelJet", "I"), ("nDressBSelLooseJet", "I")]
+                         ("nDressBSelJet", "I"), ("nDressBSelLooseJet", "I"), ("DressBSelJet_pt", "F"),("dR_DressBSelJet_DressSelLep1","F"),("Gen_HT","F"),("mindr_DressSelLep1_DressSelJet","F")]
 
         self.vars_common       = ["pt", "eta", "phi", "mass"]
         self.vars_dressleptons = ["pdgId", "hasTauAnc"]
@@ -41,7 +42,7 @@ class selectParticleAndPartonInfo(Module):
         self.colls = {}
         self.colls["DressSelLep"        ] = CollectionSkimmer("DressSelLep",         "GenDressedLepton", floats = [], saveSelectedIndices = True, maxSize = 5)
         self.colls["DressSelJet"        ] = CollectionSkimmer("DressSelJet",         "GenJet",           floats = [], saveSelectedIndices = True, maxSize = 5)
-
+        self.colls["DressSelBJet"        ] = CollectionSkimmer("DressSelBJet",         "GenJet",           floats = [], saveSelectedIndices = True, maxSize = 5)
 
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         for col in self.colls:
@@ -64,6 +65,7 @@ class selectParticleAndPartonInfo(Module):
 
         self.listdresslep         = []
         self.listdressjet         = []
+        self.listdressBjet        = []
 
         self.vetoedjets           = []
 
@@ -82,12 +84,13 @@ class selectParticleAndPartonInfo(Module):
                 self.listdresslep.append(i)
 
         for i, jet in enumerate(dressjets):
-            if   self.dressjetSel(jet):
+            if self.dressjetSel(jet):
                 if i not in self.vetoedjets:
                     self.listdressjet.append(i)
-                    if abs(jet.partonFlavour) == 5: otherVarsDict["nDressBSelJet"] += 1
-
-
+                    if abs(jet.partonFlavour) == 5: 
+                       otherVarsDict["nDressBSelJet"] += 1
+                       self.listdressBjet.append(i)
+                       
         if self._ttreereaderversion != event._tree._ttreereaderversion:
             for col in self.colls: self.colls[col].initInputTree(event._tree)
             self.initReaders(event._tree)
@@ -96,7 +99,26 @@ class selectParticleAndPartonInfo(Module):
 
         self.colls["DressSelLep"].push_back_all(self.listdresslep)
         self.colls["DressSelJet"].push_back_all(self.listdressjet)
+        self.colls["DressSelBJet"].push_back_all(self.listdressBjet)
 
+        if len(self.listdressBjet) >= 1:
+           otherVarsDict["DressBSelJet_pt"] =  dressjets[self.listdressBjet[0]].pt
+
+
+        nlep = len(self.listdresslep)
+
+        otherVarsDict["Gen_HT"] =  sum([dressjets[i].pt for i in self.listdressjet] ) 
+
+        if len(self.listdressjet)>1:
+           otherVarsDict["mindr_DressSelLep1_DressSelJet"] = min([deltaR(dressjets[i],dressleps[self.listdresslep[0]]) for i in self.listdressjet]) if nlep>=1 else 0;  
+        else:
+           otherVarsDict["mindr_DressSelLep1_DressSelJet"] = -99
+  
+
+        if len(self.listdressBjet) >= 1 and nlep >=1 :
+              otherVarsDict['dR_DressBSelJet_DressSelLep1'] = deltaR(dressjets[self.listdressBjet[0]],dressleps[self.listdresslep[0]]);
+        else: 
+              otherVarsDict['dR_DressBSelJet_DressSelLep1']  = -99
 
         #### Obtain information about the generated tops
         partobjs = [p for p in Collection(event, "GenPart")]
@@ -155,7 +177,7 @@ class selectParticleAndPartonInfo(Module):
         return True
 
 
-    def vetoJets(self, ev, l, dR = 0.04):
+    def vetoJets(self, ev, l, dR = 0.4):
         tmpjets = [j for j in Collection(ev, "GenJet")]
         vetoed  = []
 

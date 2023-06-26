@@ -419,6 +419,71 @@ float ttH_catIndex_2lss1tau_CP( float tth, float thq, float bkg, float cp)
   
 }
 
+// 2lss
+std::vector<float> tth_bounds_2lss = {0.50};
+std::vector<float> ttw_bounds_2lss = {0.475};
+std::vector<float> th_bounds_2lss  = {0.465};
+std::vector<float> bkg_bounds_2lss = {0.405};
+std::vector<float> hpt_bounds_2lss = {60,120,200,300,450};
+
+// 3l
+std::vector<float> tth_bounds_3l = {0.7};
+std::vector<float> th_bounds_3l  = {0.535};
+std::vector<float> bkg_bounds_3l = {0.505};
+std::vector<float> hpt_bounds_3l = {40,60,120,200,233,300,450};
+
+// 2lss1t
+std::vector<float> tth_bounds_2lss1t = {0.8};
+std::vector<float> th_bounds_2lss1t  = {0.565};
+std::vector<float> bkg_bounds_2lss1t = {0.52};
+std::vector<float> hpt_bounds_2lss1t = {60,100,120,173,200,233,300,450};
+
+float ttH_catIndex_diff_higgspt_varthresh_generic( float tth, std::vector<float> tth_bounds, float ttw, std::vector<float> ttw_bounds, float th, std::vector<float> th_bounds, float bkg, std::vector<float> bkg_bounds, float hpt, std::vector<float> hpt_bounds)
+{
+  if (tth_bounds.size() != 0) tth_bounds.push_back(0.00);
+  if (ttw_bounds.size() != 0) ttw_bounds.push_back(0.00);
+  if (th_bounds.size() != 0) th_bounds.push_back(0.00);
+  if (bkg_bounds.size() != 0) bkg_bounds.push_back(0.00);
+  if (hpt_bounds.size() != 0) hpt_bounds.push_back(10000);
+  float catIndex = 0;
+  if        (tth_bounds.size() != 0 && tth > ttw && tth > th && tth > bkg) {
+    for (int i=0; i<tth_bounds.size(); i++) {
+      catIndex += (tth < tth_bounds[i]);
+    }
+    catIndex *= hpt_bounds.size();
+    for (int i=0; i<hpt_bounds.size(); i++) {
+      catIndex += (hpt > hpt_bounds[i]);
+    }
+  } else if (ttw_bounds.size() != 0 && ttw > th && ttw > bkg) {
+    catIndex += tth_bounds.size()*hpt_bounds.size();
+    for (int i=0; i<ttw_bounds.size(); i++) {
+      catIndex += (ttw < ttw_bounds[i]);
+    }
+  } else if (th_bounds.size() != 0 && th > bkg) {
+    catIndex += tth_bounds.size()*hpt_bounds.size() + ttw_bounds.size();
+    for (int i=0; i<th_bounds.size(); i++) {
+      catIndex += (th < th_bounds[i]);
+    }
+  } else {
+    catIndex += tth_bounds.size()*hpt_bounds.size() + ttw_bounds.size() + th_bounds.size();
+    for (int i=0; i<bkg_bounds.size(); i++) {
+      catIndex += (bkg < bkg_bounds[i]);
+    }
+  }
+  return catIndex;
+}
+
+float ttH_catIndex_diff_higgspt_varthresh_2lss( float tth, float ttw, float th, float bkg, float hpt){
+  return ttH_catIndex_diff_higgspt_varthresh_generic( tth, tth_bounds_2lss, ttw, ttw_bounds_2lss, th, th_bounds_2lss, bkg, bkg_bounds_2lss, hpt, hpt_bounds_2lss);
+}
+
+float ttH_catIndex_diff_higgspt_varthresh_3l( float tth, float th, float bkg, float hpt){
+  return ttH_catIndex_diff_higgspt_varthresh_generic( tth, tth_bounds_3l, 0.0, std::vector<float>(), th, th_bounds_3l, bkg, bkg_bounds_3l, hpt, hpt_bounds_3l);
+}
+
+float ttH_catIndex_diff_higgspt_varthresh_2lss1t( float tth, float th, float bkg, float hpt){
+  return ttH_catIndex_diff_higgspt_varthresh_generic( tth, tth_bounds_2lss1t, 0.0, std::vector<float>(), th, th_bounds_2lss1t, bkg, bkg_bounds_2lss1t, hpt, hpt_bounds_2lss1t);
+}
 
 TF1* fTauSFs[4][3];
 TFile* fTauSFFiles[4];

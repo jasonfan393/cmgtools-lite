@@ -357,6 +357,53 @@ int ttH_catIndex_2lss_plots(int LepGood1_pdgId, int LepGood2_pdgId, float tth, f
 
 }
 
+float ttH_ClassifierCut_3l(float tth_low, float tth_high, float thq, float bkg)
+{
+  if ((bkg > 0.28) && (thq < 0.7) && (tth_high < 0.5)){
+	if (bkg < 0.45)       return 0;
+    else                  return 1;
+  }
+  else if ((thq > 0.7)){
+	return 2;
+  }
+  else if ((tth_high > 0.5) && (tth_low < 0.3) && (bkg < 0.3)){
+	if (tth_high < 0.7)       return 3;
+    else                  return 4;
+  }
+  else{
+	if ((tth_low < 0.25) && (bkg > 0.1)) return 5;
+	else if (tth_low < 0.5)  return 6;
+    else                  return 7;
+  }
+  
+}
+
+
+float ttH_ClassifierCut_3l_test(float tth_low, float tth_high, float thq, float bkg)
+{
+  if ((bkg > 0.28) && (thq < 0.7) && (tth_high < 0.5)){
+	if (bkg < 0.45)       return 0;
+    else                  return 1;
+  }
+    else if ((thq > 0.7)){
+	return 2;
+  }
+    else if ((tth_high + tth_low < 0.3)){
+	return 1;
+  }
+  else if ((tth_high > 0.5) && (tth_low < 0.3) && (bkg < 0.3)){
+	if (tth_high < 0.7)       return 3;
+    else                  return 4;
+  }
+  else{
+	if ((tth_low < 0.25) && (bkg > 0.1)) return 1;
+	else if (tth_low < 0.5)  return 5;
+    else                  return 6;
+  }
+  
+}
+
+
 
 float ttH_catIndex_2lss1tau( float tth, float thq, float bkg)
 {
@@ -1062,3 +1109,966 @@ float triggerSF_ttH(int pdgid1, float pt1, int pdgid2, float pt2, int nlep, int 
 }
 
 
+int ttH_catIndex_2lss(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
+{
+  int flch = 0;
+  int idx = 0;
+	
+  if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
+	  //ee
+	  flch = 0;
+	  if (tth_high > 0.60) idx = 2;
+	  else if (thq > 0.5) idx = 3;
+	  else if (ttw > 0.35) idx = 4;
+	  else if (rest > 0.3) idx = 5;
+	  else if (tth_low > 0.4) idx = 1;
+	  else if (tth_low > 0.2) idx = 0;
+	  else idx = 5;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 24) {
+	  //em
+      flch = 1;
+	  if (tth_high > 0.60) idx = 2;
+	  else if (thq > 0.5) idx = 3;
+	  else if (ttw > 0.35) idx = 4;
+	  else if (rest > 0.3) idx = 5;
+	  else if (tth_low > 0.4) idx = 1;
+	  else if (tth_low > 0.2) idx = 0;
+	  else idx = 5;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 26) {
+	  //mm
+      flch = 2;
+	  if (tth_high > 0.60) idx = 2;
+	  else if (thq > 0.5) idx = 3;
+	  else if (ttw > 0.35) idx = 4;
+	  else if (rest > 0.3) idx = 5;
+	  else if (tth_low > 0.4) idx = 1;
+	  else if (tth_low > 0.2) idx = 0;
+	  else idx = 5;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return flch*6 + idx;
+ 
+}
+
+float ttH_max_2lss_tth_low(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
+{
+  
+  //cout << tth_low << "\n";
+  if (!((tth_low > ttw && tth_low > rest && tth_low > tth_high && tth_low > thq) || (tth_high > ttw && tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high < 0.5))) {
+	  //cout << "Dropped \n\n";
+	  return -99;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
+	  //ee 
+	  //cout << "ee \n\n";
+	  return tth_low;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 24) {
+	  //em
+	  //cout << "em \n\n";
+	  return tth_low + 1.;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 26) {
+	  //mm
+	  //cout << "mm \n\n";
+	  return tth_low + 2.;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+float ttH_max_2lss_tth_high(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
+{
+  
+  if (tth_high < tth_low || tth_high < ttw || tth_high < thq || tth_high < rest || tth_high < 0.5) return -99;
+	
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
+	  //ee
+	  return tth_high;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 24) {
+	  //em
+	  return tth_high + 1.;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 26) {
+	  //mm
+	  return tth_high + 2.;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+float ttH_max_2lss_ttw(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
+{
+  
+  if (ttw < tth_low || ttw < tth_high || ttw < thq || ttw < rest) return -99;
+	
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
+	  //ee
+	  return ttw;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 24) {
+	  //em
+	  return ttw + 1;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 26) {
+	  //mm
+	  return ttw + 2;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return false;
+ 
+}
+
+float ttH_max_2lss_thq(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
+{
+  
+  if (thq < tth_low || thq < tth_high || thq < ttw || thq < rest) return -99;
+	
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
+	  //ee
+	  return thq;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 24) {
+	  //em
+	  return thq + 1;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 26) {
+	  //mm
+	  return thq + 2;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return false;
+ 
+}
+
+float ttH_max_2lss_rest(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
+{
+  
+  if (rest < tth_low || rest < tth_high || rest < ttw || rest < thq) return -99;
+	
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
+	  //ee
+	  return rest;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 24) {
+	  //em
+	  return rest + 1;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 26) {
+	  //mm
+	  return rest + 2;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return false;
+ 
+}
+
+
+float ttH_catIndex_2lss_ttH_low_test(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
+{
+  int flch = 0;
+  int idx = 0;
+	
+  if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
+	  //ee
+	  flch = 0;
+	  if (tth_low > 0.5) idx = 0;
+	  else idx = 1;
+	  return idx;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 24) {
+	  //em
+      flch = 1;
+	  if (tth_low > 0.60) idx = 0;
+	  else if (tth_low > 0.5) idx = 1;
+	  else if (tth_low > 0.4) idx = 2;
+	  else if (tth_low > 0.35) idx = 3;
+	  else if (tth_low > 0.3) idx = 4;
+	  else idx = 5;
+	  return 2 + idx;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 26) {
+	  //mm
+      flch = 2;
+	  if (tth_low > 0.60) idx = 0;
+	  else if (tth_low > 0.5) idx = 1;
+	  else if (tth_low > 0.4) idx = 2;
+	  else if (tth_low > 0.35) idx = 3;
+	  else if (tth_low > 0.3) idx = 4;
+	  else idx = 5;
+	  
+	  return 2 + 6 + idx;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return false;
+ 
+}
+
+float ttH_catIndex_2lss1tau(float tth_low, float tth_high, float thq, float bkg)
+{
+
+  if (tth_high > 0.6)  return 3;
+  else if (thq > 0.7) return 4;
+  else if (bkg > 0.5) return 8;
+  else if (tth_low > 0.49) return 2;
+  else if (tth_low > 0.345) return 1;
+  else if (tth_low > 0.2) return 0;
+  else if (bkg > 0.36) return 7;
+  else if (bkg > 0.255) return 6;
+  else return 5;
+  
+}
+
+// 2lss
+
+int class_max_p_2lss_tth_low(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
+{
+  std::vector<float> PrecentileCuts = {0.0, 0.2363853227182694, 0.3368149797051845, 0.3901109848733349, 0.4506187899733912, 0.5248424485833131};
+  
+  //cout << tth_low << "\n";
+  if (!((tth_low > ttw && tth_low > rest && tth_low > tth_high && tth_low > thq) || (tth_high > ttw && tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high < 0.5))) {
+	  //cout << "Dropped \n\n";
+	  return -99;
+  }
+
+
+  int bin_counter = PrecentileCuts.size()-1;
+  while (bin_counter >= 0) {
+	  if (tth_low > PrecentileCuts[bin_counter]) return bin_counter;
+	  bin_counter = bin_counter - 1;
+  }
+  
+  cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+int class_max_p_2lss_tth_high(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
+{
+  std::vector<float> PrecentileCuts = {0.0, 0.6276702917791234};
+  
+  //cout << tth_low << "\n";
+  if (tth_high < tth_low || tth_high < ttw || tth_high < thq || tth_high < rest || tth_high < 0.5) {
+	  //cout << "Dropped \n\n";
+	  return -99;
+  }
+  
+  int bin_counter = PrecentileCuts.size()-1;
+  while (bin_counter >= 0) {
+	  if (tth_high > PrecentileCuts[bin_counter]) return bin_counter;
+	  bin_counter = bin_counter - 1;
+  }
+
+  cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+int class_max_p_2lss_thq(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
+{
+  std::vector<float> PrecentileCuts_ee = {0.0, 0.354085349458666, 0.4159274794765929, 0.5146309676033994};
+  std::vector<float> PrecentileCuts_em = {0.0, 0.30232072396170684, 0.3245198619455962, 0.3514758403887882, 0.37825277692173975, 0.4018283951125225, 0.42793959660908976, 0.45400140447258974, 0.48978830344359003, 0.5269570440242298, 0.581569164294888};
+  std::vector<float> PrecentileCuts_mm = {0.0, 0.3147166177053606, 0.35773857931831554, 0.4030518141514902, 0.45022165678166953, 0.4961459045036706, 0.5600289980746318};
+  
+  //cout << tth_low << "\n";
+  if (thq < tth_low || thq < ttw || thq < tth_high || thq < rest) {
+	  //cout << "Dropped \n\n";
+	  return -99;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
+	  //ee 
+	  //cout << "ee \n\n";
+	  int bin_counter = PrecentileCuts_ee.size()-1;
+	  while (bin_counter >= 0) {
+		  if (thq > PrecentileCuts_ee[bin_counter]) return bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 24) {
+	  //em
+	  //cout << "em \n\n";
+	  int bin_counter = PrecentileCuts_em.size()-1;
+	  while (bin_counter >= 0) {
+		  if (thq > PrecentileCuts_em[bin_counter]) return 4 + bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 26) {
+	  //mm
+	  //cout << "mm \n\n";
+	  int bin_counter = PrecentileCuts_mm.size()-1;
+	  while (bin_counter >= 0) {
+		  if (thq > PrecentileCuts_mm[bin_counter]) return 15 + bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+int class_max_p_2lss_rest(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
+{
+  std::vector<float> PrecentileCuts_ee = {0.0, 0.35589085145899546, 0.39473021424996413, 0.42038832283012506, 0.4458440784977981, 0.47524492874678287, 0.507630610350954, 0.5508479071234978};
+  std::vector<float> PrecentileCuts_em = {0.0, 0.34106179945631143, 0.37537384347166464, 0.40115793767147, 0.42503565936487436, 0.4506482339902208, 0.4810122285022193, 0.5210433090893043};
+  std::vector<float> PrecentileCuts_mm = {0.0, 0.3134678090024507, 0.33836150459882647, 0.35769439175065626, 0.3754963107740153, 0.39030317708146983, 0.40510413817838403, 0.4228129819708819, 0.44071421879577927, 0.46686285529431115, 0.5048887507440911};
+  
+  //cout << tth_low << "\n";
+  if (rest < tth_low || rest < ttw || rest < tth_high || rest < thq) {
+	  //cout << "Dropped \n\n";
+	  return -99;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
+	  //ee 
+	  //cout << "ee \n\n";
+	  int bin_counter = PrecentileCuts_ee.size()-1;
+	  while (bin_counter >= 0) {
+		  if (rest > PrecentileCuts_ee[bin_counter]) return bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 24) {
+	  //em
+	  //cout << "em \n\n";
+	  int bin_counter = PrecentileCuts_em.size()-1;
+	  while (bin_counter >= 0) {
+		  if (rest > PrecentileCuts_em[bin_counter]) return 8 + bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 26) {
+	  //mm
+	  //cout << "mm \n\n";
+	  int bin_counter = PrecentileCuts_mm.size()-1;
+	  while (bin_counter >= 0) {
+		  if (rest > PrecentileCuts_mm[bin_counter]) return 16 + bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+int class_max_p_2lss_ttw(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
+{
+  std::vector<float> PrecentileCuts_ee = {0.0, 0.2996266728846854, 0.34408099834539285, 0.39052886380707674, 0.43193612762413575, 0.4845194241684518};
+  std::vector<float> PrecentileCuts_em = {0.0, 0.28687050899838823, 0.30416659060707585, 0.31662333873108667, 0.3295696565150568, 0.3390085122116467, 0.3496005760153689, 0.35928485684103334, 0.371812376313478, 0.38516495819060187, 0.39708568375176445, 0.4090171644549572, 0.4230154079938128, 0.43540545537103004, 0.4506397658058679, 0.4662733560022563, 0.4878304469053573, 0.5142451041074271, 0.5743363552359685};
+  std::vector<float> PrecentileCuts_mm = {0.0, 0.29260021687919296, 0.3147691482703262, 0.33120834411664923, 0.345197362204061, 0.3602847510177273, 0.3765950698152387, 0.3896580597302101, 0.40235956066633594, 0.41460333674441985, 0.4311239016212267, 0.4472832633374457, 0.4672440702434247, 0.49300905979589926, 0.5453891629375588};
+  
+  //cout << tth_low << "\n";
+  if (ttw < tth_low || ttw < rest || ttw < tth_high || ttw < thq) {
+	  //cout << "Dropped \n\n";
+	  return -99;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
+	  //ee 
+	  //cout << "ee \n\n";
+	  int bin_counter = PrecentileCuts_ee.size()-1;
+	  while (bin_counter >= 0) {
+		  if (ttw > PrecentileCuts_ee[bin_counter]) return bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 24) {
+	  //em
+	  //cout << "em \n\n";
+	  int bin_counter = PrecentileCuts_em.size()-1;
+	  while (bin_counter >= 0) {
+		  if (ttw > PrecentileCuts_em[bin_counter]) return 6 + bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 26) {
+	  //mm
+	  //cout << "mm \n\n";
+	  int bin_counter = PrecentileCuts_mm.size()-1;
+	  while (bin_counter >= 0) {
+		  if (ttw > PrecentileCuts_mm[bin_counter]) return 25 + bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+int class_max_p_2lss_tth_to_HiggsPt(int bin_idx, float Higgs_pt)
+{
+  std::vector<float> Pt_cuts_low = {0.0, 60, 120, 200};
+  std::vector<float> Pt_cuts_high = {0.0, 200, 300, 450};
+  
+  if (bin_idx < 6) {
+  
+	  int nr_tth_bins = Pt_cuts_low.size();
+	  int bin_counter = Pt_cuts_low.size()-1;
+	  
+	  while (bin_counter >= 0) {
+		  if (Higgs_pt > Pt_cuts_low[bin_counter]) return nr_tth_bins*bin_idx + bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+  else {
+	  	  int nr_tth_bins = Pt_cuts_high.size();
+	  int bin_counter = Pt_cuts_high.size()-1;
+	  
+	  while (bin_counter >= 0) {
+		  if (Higgs_pt > Pt_cuts_high[bin_counter]) return nr_tth_bins*bin_idx + bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+ return -99;
+ 
+}
+
+int catIndex_2lss_all_HiggsPt(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest, float Higgs_pt)
+{
+  // 121 bins [0,120]
+  int ttH_idx = 0;
+  
+  if ((tth_low > ttw && tth_low > rest && tth_low > tth_high && tth_low > thq) || (tth_high > ttw && tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high < 0.5)) {
+	  ttH_idx = class_max_p_2lss_tth_low(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
+	  return class_max_p_2lss_tth_to_HiggsPt(ttH_idx, Higgs_pt);
+  }
+  
+  else if (tth_high > ttw && tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high > 0.5) {
+	  ttH_idx = 6 + class_max_p_2lss_tth_high(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
+	  return class_max_p_2lss_tth_to_HiggsPt(ttH_idx, Higgs_pt);
+  }
+  
+  else if (thq > ttw && thq > rest && thq > tth_low && thq > tth_high) {
+	  return 32 + class_max_p_2lss_thq(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
+  }
+  
+  else if (ttw > tth_high && ttw > rest && ttw > tth_low && ttw > thq) {
+	  return 54 + class_max_p_2lss_ttw(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
+  }
+  
+  else if (rest > tth_low && rest > ttw && rest > tth_high && rest > thq) {
+	  return 94 + class_max_p_2lss_rest(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
+  }
+	else cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+ return -99;
+ 
+}
+
+
+// 2lss1tau
+
+float ttH_max_2lss1tau_tth_low(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest)
+{
+  
+  //cout << tth_low << "\n";
+  if (!((tth_low > rest && tth_low > tth_high && tth_low > thq) || (tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high < 0.5))) {
+	  //cout << "Dropped \n\n";
+	  return -99;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
+	  //ee 
+	  //cout << "ee \n\n";
+	  return tth_low;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 24) {
+	  //em
+	  //cout << "em \n\n";
+	  return tth_low + 1.;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 26) {
+	  //mm
+	  //cout << "mm \n\n";
+	  return tth_low + 2.;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+float ttH_max_2lss1tau_tth_high(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest)
+{
+  
+  if (tth_high < tth_low || tth_high < thq || tth_high < rest || tth_high < 0.5) return -99;
+	
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
+	  //ee
+	  return tth_high;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 24) {
+	  //em
+	  return tth_high + 1.;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 26) {
+	  //mm
+	  return tth_high + 2.;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+float ttH_max_2lss1tau_thq(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest)
+{
+  
+  if (thq < tth_low || thq < tth_high || thq < rest) return -99;
+	
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
+	  //ee
+	  return thq;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 24) {
+	  //em
+	  return thq + 1;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 26) {
+	  //mm
+	  return thq + 2;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return false;
+ 
+}
+
+float ttH_max_2lss1tau_rest(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest)
+{
+  
+  if (rest < tth_low || rest < tth_high || rest < thq) return -99;
+	
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
+	  //ee
+	  return rest;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 24) {
+	  //em
+	  return rest + 1;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 26) {
+	  //mm
+	  return rest + 2;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return false;
+ 
+}
+
+int class_max_p_2lss1tau_tth_low(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest)
+{
+  std::vector<float> PrecentileCuts = {0.0, 0.46820808094240446};
+  
+  //cout << tth_low << "\n";
+  if (!(tth_low > rest && tth_low > tth_high && tth_low > thq)) {
+	  //cout << "Dropped \n\n";
+	  return -99;
+  }
+  
+  int bin_counter = PrecentileCuts.size()-1;
+  while (bin_counter >= 0) {
+	  if (tth_low > PrecentileCuts[bin_counter]) return bin_counter;
+	  bin_counter = bin_counter - 1;
+  }
+  
+  cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+
+int class_max_p_2lss1tau_thq(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest)
+{
+  std::vector<float> PrecentileCuts = {0.0, 0.45035608910694963, 0.5154428669859836, 0.6468995910968893};
+  
+  //cout << tth_low << "\n";
+  if (thq < tth_low || thq < tth_high || thq < rest) {
+	  //cout << "Dropped \n\n";
+	  return -99;
+  }
+  
+  int bin_counter = PrecentileCuts.size()-1;
+  while (bin_counter >= 0) {
+	  if (thq > PrecentileCuts[bin_counter]) return bin_counter;
+	  bin_counter = bin_counter - 1;
+  }
+
+
+  cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+int class_max_p_2lss1tau_rest(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest)
+{
+  std::vector<float> PrecentileCuts = {0.0, 0.3871003602105856, 0.4414829001841132, 0.498805189523118, 0.5766101702746904};
+  
+  //cout << tth_low << "\n";
+  if (rest < tth_low || rest < tth_high || rest < thq) {
+	  //cout << "Dropped \n\n";
+	  return -99;
+  }
+  
+  int bin_counter = PrecentileCuts.size()-1;
+  while (bin_counter >= 0) {
+	  if (rest > PrecentileCuts[bin_counter]) return bin_counter;
+	  bin_counter = bin_counter - 1;
+  }
+  
+  cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+int class_max_p_2lss1tau_tth_to_HiggsPt(int bin_idx, float Higgs_pt)
+{
+  std::vector<float> Pt_cuts_low = {0.0, 60, 120, 200};
+  std::vector<float> Pt_cuts_high = {0.0, 200, 300, 450};
+  
+  if (bin_idx < 2) {
+  
+	  int nr_tth_bins = Pt_cuts_low.size();
+	  int bin_counter = Pt_cuts_low.size()-1;
+	  
+	  while (bin_counter >= 0) {
+		  if (Higgs_pt > Pt_cuts_low[bin_counter]) return nr_tth_bins*bin_idx + bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+  else {
+	  	  int nr_tth_bins = Pt_cuts_high.size();
+	  int bin_counter = Pt_cuts_high.size()-1;
+	  
+	  while (bin_counter >= 0) {
+		  if (Higgs_pt > Pt_cuts_high[bin_counter]) return nr_tth_bins*bin_idx + bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+ return -99;
+ 
+}
+
+int catIndex_2lss1tau_all_HiggsPt(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest, float Higgs_pt)
+{
+  // 21 bins [0,20]
+  int ttH_idx = 0;
+  
+  if (((tth_low > rest && tth_low > tth_high && tth_low > thq) || (tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high < 0.5))) {
+	  ttH_idx = class_max_p_2lss1tau_tth_low(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
+	  return class_max_p_2lss1tau_tth_to_HiggsPt(ttH_idx, Higgs_pt);
+  }
+  
+  else if (tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high > 0.5) {
+	  return class_max_p_2lss1tau_tth_to_HiggsPt(2, Higgs_pt);
+  }
+  
+  else if (thq > rest && thq > tth_low && thq > tth_high) {
+	  return 12 + class_max_p_2lss1tau_thq(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
+  }
+  
+  else if (rest > tth_low && rest > tth_high && rest > thq) {
+	  return 16 + class_max_p_2lss1tau_rest(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
+  }
+	else cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+ return -99;
+}
+
+
+// 3l
+
+
+float ttH_max_3l_tth_low(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest)
+{
+  
+  //cout << tth_low << "\n";
+  if (!((tth_low > rest && tth_low > tth_high && tth_low > thq) || (tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high < 0.5))) {
+	  //cout << "Dropped \n\n";
+	  return -99;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 33) {
+	  //eee
+	  return tth_low;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 35) {
+	  //eem
+	  return tth_low + 1;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 37) {
+	  //emm
+      return tth_low + 2;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 39) {
+	  //mmm
+	  return tth_low + 3;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+float ttH_max_3l_tth_high(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest)
+{
+  
+  if (tth_high < tth_low || tth_high < thq || tth_high < rest || tth_high < 0.5) return -99;
+	
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 33) {
+	  //eee
+	  return tth_high;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 35) {
+	  //eem
+	  return tth_high + 1;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 37) {
+	  //emm
+      return tth_high + 2;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 39) {
+	  //mmm
+	  return tth_high + 3;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+float ttH_max_3l_thq(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest)
+{
+  
+  if (thq < tth_low || thq < tth_high || thq < rest) return -99;
+	
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 33) {
+	  //eee
+	  return thq;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 35) {
+	  //eem
+	  return thq + 1;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 37) {
+	  //emm
+      return thq + 2;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 39) {
+	  //mmm
+	  return thq + 3;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return false;
+ 
+}
+
+float ttH_max_3l_rest(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest)
+{
+  
+  if (rest < tth_low || rest < tth_high || rest < thq) return -99;
+	
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 33) {
+	  //eee
+	  return rest;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 35) {
+	  //eem
+	  return rest + 1;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 37) {
+	  //emm
+	  return rest + 2;
+  }
+  else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 39) {
+	  //mmm
+	  return rest + 3;
+  }
+  else
+    cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return false;
+ 
+}
+
+int class_max_p_3l_tth_low(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest)
+{
+  std::vector<float> PrecentileCuts = {0.0, 0.46820808094240446};
+  
+  //cout << tth_low << "\n";
+  if (!(tth_low > rest && tth_low > tth_high && tth_low > thq)) {
+	  //cout << "Dropped \n\n";
+	  return -99;
+  }
+  
+  int bin_counter = PrecentileCuts.size()-1;
+  while (bin_counter >= 0) {
+	  if (tth_low > PrecentileCuts[bin_counter]) return bin_counter;
+	  bin_counter = bin_counter - 1;
+  }
+  
+  cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+
+int class_max_p_3l_thq(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest)
+{
+  std::vector<float> PrecentileCuts = {0.0, 0.45035608910694963, 0.5154428669859836, 0.6468995910968893};
+  
+  //cout << tth_low << "\n";
+  if (thq < tth_low || thq < tth_high || thq < rest) {
+	  //cout << "Dropped \n\n";
+	  return -99;
+  }
+  
+  int bin_counter = PrecentileCuts.size()-1;
+  while (bin_counter >= 0) {
+	  if (thq > PrecentileCuts[bin_counter]) return bin_counter;
+	  bin_counter = bin_counter - 1;
+  }
+
+
+  cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+int class_max_p_3l_rest(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest)
+{
+  std::vector<float> PrecentileCuts = {0.0, 0.410866806016376, 0.46782556287241234, 0.5318078974624368, 0.6110519619335995};
+  
+  //cout << tth_low << "\n";
+  if (rest < tth_low || rest < tth_high || rest < thq) {
+	  //cout << "Dropped \n\n";
+	  return -99;
+  }
+  
+  int bin_counter = PrecentileCuts.size()-1;
+  while (bin_counter >= 0) {
+	  if (rest > PrecentileCuts[bin_counter]) return bin_counter;
+	  bin_counter = bin_counter - 1;
+  }
+  
+  cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+
+ return -99;
+ 
+}
+
+int class_max_p_3l_tth_to_HiggsPt(int bin_idx, float Higgs_pt)
+{
+  std::vector<float> Pt_cuts_low = {0.0, 60, 120, 200};
+  std::vector<float> Pt_cuts_high = {0.0, 200, 300, 450};
+  
+  if (bin_idx < 2) {
+  
+	  int nr_tth_bins = Pt_cuts_low.size();
+	  int bin_counter = Pt_cuts_low.size()-1;
+	  
+	  while (bin_counter >= 0) {
+		  if (Higgs_pt > Pt_cuts_low[bin_counter]) return nr_tth_bins*bin_idx + bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+  else {
+	  	  int nr_tth_bins = Pt_cuts_high.size();
+	  int bin_counter = Pt_cuts_high.size()-1;
+	  
+	  while (bin_counter >= 0) {
+		  if (Higgs_pt > Pt_cuts_high[bin_counter]) return nr_tth_bins*bin_idx + bin_counter;
+		  bin_counter = bin_counter - 1;
+	  }
+  }
+ return -99;
+ 
+}
+
+int catIndex_3l_all_HiggsPt(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest, float Higgs_pt, int nBMedium )
+{
+  // 21 bins [0,20]
+  int ttH_idx = 0;
+  
+  if ((tth_low > rest && tth_low > tth_high && tth_low > thq)) {
+    if (nBMedium < 2)
+      ttH_idx = 0; // ttH_bl
+    else
+      ttH_idx = 1; // ttH_bt
+    return class_max_p_2lss1tau_tth_to_HiggsPt(ttH_idx, Higgs_pt);
+  }
+  
+  else if (tth_high > rest && tth_high > tth_low && tth_high > thq) {
+	  return class_max_p_2lss1tau_tth_to_HiggsPt(2, Higgs_pt);
+  }
+  
+  else if (thq > rest && thq > tth_low && thq > tth_high) {
+    if (nBMedium < 2){
+      return 12; // tH_bl
+    }
+    else{
+      return 13; // tH_bt
+    }}
+  
+  else if (rest > tth_low && rest > tth_high && rest > thq) {
+    int sumpdgId = abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId);
+    if ( sumpdgId == 33){ // rest_eee
+      return 14;
+    }
+    else if (sumpdgId == 35){ 
+      if (nBMedium < 2)
+	return 15; // rest_eem_bl
+      else
+	return 16; // rest_eem_bt
+    }
+    else if (sumpdgId == 37){ // emm
+      if (nBMedium < 2)
+	return 17; // rest_emm_bl
+      else
+	return 18; // rest_emm_bt
+    }
+    else if (sumpdgId == 39){ // mmm
+      if (nBMedium < 2)
+	return 19; // rest_mmm_bl
+      else
+	return 20; // rest_mmm_bt
+    }
+  }
+	else cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+ return -99;
+}

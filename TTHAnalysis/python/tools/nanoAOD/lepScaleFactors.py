@@ -104,8 +104,6 @@ class lepScaleFactors(Module):
                 hist_2lss=self.triggerSF['%s %s'%(year,channel)]
                 thebin=hist_2lss.FindBin( min(199.,leps[0].pt), min(199.,leps[1].pt) ) 
                 shift= 0 if var == '' else 1 if 'up' in var else -1 
-                if var == '' and hist_2lss.GetBinContent(thebin) == 0:
-                    print hist_2lss.GetBinContent(thebin), leps[0].pt, leps[1].pt, channel
                 self.out.fillBranch('triggerSF_2lss%s'%var, hist_2lss.GetBinContent(thebin) + shift*hist_2lss.GetBinError(thebin))
             else:
                 self.out.fillBranch('triggerSF_2lss%s'%var, 1)

@@ -25,7 +25,7 @@ Do plots, matrix...
 # 1) getting the gen level distribution. For that you need an unskimmed sample
 # 2) scale each of the bins of the gen level distribution by the mu you have measured in the fit. Make sure the ttW normalization uncertainty doesnt make it to this result!
 
-ttW-multilepton/makeDifferentialPlot.py folder genDistribution.root  var
+ttW-multilepton/makeDifferentialPlot.py folder genDistribution  var
 ttW-multilepton/makeDifferentialMatix.py workspace.root fitdiagnostics.root genDistribution.root  varname
 
 

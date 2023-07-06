@@ -37,7 +37,7 @@ if ".psi.ch" in os.environ['HOSTNAME']:
     P0 = "/pnfs/psi.ch/cms/trivcat/store/user/sesanche"
     submit = 'sbatch -c %d  --wrap "{command}"'%nCores
 
-TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW --FMCs {P}/0_jmeUnc_v1  --FMCs {P}/2_btagSF/ --FMCs {P}/2_scalefactors_lep/   " 
+TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW --FMCs {P}/0_jmeUnc_v1  --FMCs {P}/2_btagSF_fixedWP/ --FMCs {P}/2_scalefactors_lep/  --Fs {P}/4_evtVars --Fs {P}/1_recl  " 
 YEARDIR=YEAR if YEAR != 'all' else ''
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_UL_v2_060422/%s          --Fs  {P}/1_recl_new "%(YEARDIR,)         
 TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_skim2lss_newfts/%s  --Fs {P}/1_recl  "%(YEARDIR,)
@@ -52,12 +52,12 @@ def base(selection):
     LEGEND=" --legendColumns 2 --legendWidth 0.25 "
     LEGEND2=" --legendFontSize 0.042 "
     SPAM=" --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' "
-    if dowhat == "plots": CORE+=RATIO+RATIO2+LEGEND+LEGEND2+SPAM+"  --showMCError --rebin 4 --xP 'nT_.*' --xP 'debug_.*'"
+    if dowhat == "plots": CORE+=RATIO+RATIO2+LEGEND+LEGEND2+SPAM+"  --showMCError --rebin 4 --xP 'nT_.*' --xP 'debug_.*' -L ttH-multilepton/functionsTTH.cc"
 
     if selection=='2lss':
-        GO="%s ttW-multilepton/mca-2lss-mc.txt ttW-multilepton/2lss_tight.txt "%CORE
+        GO="%s ttW-multilepton/mca-2lss-mc.txt ttW-multilepton/2lss_tight.txt --xp TTW_jet1_pt.*,TTW_nbjets.*,TTW_njets.*,TTW_lep1_pt.*,TTW_lep1_eta.*,TTW_deta_llss.*,TTW_ooa.*,TTW_dR_lbMedium.*,TTW_dR_lbLoose.*,TTW_mindr_lep1_jet25.*,TTW_HT_bin.*,TTW_dR_ll.*,TTW_max_eta.*"%CORE
         GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_2lss'"%GO
-        if dowhat in ["plots","ntuple"]: GO+=" ttW-multilepton/2lss_3l_plots.txt --xP '^lep(3|4)_.*' --xP '^(3|4)lep_.*' --xP 'kinMVA_3l_.*' "
+        if dowhat in ["plots","ntuple"]: GO+=" ttW-multilepton/2lss_3l_plots_diff.txt --xP '^lep(3|4)_.*' --xP '^(3|4)lep_.*' --xP 'kinMVA_3l_.*' "
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.52 ")
         if dowhat == "plots": GO=GO.replace(RATIO,  " --maxRatioRange 0.6  1.99 --ratioYNDiv 210 ")
         GO += " --binname 2lss "
@@ -185,7 +185,7 @@ if __name__ == '__main__':
             if '_notrigger' in torun: x = add(x,'-X ^trigger ' )
 
         if '_unc' in torun:
-            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
+            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU,CMS_ttWl_WZ_lnU,CMS_ttWl_ZZ_lnU")
 
         if '_varsFR' in torun:
             x = x.replace('mca-2lss-mc.txt','mca-2lss-data-frdata-vars.txt')
@@ -457,7 +457,7 @@ if __name__ == '__main__':
         #plots += ['3lep_.*','nJet25','nBJetLoose25','nBJetMedium25','met','metLD','htJet25j','mhtJet25','mtWmin','htllv','kinMVA_3l_ttbar','kinMVA_3l_ttV','kinMVA_3l_ttV_withMEM','era','kinMVA_3l.*']
 
         plots=['kinMVA_3l_score_.*','kinMVA_3l_input_.*']
-        x = add(x,"-I 'Zveto' -X ^2b1B -E ^gt2b -E ^1B ")
+        x = add(x,"-I 'Zveto' ")
         if '_1fwd' in torun:
             x = add(x, "-A ^alwaystrue fwdjet1 'nFwdJet>0'")
         if '_unc' in torun:

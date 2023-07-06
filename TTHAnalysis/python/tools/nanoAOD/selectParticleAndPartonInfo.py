@@ -17,10 +17,12 @@ from array import array
 
 class selectParticleAndPartonInfo(Module):
     def __init__(self, dresslepSel_         = lambda l: True,
-                       dressjetSel_         = lambda j: True):
+                       dressjetSel_         = lambda j: True,
+                       dressfwdSel_         = lambda j: True,
+             ):
 
-        self.branches = ["Top1_pt", "Top1_eta", "Top1_phi", ("Top1_charge", "I"),
-                         "Top2_pt", "Top2_eta", "Top2_phi", ("Top2_charge", "I"),
+        self.branches = ["Top1_pt", "Top1_eta", "Top1_phi","Top1_mass", ("Top1_charge", "I"),
+                         "Top2_pt", "Top2_eta", "Top2_phi","Top2_mass", ("Top2_charge", "I"),
                          ("nDressBSelJet", "I"), ("nDressBSelLooseJet", "I"), ("DressBSelJet_pt", "F"),("dR_DressBSelJet_DressSelLep1","F"),("Gen_HT","F"),("mindr_DressSelLep1_DressSelJet","F")]
 
         self.vars_common       = ["pt", "eta", "phi", "mass"]
@@ -138,12 +140,14 @@ class selectParticleAndPartonInfo(Module):
             otherVarsDict["Top1_pt"]     = partobjs[candtops[highptind]].pt
             otherVarsDict["Top1_eta"]    = partobjs[candtops[highptind]].eta
             otherVarsDict["Top1_phi"]    = partobjs[candtops[highptind]].phi
+            otherVarsDict["Top1_mass"]    = partobjs[candtops[highptind]].mass
             otherVarsDict["Top1_charge"] = 1 if (partobjs[candtops[highptind]].pdgId > 0) else -1
 
             if len(candtops) > 1:
                 otherVarsDict["Top2_pt"]     = partobjs[candtops[lowptind]].pt
                 otherVarsDict["Top2_eta"]    = partobjs[candtops[lowptind]].eta
                 otherVarsDict["Top2_phi"]    = partobjs[candtops[lowptind]].phi
+                otherVarsDict["Top2_mass"]    = partobjs[candtops[lowptind]].mass
                 otherVarsDict["Top2_charge"] = 1 if (partobjs[candtops[lowptind]].pdgId > 1) else -1
 
 

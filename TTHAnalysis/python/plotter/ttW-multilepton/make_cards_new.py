@@ -66,12 +66,9 @@ MCASUFFIX="mcdata-frdata"
 
 DOFILE = ""
 
-availableObservables = ['inclusive', 'njets','nbjets','lep1_pt','lep1_eta',"dR_ll","max_eta",'jet1_pt','deta_llss',"HT",'dR_lbLoose', 'dR_lbMedium',"mindr_lep1_jet25", "asymmetry"]
-
 if OBSERVABLE == "inclusive":
     FUNCTION_2L="0"
     CATBINS    ="[-0.5,0.5]"
-    
 
 elif OBSERVABLE == "njets":
     FUNCTION_2L="nJet25"
@@ -137,7 +134,7 @@ elif OBSERVABLE == "deta_llss":
         SYSTS = ""
 
 
-elif OBSERVABLE == "dR_lbMedium":
+elif OBSERVABLE == "dR_lbmedium":
     FUNCTION_2L="dR_lbmedium"
     CATBINS    ="[0, 0.5, 1.0,1.25, 1.5,1.75, 2.0, 2.5, 3.0]"
     if "gen" in OTHER:
@@ -145,7 +142,7 @@ elif OBSERVABLE == "dR_lbMedium":
         CATBINS    ="[0, 1.0, 1.5, 2.0, 3.0]"
         SYSTS = ""
 
-elif OBSERVABLE == "dR_lbLoose":
+elif OBSERVABLE == "dR_lbloose":
     FUNCTION_2L="dR_lbloose"
     CATBINS    ="[0, 0.5, 1.0,1.25, 1.5,1.75, 2.0, 2.5, 3.0]"
     if "gen" in OTHER:
@@ -174,11 +171,6 @@ elif OBSERVABLE == "asymmetry":
     CATBINS    ="[-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.5,25.5,26.5,27.5,28.5,29.5,30.5,31.5]"
     CATPOSTFIX=" -E ^met "
 
-if "gen" in OTHER:
-   signals_remove = []
-
-else:
-   signals_remove = [ 'TTW_%s.*'%s for s in availableObservables if s!= OBSERVABLE]     
 GENN = ""
 if "gen" in OTHER:
    GENN = "Gen_"
@@ -189,10 +181,10 @@ if REGION == "2lss":
         OPT_2L = OPT_2L.replace('-W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_2lss"','')
     CATPOSTFIX=""
 
-    TORUN='''python {SCRIPT} {DOFILE} ttW-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}.txt ttW-multilepton/2lss_tight.txt "{FUNCTION_2L}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttW_2lss_0tau_{GEN}{OBS}_{YEAR} --year {YEAR} --xp {signals_remove} '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_2L=FUNCTION_2L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_2L=OPT_2L, signals_remove=','.join(signals_remove), YEAR=YEAR, GEN=GENN,OBS=OBSERVABLE)
+    TORUN='''python {SCRIPT} {DOFILE} ttW-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}{OBSERVABLE}.txt ttW-multilepton/2lss_tight.txt "{FUNCTION_2L}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttW_2lss_0tau_{GEN}{OBS}_{YEAR} --year {YEAR}  '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, OBSERVABLE="-"+OBSERVABLE, FUNCTION_2L=FUNCTION_2L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_2L=OPT_2L, YEAR=YEAR, GEN=GENN,OBS=OBSERVABLE)
     if "gen" in OTHER:
-        TORUN = TORUN.replace("--xp","")
-        TORUN = TORUN.replace("ttW-multilepton/mca-2lss-mcdata-frdata.txt","ttW-multilepton/mca-includes/mca-2lss-sigprompt-gen.txt")
+        MCA = '''ttW-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}{OBSERVABLE}.txt'''.format(MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, OBSERVABLE="-"+OBSERVABLE)
+        TORUN = TORUN.replace(MCA,"ttW-multilepton/mca-includes/mca-2lss-sigprompt-gen.txt")
         TORUN = TORUN.replace("ttW-multilepton/2lss_tight.txt","ttW-multilepton/2lss_fiducial.txt")
     #os.system( submit.format(command=TORUN))
     print( submit.format(command=TORUN))
@@ -200,5 +192,5 @@ if REGION == "2lss":
 
 if REGION == "3l":
     OPT_3L='{T2L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_3l*triggerSF_3l"'.format(T2L=T2L, OPTIONS=OPTIONS, YEAR=YEAR)
-    TORUN='''python {SCRIPT} {DOFILE} ttW-multilepton/mca-3l-mcdata-frdata-leptoncharge.txt ttW-multilepton/3l_tight.txt "{FUNCTION_3L}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttW_3l_{OBS}_{YEAR} --year {YEAR} --xp {signals_remove} {CATPOSTFIX} '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_3L=FUNCTION_3L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_3L=OPT_3L, signals_remove=','.join(signals_remove), YEAR=YEAR, OBS=OBSERVABLE, CATPOSTFIX=CATPOSTFIX)
+    TORUN='''python {SCRIPT} {DOFILE} ttW-multilepton/mca-3l-mcdata-frdata-leptoncharge.txt ttW-multilepton/3l_tight.txt "{FUNCTION_3L}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttW_3l_{OBS}_{YEAR} --year {YEAR}{CATPOSTFIX} '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_3L=FUNCTION_3L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_3L=OPT_3L, YEAR=YEAR, OBS=OBSERVABLE, CATPOSTFIX=CATPOSTFIX)
     print submit.format(command=TORUN)

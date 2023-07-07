@@ -18,7 +18,7 @@ submit = '{command}'
 dowhat = "plots" 
 #dowhat = "dumps" 
 #dowhat = "yields" 
-#dowhat = "ntuple" # syntax: python ttW-multilepton/ttW_plots.py no 2lss_SR_extr outfile_{cname}.root --sP var1,var2,...
+#dowhat = "ntuple" # syntax: python ttW_multilepton/ttW_plots.py no 2lss_SR_extr outfile_{cname}.root --sP var1,var2,...
 dojeccomps=True
 P0="/eos/cms/store/cmst3/group/tthlep/peruzzi/"
 #if 'cmsco01'   in os.environ['HOSTNAME']: P0="/data1/peruzzi"
@@ -37,7 +37,7 @@ if ".psi.ch" in os.environ['HOSTNAME']:
     P0 = "/pnfs/psi.ch/cms/trivcat/store/user/sesanche"
     submit = 'sbatch -c %d  --wrap "{command}"'%nCores
 
-TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW --FMCs {P}/0_jmeUnc_v1  --FMCs {P}/2_btagSF_fixedWP/ --FMCs {P}/2_scalefactors_lep/  --Fs {P}/4_evtVars --Fs {P}/1_recl  " 
+TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW --FMCs {P}/0_jmeUnc_v1  --FMCs {P}/2_btagSF_fixedWP/ --FMCs {P}/2_scalefactors_lep/  --Fs {P}/4_evtVars --Fs {P}/1_recl --Fs {P}/6_ttWforlepton  " 
 YEARDIR=YEAR if YEAR != 'all' else ''
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_UL_v2_060422/%s          --Fs  {P}/1_recl_new "%(YEARDIR,)         
 TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_skim2lss_newfts/%s  --Fs {P}/1_recl  "%(YEARDIR,)
@@ -46,7 +46,7 @@ TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_skim2lss_newfts/%s  --Fs {
 def base(selection):
     THETREES = TREESALL
     CORE=' '.join([THETREES,TREESONLYSKIM])
-    CORE+=" -f -j %d -l %s  --tree NanoAOD --mcc ttW-multilepton/lepchoice-ttW-FO.txt --split-factor=-1 --WA prescaleFromSkim --year %s  --mcc ttW-multilepton/mcc-METchoice-prefiring.txt"%(nCores, lumis[YEAR],YEAR if YEAR!='all' else '2016APV,2016,2017,2018')# --neg" --s2v 
+    CORE+=" -f -j %d -l %s  --tree NanoAOD --mcc ttW_multilepton/lepchoice-ttW-FO.txt --split-factor=-1 --WA prescaleFromSkim --year %s  --mcc ttW_multilepton/mcc-METchoice-prefiring.txt"%(nCores, lumis[YEAR],YEAR if YEAR!='all' else '2016APV,2016,2017,2018')# --neg" --s2v 
     RATIO= " --maxRatioRange 0.0  1.99 --ratioYNDiv 505 "
     RATIO2=" --showRatio --attachRatioPanel --fixRatioRange "
     LEGEND=" --legendColumns 2 --legendWidth 0.25 "
@@ -55,16 +55,16 @@ def base(selection):
     if dowhat == "plots": CORE+=RATIO+RATIO2+LEGEND+LEGEND2+SPAM+"  --showMCError --rebin 4 --xP 'nT_.*' --xP 'debug_.*' -L ttH-multilepton/functionsTTH.cc"
 
     if selection=='2lss':
-        GO="%s ttW-multilepton/mca-2lss-mc.txt ttW-multilepton/2lss_tight.txt --xp TTW_jet1_pt.*,TTW_nbjets.*,TTW_njets.*,TTW_lep1_pt.*,TTW_lep1_eta.*,TTW_deta_llss.*,TTW_ooa.*,TTW_dR_lbMedium.*,TTW_dR_lbLoose.*,TTW_mindr_lep1_jet25.*,TTW_HT_bin.*,TTW_dR_ll.*,TTW_max_eta.*"%CORE
+        GO="%s ttW_multilepton/mca-2lss-mc.txt ttW_multilepton/2lss_tight.txt --xp TTW_jet1_pt.*,TTW_nbjets.*,TTW_njets.*,TTW_lep1_pt.*,TTW_lep1_eta.*,TTW_deta_llss.*,TTW_ooa.*,TTW_dR_lbMedium.*,TTW_dR_lbLoose.*,TTW_mindr_lep1_jet25.*,TTW_HT_bin.*,TTW_dR_ll.*,TTW_max_eta.*"%CORE
         GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_2lss'"%GO
-        if dowhat in ["plots","ntuple"]: GO+=" ttW-multilepton/2lss_3l_plots_diff.txt --xP '^lep(3|4)_.*' --xP '^(3|4)lep_.*' --xP 'kinMVA_3l_.*' "
+        if dowhat in ["plots","ntuple"]: GO+=" ttW_multilepton/2lss_3l_plots_diff.txt --xP '^lep(3|4)_.*' --xP '^(3|4)lep_.*' --xP 'kinMVA_3l_.*' "
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.52 ")
         if dowhat == "plots": GO=GO.replace(RATIO,  " --maxRatioRange 0.6  1.99 --ratioYNDiv 210 ")
         GO += " --binname 2lss "
     elif selection=='3l':
-        GO="%s ttW-multilepton/mca-3l-mc.txt ttW-multilepton/3l_tight.txt "%CORE
+        GO="%s ttW_multilepton/mca-3l-mc.txt ttW_multilepton/3l_tight.txt "%CORE
         GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_3l*triggerSF_3l'"%GO
-        if dowhat in ["plots","ntuple"]: GO+=" ttW-multilepton/2lss_3l_plots.txt --xP '^(2|4)lep_.*' --xP '^lep4_.*' --xP 'kinMVA_2lss_.*' "
+        if dowhat in ["plots","ntuple"]: GO+=" ttW_multilepton/2lss_3l_plots.txt --xP '^(2|4)lep_.*' --xP '^lep4_.*' --xP 'kinMVA_2lss_.*' "
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.42 ")
         GO += " --binname 3l "
     else:
@@ -116,7 +116,7 @@ if __name__ == '__main__':
             x = x.replace('2lss_3l_plots.txt', '2lss_3l_plots_diff.txt').replace('--showMCError', '-X --showMCError')
         if '_norebin' in torun: x = x.replace('--rebin 4','')
         if '_appl' in torun: x = add(x,'-I ^TT ')
-        if '_legacy' in torun: x = x.replace('ttW-multilepton/2lss_tight.txt',"ttW-multilepton/2lss_tight_legacy.txt")
+        if '_legacy' in torun: x = x.replace('ttW_multilepton/2lss_tight.txt',"ttW_multilepton/2lss_tight_legacy.txt")
         if '_1fo' in torun:
             x = add(x,"-A alwaystrue 1FO 'LepGood1_isLepTight+LepGood2_isLepTight==1'")
             x = x.replace("--xP 'nT_.*'","")
@@ -185,7 +185,7 @@ if __name__ == '__main__':
             if '_notrigger' in torun: x = add(x,'-X ^trigger ' )
 
         if '_unc' in torun:
-            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU,CMS_ttWl_WZ_lnU,CMS_ttWl_ZZ_lnU")
+            x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU,CMS_ttWl_WZ_lnU,CMS_ttWl_ZZ_lnU")
 
         if '_varsFR' in torun:
             x = x.replace('mca-2lss-mc.txt','mca-2lss-data-frdata-vars.txt')
@@ -231,7 +231,7 @@ if __name__ == '__main__':
         x = base('3l')
         if '_norebin' in torun: x = x.replace('--rebin 4','')
         if '_appl' in torun: x = add(x,'-I ^TTT ')
-        if '_legacy' in torun: x = x.replace('ttW-multilepton/3l_tight.txt',"ttW-multilepton/3l_tight_legacy.txt")
+        if '_legacy' in torun: x = x.replace('ttW_multilepton/3l_tight.txt',"ttW_multilepton/3l_tight_legacy.txt")
         if '_1fo' in torun:
             x = add(x,"-A alwaystrue 1FO 'LepGood1_isLepTight+LepGood2_isLepTight+LepGood3_isLepTight==2'")
             x = x.replace("--xP 'nT_.*'","")
@@ -282,7 +282,7 @@ if __name__ == '__main__':
             if '_notrigger' in torun: x = add(x,'-X ^trigger ')
 
         if '_unc' in torun:
-            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
+            x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
 
 
         if '_varsFR' in torun:
@@ -317,7 +317,7 @@ if __name__ == '__main__':
             x = promptsub(x)
             raise RuntimeError, 'Fakes estimation not implemented for 4l'
         if '_unc' in torun:
-            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
+            x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
         runIt(x,'%s'%torun)
 
     if 'cr_3j' in torun:
@@ -334,7 +334,7 @@ if __name__ == '__main__':
         else: 
             x = add(x,"-R ^4j 3j 'nJet25+nFwdJet==3'")
         if '_unc' in torun:
-            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
+            x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
         if '_1fwd' in torun:
@@ -360,7 +360,7 @@ if __name__ == '__main__':
         if '_highMetNoBCut' in torun: x = add(x,"-A 'entry point' highMET 'met_pt>60'")
         else: x = add(x,"-E ^1B ")
         if '_unc' in torun:
-            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
+            x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
         plots = ['2lep_.*','met','metLD','nVert','nJet25','nBJetMedium25','nBJetLoose25','nBJetLoose40','nBJetMedium40','era']
         runIt(x,'%s'%torun)#,plots)
 
@@ -394,7 +394,7 @@ if __name__ == '__main__':
         if '_data' not in torun: x = add(x,'--xp data')
         x = add(x,"-X ^2b1B -X ^Zee_veto -X ^Z_veto -X ^metLDee -A alwaystrue mllonZ 'mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass,LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass)>60 && mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass,LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass)<120' -X ^tauveto")
         if '_unc' in torun:
-            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
+            x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
         plots = ['nJet25_from0','nJet40_from0', 'lep1_pt', 'lep2_pt','2lep_.*', 'met.*','tot_weight','era']
         runIt(add(x,' -X ^4j'),'%s'%(torun),plots)
     if 'cr_dilep' in torun:
@@ -428,7 +428,7 @@ if __name__ == '__main__':
         else: 
             print "ERROR: cr_wz with MC backgrounds does not work."
         if '_unc' in torun:
-            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
+            x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
 
@@ -461,7 +461,7 @@ if __name__ == '__main__':
         if '_1fwd' in torun:
             x = add(x, "-A ^alwaystrue fwdjet1 'nFwdJet>0'")
         if '_unc' in torun:
-            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
+            x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
 
@@ -477,7 +477,7 @@ if __name__ == '__main__':
             x = promptsub(x)
             raise RuntimeError, 'Fakes estimation not implemented for 4l'
         if '_unc' in torun:
-            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
+            x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
         x = add(x,"-I ^Zveto")
         plots = ['lep4_pt','met','mZ1','4lep_m4l_noRecl','4lep_mZ2_noRecl','minMllAFAS','tot_weight','4lep_nJet25','nBJetMedium25']
         runIt(x,'%s'%torun,plots)
@@ -491,7 +491,7 @@ if __name__ == '__main__':
             x = promptsub(x)
             raise RuntimeError, 'Fakes estimation not implemented for 4l'
         if '_unc' in torun:
-            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
+            x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
         if '_fit' in torun:
             if not '_data' in torun: raise RuntimeError
             x = add(x,"--sP tot_weight --preFitData tot_weight --sp ZZ ")
@@ -513,7 +513,7 @@ if __name__ == '__main__':
             x = x.replace('mca-3l-mcdata.txt','mca-3l-mcdata-frdata.txt')
         plots = ['cr_3l']
         if '_unc' in torun:
-            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
+            x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
 
@@ -527,7 +527,7 @@ if __name__ == '__main__':
             x = promptsub(x)
             raise RuntimeError, 'Fakes estimation not implemented for 4l'
         if '_unc' in torun:
-            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
+            x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
         plots = ['cr_4l']
@@ -546,7 +546,7 @@ if __name__ == '__main__':
         plots=['kinMVA_3l_score_.*','kinMVA_3l_input_.*']
         x = add(x,"-I ^metLD -E ^2j -X ^3j -E ^mll ")
         if '_unc' in torun:
-            x = add(x,"--unc ttW-multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
+            x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
 

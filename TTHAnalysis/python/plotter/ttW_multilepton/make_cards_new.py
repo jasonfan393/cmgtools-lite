@@ -1,18 +1,22 @@
 import os, sys
-nCores=32
-submit = '''sbatch -c %d -p batch  --wrap '{command}' '''%nCores
-#submit = '{command}' 
+nCores=16
 
 
-if 'psi' in os.environ['HOSTNAME']:       ORIGIN="/pnfs/psi.ch/cms/trivcat/store/user/sesanche/"; 
+if 'psi' in os.environ['HOSTNAME']:       
+    ORIGIN="/pnfs/psi.ch/cms/trivcat/store/user/sesanche/"; 
+    queue ="standard"
 elif 'fanae' in os.environ['HOSTNAME']:
     ORIGIN     = "/beegfs/data/nanoAODv9/ttH_differential/"
+    queue ="batch"
 elif 'gae' in os.environ['HOSTNAME']: 
     ORIGIN    = "/beegfs/data/nanoAODv9/ttH_differential/"
-
+    queue ="batch"
 
 else: 
     raise RuntimeError("You need ntuples to run the analysis :)")
+
+#submit = '{command}' 
+submit = '''sbatch -c %d -p %s  --wrap '{command}' '''%(nCores, queue)
 
 if len(sys.argv) < 4: 
     print 'Sytaxis is %s [outputdir] [year] [region] [observable] [other]'%sys.argv[0]
@@ -40,7 +44,7 @@ if "gen" in OTHER:
    ltext = "-l {LUMI}".format(LUMI=LUMI)
 
 
-T2L="-P {ORIGIN}/NanoTrees_UL_v2_060422_skim2lss_newfts/{YEAR} --FMCs {{P}}/0_jmeUnc_v1  --FMCs {{P}}/2_btagSF_fixedWP/ --FMCs {{P}}/2_scalefactors_lep/ --Fs {{P}}/4_evtVars --FMCs {{P}}/6_ttWforlepton --Fs {{P}}/7_Vars_forttWDiff_25 --Fs {{P}}/1_recl   --xf GGHZZ4L_new,qqHZZ4L,tWll,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW ".format(ORIGIN=ORIGIN, YEAR=YEAR)
+T2L="-P {ORIGIN}/NanoTrees_UL_v2_060422_newfts_skim2lss/{YEAR} --FMCs {{P}}/0_jmeUnc_v1  --FMCs {{P}}/2_btagSF_fixedWP/ --FMCs {{P}}/2_scalefactors_lep/ --Fs {{P}}/4_evtVars --FMCs {{P}}/6_ttWforlepton --Fs {{P}}/7_Vars_forttWDiff_25 --Fs {{P}}/1_recl   --xf GGHZZ4L_new,qqHZZ4L,tWll,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW ".format(ORIGIN=ORIGIN, YEAR=YEAR)
 
 if "gen" in OTHER:
    T2L= "-P {ORIGIN}/NanoTrees_UL_v2_gennoskim/{YEAR} ".format(ORIGIN=ORIGIN, YEAR=YEAR)
@@ -49,7 +53,7 @@ if "gen" in OTHER:
 T3L=T2L
 T4L=T2L
 
-SYSTS="--unc ttW-multilepton/systsUnc.txt --amc --xu CMS_ttWl_WZ_lnU,CMS_ttWl_ZZ_lnU,QCDscale_ttW,CMS_ttHl_TTW_lnU,CMS_ttHl_TTZ_lnU"
+SYSTS="--unc ttW_multilepton/systsUnc.txt --amc --xu CMS_ttWl_WZ_lnU,CMS_ttWl_ZZ_lnU,QCDscale_ttW,CMS_ttHl_TTW_lnU,CMS_ttHl_TTZ_lnU"
 MCAOPTION=""
 MCAOPTION=""
 ASIMOV="--asimov signal"
@@ -60,7 +64,7 @@ if 'unblind' in OTHER:
     ASIMOV=""
 
 print "We are using the asimov dataset"
-OPTIONS="{OPTIONS} -L ttH-multilepton/functionsTTH.cc --mcc ttW-multilepton/lepchoice-ttW-FO.txt --mcc ttW-multilepton/mcc-METchoice-prefiring.txt {PROMPTSUB} --neg   --threshold 0.01 {ASIMOV} ".format(OPTIONS=OPTIONS,PROMPTSUB=PROMPTSUB,ASIMOV=ASIMOV) # neg necessary for subsequent rebin #
+OPTIONS="{OPTIONS} -L ttH-multilepton/functionsTTH.cc --mcc ttW_multilepton/lepchoice-ttW-FO.txt --mcc ttW_multilepton/mcc-METchoice-prefiring.txt {PROMPTSUB} --neg   --threshold 0.01 {ASIMOV} ".format(OPTIONS=OPTIONS,PROMPTSUB=PROMPTSUB,ASIMOV=ASIMOV) # neg necessary for subsequent rebin #
 CATPOSTFIX=""
 MCASUFFIX="mcdata-frdata"
 
@@ -165,6 +169,13 @@ elif OBSERVABLE == "HT":
         FUNCTION_2L="Gen_HT"
         CATBINS    ="[0.0,200.,400.,600.,1000.]"
         SYSTS = ""
+elif OBSERVABLE == "lep2_pt":
+    FUNCTION_2L="LepGood2_conePt"
+    CATBINS    = "[20,22.5,25,27.5,30,32.5,35,37.5,40,42.5,45,55,62.5,70,85,100]"
+    if "gen" in OTHER:
+        FUNCTION_2L="GenDressedLepton_pt[iDressSelLep[1]]"
+        CATBINS    ="[20,25,30,35,40,45,55,70,100]"
+        SYSTS = ""
 
 elif OBSERVABLE == "asymmetry":
     FUNCTION_3L="ttW_charge_asymmetry_v4(hasOSSF,nJet30, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30, mZ_OSSF)"
@@ -181,16 +192,16 @@ if REGION == "2lss":
         OPT_2L = OPT_2L.replace('-W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_2lss"','')
     CATPOSTFIX=""
 
-    TORUN='''python {SCRIPT} {DOFILE} ttW-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}{OBSERVABLE}.txt ttW-multilepton/2lss_tight.txt "{FUNCTION_2L}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttW_2lss_0tau_{GEN}{OBS}_{YEAR} --year {YEAR}  '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, OBSERVABLE="-"+OBSERVABLE, FUNCTION_2L=FUNCTION_2L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_2L=OPT_2L, YEAR=YEAR, GEN=GENN,OBS=OBSERVABLE)
+    TORUN='''python {SCRIPT} {DOFILE} ttW_multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}{OBSERVABLE}.txt ttW_multilepton/2lss_tight.txt "{FUNCTION_2L}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttW_2lss_0tau_{GEN}{OBS}_{YEAR} --year {YEAR}  '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, OBSERVABLE="-"+OBSERVABLE, FUNCTION_2L=FUNCTION_2L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_2L=OPT_2L, YEAR=YEAR, GEN=GENN,OBS=OBSERVABLE)
     if "gen" in OTHER:
-        MCA = '''ttW-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}{OBSERVABLE}.txt'''.format(MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, OBSERVABLE="-"+OBSERVABLE)
-        TORUN = TORUN.replace(MCA,"ttW-multilepton/mca-includes/mca-2lss-sigprompt-gen.txt")
-        TORUN = TORUN.replace("ttW-multilepton/2lss_tight.txt","ttW-multilepton/2lss_fiducial.txt")
+        MCA = '''ttW_multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}{OBSERVABLE}.txt'''.format(MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, OBSERVABLE="-"+OBSERVABLE)
+        TORUN = TORUN.replace(MCA,"ttW_multilepton/mca-includes/mca-2lss-sigprompt-gen.txt")
+        TORUN = TORUN.replace("ttW_multilepton/2lss_tight.txt","ttW_multilepton/2lss_fiducial.txt")
     #os.system( submit.format(command=TORUN))
     print( submit.format(command=TORUN))
 
 
 if REGION == "3l":
     OPT_3L='{T2L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_3l*triggerSF_3l"'.format(T2L=T2L, OPTIONS=OPTIONS, YEAR=YEAR)
-    TORUN='''python {SCRIPT} {DOFILE} ttW-multilepton/mca-3l-mcdata-frdata-leptoncharge.txt ttW-multilepton/3l_tight.txt "{FUNCTION_3L}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttW_3l_{OBS}_{YEAR} --year {YEAR}{CATPOSTFIX} '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_3L=FUNCTION_3L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_3L=OPT_3L, YEAR=YEAR, OBS=OBSERVABLE, CATPOSTFIX=CATPOSTFIX)
+    TORUN='''python {SCRIPT} {DOFILE} ttW_multilepton/mca-3l-mcdata-frdata-leptoncharge.txt ttW_multilepton/3l_tight.txt "{FUNCTION_3L}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttW_3l_{OBS}_{YEAR} --year {YEAR}{CATPOSTFIX} '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_3L=FUNCTION_3L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_3L=OPT_3L, YEAR=YEAR, OBS=OBSERVABLE, CATPOSTFIX=CATPOSTFIX)
     print submit.format(command=TORUN)

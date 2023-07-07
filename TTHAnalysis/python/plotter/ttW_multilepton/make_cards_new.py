@@ -1,4 +1,5 @@
 import os, sys
+from differential_variables import all_vars
 nCores=16
 
 
@@ -74,117 +75,19 @@ if OBSERVABLE == "inclusive":
     FUNCTION_2L="0"
     CATBINS    ="[-0.5,0.5]"
 
-elif OBSERVABLE == "njets":
-    FUNCTION_2L="nJet25"
-    if "gen" in OTHER:
-        FUNCTION_2L="nDressSelJet"
-        SYSTS = ""
-    CATBINS    ="[2.5,3.5,4.5,5.5,6.5,7.5]"
-
-elif OBSERVABLE == "nbjets":
-    FUNCTION_2L="nBJetLoose25"
-    if "gen" in OTHER:
-        FUNCTION_2L="nDressBSelJet"
-        SYSTS = ""
-    CATBINS    ="[0.5,1.5,2.5,3.5]"
-
-elif OBSERVABLE == "lep1_pt":
-    FUNCTION_2L="LepGood1_conePt"
-    CATBINS    = "[25,40,50,75,100,125,150,187,225,350,500]"
-    if "gen" in OTHER:
-        FUNCTION_2L="GenDressedLepton_pt[iDressSelLep[0]]"
-        CATBINS    ="[25,50,100,150,225,500]"
-        SYSTS = ""
-
-elif OBSERVABLE == "dR_ll":
-    FUNCTION_2L="deltaR(LepGood1_eta,LepGood1_phi,LepGood2_eta,LepGood2_phi)"
-    CATBINS    = "[0.75,1.5,2.0,2.5,3.0,3.5,4.5,5]"
-    if "gen" in OTHER:
-        FUNCTION_2L="deltaR(GenDressedLepton_eta[iDressSelLep[0]],GenDressedLepton_phi[iDressSelLep[0]],GenDressedLepton_eta[iDressSelLep[1]],GenDressedLepton_phi[iDressSelLep[1]])"
-        CATBINS    ="[0.0,1.5,2.5,3.5,5]"
-        SYSTS = ""
-
-elif OBSERVABLE == "lep1_eta":
-    FUNCTION_2L="abs(LepGood1_eta)"
-    CATBINS    = "[0.,0.45,0.9,1.1,1.2,1.85,2.5]"
-    if "gen" in OTHER:
-        FUNCTION_2L="abs(GenDressedLepton_eta[iDressSelLep[0]])"
-        CATBINS    ="[0.,0.9,1.2,2.5]"
-        SYSTS = ""
-
-elif OBSERVABLE == "max_eta":
-    FUNCTION_2L="max(LepGood1_eta,LepGood2_eta)"
-    CATBINS    = "[0.0,0.45,0.75,1.25,1.5,1.75,2.0,2.25,2.5]"
-    if "gen" in OTHER:
-        FUNCTION_2L="max(GenDressedLepton_eta[iDressSelLep[0]],GenDressedLepton_eta[iDressSelLep[1]])"
-        CATBINS    ="[0.0,0.75,1.5,2.0,2.5]"
-        SYSTS = ""
-
-
-elif OBSERVABLE == "jet1_pt":
-    FUNCTION_2L="JetSel_Recl_pt[0]"
-    CATBINS    ="[25,40,50,75,100,125,150,187,225,350,500]"
-    if "gen" in OTHER:
-        FUNCTION_2L="GenJet_pt[iDressSelJet[0]]"
-        CATBINS    ="[25,50,100,150,225,500]"
-        SYSTS = ""
-
-elif OBSERVABLE == "deta_llss":
-    FUNCTION_2L="abs(LepGood1_eta-LepGood2_eta)"
-    CATBINS    ="[0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4]"
-    if "gen" in OTHER:
-        FUNCTION_2L="abs(GenDressedLepton_eta[iDressSelLep[0]]-GenDressedLepton_eta[iDressSelLep[1]])"
-        CATBINS    ="[0.0,0.4,0.8,1.2,1.6,2.0,2.4]"
-        SYSTS = ""
-
-
-elif OBSERVABLE == "dR_lbmedium":
-    FUNCTION_2L="dR_lbmedium"
-    CATBINS    ="[0, 0.5, 1.0,1.25, 1.5,1.75, 2.0, 2.5, 3.0]"
-    if "gen" in OTHER:
-        FUNCTION_2L="dR_DressBSelJet_DressSelLep1"
-        CATBINS    ="[0, 1.0, 1.5, 2.0, 3.0]"
-        SYSTS = ""
-
-elif OBSERVABLE == "dR_lbloose":
-    FUNCTION_2L="dR_lbloose"
-    CATBINS    ="[0, 0.5, 1.0,1.25, 1.5,1.75, 2.0, 2.5, 3.0]"
-    if "gen" in OTHER:
-        FUNCTION_2L="dR_DressBSelJet_DressSelLep1"
-        CATBINS    ="[0, 1.0, 1.5, 2.0, 3.0]"
-        SYSTS = ""
-
-elif OBSERVABLE == "mindr_lep1_jet25":
-    FUNCTION_2L="mindr_lep1_jet25"
-    CATBINS    ="[0, 0.5, 1.0,1.25, 1.5,1.75, 2.0, 2.5, 3.0]"
-    if "gen" in OTHER:
-        FUNCTION_2L="mindr_DressSelLep1_DressSelJet"
-        CATBINS    ="[0, 1.0, 1.5, 2.0, 3.0]"
-        SYSTS = ""
-
-elif OBSERVABLE == "HT":
-    FUNCTION_2L="htJet25j_Recl"
-    CATBINS    ="[0.0,100,200.,300.,400.,500.,600.,800.,1000.]"
-    if "gen" in OTHER:
-        FUNCTION_2L="Gen_HT"
-        CATBINS    ="[0.0,200.,400.,600.,1000.]"
-        SYSTS = ""
-elif OBSERVABLE == "lep2_pt":
-    FUNCTION_2L="LepGood2_conePt"
-    CATBINS    = "[20,22.5,25,27.5,30,32.5,35,37.5,40,42.5,45,55,62.5,70,85,100]"
-    if "gen" in OTHER:
-        FUNCTION_2L="GenDressedLepton_pt[iDressSelLep[1]]"
-        CATBINS    ="[20,25,30,35,40,45,55,70,100]"
-        SYSTS = ""
-
 elif OBSERVABLE == "asymmetry":
     FUNCTION_3L="ttW_charge_asymmetry_v4(hasOSSF,nJet30, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30, mZ_OSSF)"
     CATBINS    ="[-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.5,25.5,26.5,27.5,28.5,29.5,30.5,31.5]"
     CATPOSTFIX=" -E ^met "
+else:
+    if "gen" in OTHER:
+        GENN = "Gen_"
+        FUNCTION_2L=all_vars[OBSERVABLE].FUNCTION_2L
+    else:
+        FUNCTION_2L=all_vars[OBSERVABLE].FUNCTION_2Lreco
+    CATBINS=all_vars[OBSERVABLE].CATBINS
 
 GENN = ""
-if "gen" in OTHER:
-   GENN = "Gen_"
 
 if REGION == "2lss":
     OPT_2L='{T2L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_2lss"'.format(T2L=T2L, OPTIONS=OPTIONS, YEAR=YEAR)

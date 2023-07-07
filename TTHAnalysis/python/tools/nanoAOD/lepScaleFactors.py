@@ -110,19 +110,8 @@ class lepScaleFactors(Module):
 
         for var in ',_up,_dn'.split(","):
             if len(leps)>=3:
-                comb = abs(leps[0].pdgId) + abs(leps[1].pdgId) + abs(leps[2].pdgId)
-                if (comb == 33): channel = 'sf_3l_eee'
-                if (comb == 35): channel = 'sf_3l_eem'
-                if (comb == 37): channel = 'sf_3l_emm'
-                if (comb == 39): channel = 'sf_3l_mmm'
-
-                hist_3l=self.triggerSF['%s %s'%(year,channel)]
-                thebin=hist_3l.FindBin( min(299.,leps[0].pt), abs(leps[0].eta ) )
                 shift= 0 if var == '' else 1 if 'up' in var else -1 
-                if channel == 'sf_3l_eee' and year == '2016APV' and leps[0].pt < 80 and abs(leps[0].eta) > 1.4:
-                    scale_factor=1
-                else:
-                    scale_factor=hist_3l.GetBinContent(thebin) + shift*hist_3l.GetBinError(thebin)
+                scale_factor=1+shift*0.02
                 self.out.fillBranch('triggerSF_3l%s'%var, scale_factor)
 
             else:

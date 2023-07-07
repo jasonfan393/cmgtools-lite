@@ -71,6 +71,8 @@ MCASUFFIX="mcdata-frdata"
 
 DOFILE = ""
 
+GENN = ""
+
 if OBSERVABLE == "inclusive":
     FUNCTION_2L="0"
     CATBINS    ="[-0.5,0.5]"
@@ -87,7 +89,9 @@ else:
         FUNCTION_2L=all_vars[OBSERVABLE].FUNCTION_2Lreco
     CATBINS=all_vars[OBSERVABLE].CATBINS
 
-GENN = ""
+if "gen" in OTHER:
+    SYSTS=""
+
 
 if REGION == "2lss":
     OPT_2L='{T2L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_2lss"'.format(T2L=T2L, OPTIONS=OPTIONS, YEAR=YEAR)

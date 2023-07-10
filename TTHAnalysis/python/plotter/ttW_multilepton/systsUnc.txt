@@ -284,6 +284,8 @@ QCDscale_tHW   : $tHW  : .* : normAsymm : 0.939 : 1.046
 QCDscale_ttWW  : TTWW  : .* : normAsymm : 0.891 : 1.081
 QCDscale_WH    : $WH   : .* : normAsymm : 0.950 : 1.070
 QCDscale_ZH    : $ZH   : .* : normAsymm : 0.962 : 1.031
+QCDscale_WZ    : $WZ   : .* : normAsymm : 0.968 : 1.039
+QCDscale_ZZ    : $ZZ   : .* : normAsymm : 0.982 : 1.02
 pdf_Higgs_ttH  : $ttH  : .* : normSymm : 1.036
 pdf_gg         : TTZ   : .* : normSymm : 0.966
 pdf_qg	       : $tHq  : .* : normSymm : 1.01
@@ -292,6 +294,8 @@ pdf_qqbar      : $TTW   : .* : normSymm : 1.04
 pdf_TTWW       : TTWW  : .* : normSymm : 1.03
 pdf_WH	       : $WH   : .* : normSymm : 1.019
 pdf_ZH	       : $ZH   : .* : normSymm : 1.016
+pdf_WZ	       : $WZ   : .* : normSymm : 1.014
+pdf_ZZ	       : $ZZ   : .* : normSymm : 1.015
 
 BR_hbb         : ttH$  	       : .* : normSymm : 1.0126 # in this analysis un-splitted ttH sample is TTHnobb
 BR_hbb         : WH$  	       : .* : normSymm : 1.0126

@@ -26,6 +26,9 @@ TTW_{OBSERVABLE}_bin{binno}+     : TTWJetsToLNu_EWK_5f_NLO_withGen : xsec*1.44 :
     for i,(binlow,binhigh) in enumerate(zip(binning, binning[1:])):
         signal_mca += template.format(binno=i, cutlow=binlow, cuthigh=binhigh, OBSERVABLE=OBSERVABLE, FUNCTION_2L=all_vars[OBSERVABLE].FUNCTION_2L)
 
+    signal_mca+='''TTW_ooa+     : TTWToLNu_fxfx_withGen : 0.2357: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && !((nDressSelLep > 1) && (GenDressedLepton_pdgId[iDressSelLep[0]]*GenDressedLepton_pdgId[iDressSelLep[1]]>0) && (GenDressedLepton_pt[iDressSelLep[0]] > 25 && GenDressedLepton_pt[iDressSelLep[1]] >  20) && (nDressSelJet >= 3) && (nDressBSelJet >=1)) ;  FillColor=ROOT.kGreen-5, Label="ttW (<2 leps)", FriendsSimple="{P}/A_ttW_diff_info_extended/"  
+    TTW_ooa+     : TTWJetsToLNu_EWK_5f_NLO_withGen : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && !((nDressSelLep > 1) && (GenDressedLepton_pdgId[iDressSelLep[0]]*GenDressedLepton_pdgId[iDressSelLep[1]]>0) && (GenDressedLepton_pt[iDressSelLep[0]] > 25 && GenDressedLepton_pt[iDressSelLep[1]] >  20) && (nDressSelJet >= 3) && (nDressBSelJet >=1)) ; FillColor=ROOT.kGreen-5, Label="ttW (<2 leps)", FriendsSimple="{P}/A_ttW_diff_info_extended/" \n'''
+
     outf2=open("ttW_multilepton/mca-includes/mca-2lss-sigprompt-{OBSERVABLE}.txt".format(OBSERVABLE=OBSERVABLE),'w')
     outf2.write( signal_mca )
     outf2.close()

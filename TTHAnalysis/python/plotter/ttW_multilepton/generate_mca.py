@@ -20,10 +20,8 @@ incl_data : + ; IncludeMca="ttW_multilepton/mca-includes/mca-data.txt"'''
 TTW_{OBSERVABLE}_bin{binno}+     : TTWJetsToLNu_EWK_5f_NLO_withGen : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && ({FUNCTION_2L} > {cutlow}) && ({FUNCTION_2L} < {cuthigh}) && (nDressSelLep > 1) && (GenDressedLepton_pdgId[iDressSelLep[1]]*GenDressedLepton_pdgId[iDressSelLep[1]]>0) && (GenDressedLepton_pt[iDressSelLep[1]] > 25 && GenDressedLepton_pt[iDressSelLep[1]] >  20) && (nDressSelJet >= 3) && (nDressBSelJet >=1) ; FillColor=ROOT.kGreen-5   , Label="{cutlow} < ttW {OBSERVABLE}  < {cuthigh}", FillStyle=3022,  FriendsSimple="{{P}}/A_ttW_diff_info_extended_25gev/"\n'''
     
     signal_mca=""
-    nbin = 0
-    for i,(binlow,binhigh) in enumerate(zip(binning, binning[1:-1])):
 
-        nbin = i
+    for i,(binlow,binhigh) in enumerate(zip(binning, binning[1:-1])):
         signal_mca += template.format(binno=i, cutlow=binlow, cuthigh=binhigh, OBSERVABLE=OBSERVABLE, FUNCTION_2L=all_vars[OBSERVABLE].FUNCTION_2L)
     signal_mca+='''TTW_{OBSERVABLE}_bin{binno}+     : TTWToLNu_fxfx_withGen : 0.2269 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && ({FUNCTION_2L} > {cuthigh}) && (nDressSelLep > 1) && (GenDressedLepton_pdgId[iDressSelLep[1]]*GenDressedLepton_pdgId[iDressSelLep[1]]>0) && (GenDressedLepton_pt[iDressSelLep[1]] > 25 && GenDressedLepton_pt[iDressSelLep[1]] >  20) && (nDressSelJet >= 3) && (nDressBSelJet >=1) ; FillColor=ROOT.kGreen-5   , Label="{cutlow} < ttW {OBSERVABLE} < {cuthigh}", FillStyle=3022,  FriendsSimple="{{P}}/A_ttW_diff_info_extended_25gev/"
 TTW_{OBSERVABLE}_bin{binno}+     : TTWJetsToLNu_EWK_5f_NLO_withGen : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && ({FUNCTION_2L} > {cuthigh}) && (nDressSelLep > 1) && (GenDressedLepton_pdgId[iDressSelLep[1]]*GenDressedLepton_pdgId[iDressSelLep[1]]>0) && (GenDressedLepton_pt[iDressSelLep[1]] > 25 && GenDressedLepton_pt[iDressSelLep[1]] >  20) && (nDressSelJet >= 3) && (nDressBSelJet >=1) ; FillColor=ROOT.kGreen-5   , Label="{cutlow} < ttW {OBSERVABLE}  < {cuthigh}", FillStyle=3022,  FriendsSimple="{{P}}/A_ttW_diff_info_extended_25gev/"\n'''.format(binno=i+1, cutlow=binlow, cuthigh=binning[-2], OBSERVABLE=OBSERVABLE, FUNCTION_2L=all_vars[OBSERVABLE].FUNCTION_2L)

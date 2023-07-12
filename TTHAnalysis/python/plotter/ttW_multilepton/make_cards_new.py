@@ -1,6 +1,6 @@
 import os, sys
 from differential_variables import all_vars
-nCores=16
+nCores=10
 
 
 if 'psi' in os.environ['HOSTNAME']:       
@@ -38,14 +38,13 @@ else:
 
 #print "Normalizing to {LUMI}/fb".format(LUMI=LUMI);
 OPTIONS=" --tree NanoAOD --s2v -j {J} -l {LUMI} -f --WA prescaleFromSkim --split-factor=-1 ".format(LUMI=LUMI,J=nCores)
-os.system("test -d cards/{OUTNAME} || mkdir -p cards/{OUTNAME}".format(OUTNAME=OUTNAME))
 OPTIONS="{OPTIONS} --od cards/{OUTNAME} ".format(OPTIONS=OPTIONS, OUTNAME=OUTNAME)
 if "gen" in OTHER:
    OPTIONS = OPTIONS.replace("--WA prescaleFromSkim","")
    ltext = "-l {LUMI}".format(LUMI=LUMI)
 
 
-T2L="-P {ORIGIN}/NanoTrees_UL_v2_060422_newfts_skim2lss/{YEAR} --FMCs {{P}}/0_jmeUnc_v1  --FMCs {{P}}/2_btagSF_fixedWP/ --FMCs {{P}}/2_scalefactors_lep/ --Fs {{P}}/4_evtVars --FMCs {{P}}/6_ttWforlepton --Fs {{P}}/7_Vars_forttWDiff_25 --Fs {{P}}/1_recl   --xf GGHZZ4L_new,qqHZZ4L,tWll,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW ".format(ORIGIN=ORIGIN, YEAR=YEAR)
+T2L="-P {ORIGIN}/NanoTrees_UL_v2_060422_skim2lss_newfts/{YEAR} --FMCs {{P}}/0_jmeUnc_v1  --FMCs {{P}}/2_btagSF_fixedWP/ --FMCs {{P}}/2_scalefactors_lep/ --Fs {{P}}/4_evtVars --FMCs {{P}}/6_ttWforlepton --Fs {{P}}/7_Vars_forttWDiff_25 --Fs {{P}}/1_recl   --xf GGHZZ4L_new,qqHZZ4L,tWll,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW ".format(ORIGIN=ORIGIN, YEAR=YEAR)
 
 if "gen" in OTHER:
    T2L= "-P {ORIGIN}/NanoTrees_UL_v2_gennoskim/{YEAR} ".format(ORIGIN=ORIGIN, YEAR=YEAR)
@@ -85,9 +84,11 @@ else:
     if "gen" in OTHER:
         GENN = "Gen_"
         FUNCTION_2L=all_vars[OBSERVABLE].FUNCTION_2L
+        CATBINS=all_vars[OBSERVABLE].CATBINS_Gen
+
     else:
         FUNCTION_2L=all_vars[OBSERVABLE].FUNCTION_2Lreco
-    CATBINS=all_vars[OBSERVABLE].CATBINS
+        CATBINS=all_vars[OBSERVABLE].CATBINS
 
 if "gen" in OTHER:
     SYSTS=""

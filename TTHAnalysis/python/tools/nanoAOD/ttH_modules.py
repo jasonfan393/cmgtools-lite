@@ -468,6 +468,14 @@ from CMGTools.TTHAnalysis.tools.higgsDiffGenTTH import higgsDiffGenTTH
 from CMGTools.TTHAnalysis.tools.higgsDiffRecoTTH import higgsDiffRecoTTH, higgsDiffRecoTTH_noWmassConstraint
 from CMGTools.TTHAnalysis.tools.higgsDiffCompTTH import higgsDiffCompTTH, higgsDiffCompTTH_noWmassConstraint
 from CMGTools.TTHAnalysis.tools.higgsDiffRegressionTTH import higgsDiffRegressionTTH
+from CMGTools.TTHAnalysis.tools.higgsDiffRegressionTTH_2lss1tau import higgsDiffRegressionTTH_2lss1tau
+from CMGTools.TTHAnalysis.tools.ttH_2lss_dnn_pt_regression import Class_ttH_2lss_dnn_pt_regression
+from CMGTools.TTHAnalysis.tools.ttH_2lss1tau_ptregression import ttH_2lss1tau_ptregression
+
+ttH_2lss_dnn_pt_regression = lambda : Class_ttH_2lss_dnn_pt_regression(label='Hreco_',
+                                                                       variations=jevariations,
+                                                         btagDeepCSVveto = 'M')
+pt_regression_2lss1tau_allvars = lambda : ttH_2lss1tau_ptregression(variations=jevariations)
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.ttH_genericTreeVarForSR import ttH_genericTreeVarForSR
 

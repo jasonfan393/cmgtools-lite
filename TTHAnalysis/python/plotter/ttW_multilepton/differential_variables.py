@@ -61,7 +61,7 @@ for OBSERVABLE in ["njets","nbjets","lep1_pt","lep2_pt","dR_ll","lep1_eta","max_
     elif OBSERVABLE == "deta_llss":
         FUNCTION_2L="abs(GenDressedLepton_eta[iDressSelLep[0]]-GenDressedLepton_eta[iDressSelLep[1]])"
         FUNCTION_2Lreco="abs(LepGood1_eta-LepGood2_eta)"
-        CATBINS    =" [0,0.25,0.5,0.75,1.10,1.5,2.1,2.5]"
+        CATBINS    ="[0,0.25,0.5,0.75,1.10,1.5,2.1,2.5]"
         CATBINS_Gen    =" [0,0.5,1.10,2.1,2.5]"
     
     

@@ -37,8 +37,8 @@ for OBSERVABLE in ["njets","nbjets","lep1_pt","lep2_pt","dR_ll","lep1_eta","max_
     elif OBSERVABLE == "dR_ll":
         FUNCTION_2L="deltaR(GenDressedLepton_eta[iDressSelLep[0]],GenDressedLepton_phi[iDressSelLep[0]],GenDressedLepton_eta[iDressSelLep[1]],GenDressedLepton_phi[iDressSelLep[1]])"
         FUNCTION_2Lreco="deltaR(LepGood1_eta,LepGood1_phi,LepGood2_eta,LepGood2_phi)"
-        CATBINS    ="[0.0,1.5,2.5,3.5,5]"
-        CATBINS_Gen    ="[0.0,1.5,2.5,3.5,5]"
+        CATBINS    ="[0, 1.0, 1.5, 2.0, 2.5, 3.0,3.5,10.0]"
+        CATBINS_Gen    =CATBINS
     
     elif OBSERVABLE == "lep1_eta":
         FUNCTION_2L="abs(GenDressedLepton_eta[iDressSelLep[0]])"
@@ -74,20 +74,20 @@ for OBSERVABLE in ["njets","nbjets","lep1_pt","lep2_pt","dR_ll","lep1_eta","max_
     elif OBSERVABLE == "dR_lbloose":
         FUNCTION_2L="dR_DressBSelJet_DressSelLep1"
         FUNCTION_2Lreco="dR_lbloose"
-        CATBINS    ="[0, 1.0, 1.5, 2.0, 3.0]"
-        CATBINS_Gen    ="[0, 1.0, 1.5, 2.0, 3.0]"
+        CATBINS    ="[0, 1.0, 1.5, 2.0, 2.5, 3.0,3.5,4.0]"
+        CATBINS_Gen    =CATBINS
     
     elif OBSERVABLE == "mindr_lep1_jet25":
         FUNCTION_2L="mindr_DressSelLep1_DressSelJet"
         FUNCTION_2Lreco="mindr_lep1_jet25"
-        CATBINS    ="[0, 1.0, 1.5, 2.0, 3.0]"
-        CATBINS_Gen    ="[0, 1.0, 1.5, 2.0, 3.0]"
+        CATBINS    ="[0, 0.75,1.0,1.25, 1.5,1.75, 2.0,2.5, 3.0]"
+        CATBINS_Gen    =CATBINS
     
     elif OBSERVABLE == "HT":
         FUNCTION_2L="Gen_HT"
         FUNCTION_2Lreco="htJet25j_Recl"
-        CATBINS    ="[0.0,200.,400.,600.,1000.]"
-        CATBINS_Gen    ="[0.0,200.,400.,600.,1000.]"
+        CATBINS    ="[0.0,200,300.,375.,450,525,600.,800,2000.]"
+        CATBINS_Gen    =CATBINS
 
     all_vars[OBSERVABLE]=Observable(FUNCTION_2L, FUNCTION_2Lreco,CATBINS)
 

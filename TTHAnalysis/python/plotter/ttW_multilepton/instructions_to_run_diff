@@ -30,3 +30,5 @@ ttW_multilepton/makeDifferentialMatix.py workspace.root fitdiagnostics.root genD
 
 
 
+# impact plots 
+python ttW_multilepton/getImpacts.py --inpath cards/13jul/lep1_pt --variable lep1_pt --verbose -j 10

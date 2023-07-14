@@ -6,13 +6,13 @@ import os,sys
 folder = sys.argv[1]
 GenInfo=folder+"/"+sys.argv[2]
 var = sys.argv[3]
-Fit=folder+"/fitDiagnosticsnominal.root"
-fit_st = folder+"/fitDiagnosticsfreezing.root"
-
+Fit=folder+"/fitDiagnosticsnominal_"+var+".root"
+fit_st = folder+"/fitDiagnosticsfreezing_"+var+".root"
+print(folder+"/fitDiagnosticsfreezing_"+var+".root")
 
 lumi = 16.8+19.5+41.4+59.7#use the lumi used to normalized the gen histos (fb-1)
 
-varname = {"lep1_pt":("p_{T} (lep1)"),"lep1_eta":("#eta (lep1)"),"njets":("N Jet"),"nbjets":("N b-tag"),"jet1_pt":("p_{T} (jet)"),"deta_llss":("#Delta #eta (ll)"),"HT":("HT"),"dR_ll":("#Delta R (ll)"),"max_eta":("max(#eta) (ll)")}
+varname = {"lep1_pt":("p_{T} (lep1)"),"lep2_pt":("p_{T} (lep2)"),"lep1_eta":("#eta (lep1)"),"njets":("N Jet"),"nbjets":("N b-tag"),"jet1_pt":("p_{T} (jet)"),"deta_llss":("#Delta #eta (ll)"),"HT":("HT"),"dR_ll":("#Delta R (ll)"),"max_eta":("max(#eta) (ll)"),"dR_lbloose":("#Delta R (l bloose)"),"dR_lbmedium":("#Delta R (l medium)"),"mindr_lep1_jet25":("min (#Delta R (lj)) "),"HT":("HT ")}
 
 
 r.gROOT.ProcessLine(".x tdrstyle.cc")
@@ -125,6 +125,7 @@ tf2=r.TFile.Open(GenInfo+"_2017.root")
 tf3=r.TFile.Open(GenInfo+"_2018.root")
 reference = Get_Genhisto(tf,tf1,tf2,tf3)
 
+
 tf_fit = r.TFile.Open(str(Fit))
 tf_fitst = r.TFile.Open(str(fit_st))
 #lim=tf_fit.Get("limit")
@@ -140,19 +141,23 @@ unc = r.TGraphAsymmErrors(len(reference))
 results = {}
 results_st = {}
 count =0
-
+print("g")
+print(reference.GetNbinsX(),fitResult.floatParsFinal())
+#print("hey:",fitResult_stat.floatParsFinal().Print())
+#print("hey:",fitResult.floatParsFinal().Print())
 for v in fitResult.floatParsFinal():
         if "r_TTW" in v.GetName():
             count += 1
-            print(v)
+            print(v.GetName(), count)
             results[v.GetName()] = [ v.getVal(), abs(v.getErrorLo()), v.getErrorHi(), v.getError() ]
             if count == reference.GetNbinsX(): break
 count2 =0
 
-print(fitResult_stat.floatParsFinal())
+
 for v in fitResult_stat.floatParsFinal():
         if "r_TTW" in v.GetName():
             count2 += 1
+            print(v.GetName())
             results_st[v.GetName()] = [ v.getVal(), abs(v.getErrorLo()), v.getErrorHi(), v.getError() ]
             if count2 == reference.GetNbinsX(): break
 

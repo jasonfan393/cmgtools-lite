@@ -8,11 +8,12 @@ folder = sys.argv[1]
 GenInfo=folder+"/"+sys.argv[2]
 RecoInfo=folder+"/"+sys.argv[3]
 var = sys.argv[4]
-Fit=folder+"/fitDiagnosticsnominal.root"
-fit_st = folder+"/fitDiagnosticsfreezing.root"
+print(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
+Fit=folder+"/fitDiagnosticsnominal_"+var+".root"
+fit_st = folder+"/fitDiagnosticsfreezing_"+var+".root"
 
 lumi =200.68 #use the lumi used to normalized the gen histos (fb-1)
-varname = {"lep1_pt":("p_{T} (lep1)"),"lep1_eta":("#eta (lep1)"),"njets":("N Jet"),"nbjets":("N b-tag"),"jet1_pt":("p_{T} (jet)"),"deta_llss":("#Delta #eta (ll)"),"HT":("HT"),"dR_ll":("#Delta R (ll)"),"max_eta":("max(#eta) (ll)")}
+varname = {"lep1_pt":("p_{T} (lep1)"),"lep2_pt":("p_{T} (lep2)"),"lep1_eta":("#eta (lep1)"),"njets":("N Jet"),"nbjets":("N b-tag"),"jet1_pt":("p_{T} (jet)"),"deta_llss":("#Delta #eta (ll)"),"HT":("HT"),"dR_ll":("#Delta R (ll)"),"max_eta":("max(#eta) (ll)"),"dR_lbloose":("#Delta R (l bloose)"),"dR_lbmedium":("#Delta R (l medium)"),"mindr_lep1_jet25":("min (#Delta R (lj)) "),"HT":("HT ")}
 
 r.gROOT.ProcessLine(".x tdrstyle.cc")
 r.gStyle.SetOptStat(0)
@@ -124,8 +125,9 @@ pois_0 = results.keys()
 
 
 tf_reco=r.TFile.Open(str(RecoInfo))
-print(pois_0[0].replace("r","x"))
-reference_reco=tf_reco.Get(pois_0[0].replace("r","x"))
+print(RecoInfo)
+print(pois_0[0].replace("r_TTW","x_TTW"))
+reference_reco=tf_reco.Get(pois_0[0].replace("r_TTW","x_TTW"))
 
 #order pois by bin number
 index = []
@@ -133,7 +135,7 @@ for p in pois_0:
      i = re.sub(r'\D', "", p) #remove all items which are not numbers
      index.append(int(i))
 
-particle_bins = [p.replace("r_","") for _,p in sorted(zip(index,pois_0))]
+particle_bins = [p.replace("r_TTW","TTW") for _,p in sorted(zip(index,pois_0))]
 print(particle_bins)
 
 

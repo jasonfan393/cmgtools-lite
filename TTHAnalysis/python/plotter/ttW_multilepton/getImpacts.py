@@ -239,6 +239,7 @@ def plotImpacts(inputjson, outputname, outputpath, npois, doBlind, varName):
                 g_impacts_lo_list[iP].SetPointError(i, imp_list[iP][1] - imp_list[iP][0], 0, 0.5, 0.5)
                 max_impact_list[iP] = max(
                     max_impact_list[iP], abs(imp_list[iP][1] - imp_list[iP][0]), abs(imp_list[iP][2] - imp_list[iP][1]))
+            max_impact = max(max_impact_list)
                 
             col = nuisanceColours.get(tp, 2)
             if colour_groups is not None and len(pdata[p]['groups']) >= 1:
@@ -277,12 +278,12 @@ def plotImpacts(inputjson, outputname, outputpath, npois, doBlind, varName):
         h_impacts_list = []
         for iP in range(npois):
             pads[iP + 1].cd()
-            if max_impact_list[iP] == 0.: max_impact_list[iP] = 1E-6  # otherwise the plotting gets screwed up
+            if max_impact == 0.: max_impact = 1E-6  # otherwise the plotting gets screwed up
             h_impacts_list.append(r.TH2F("impacts_" + str(iP), 
                                          "impacts_" + str(iP), 
                                          6, 
-                                         -max_impact_list[iP] * 1.1, 
-                                         max_impact_list[iP] * 1.1, 
+                                         -max_impact * 1.1, 
+                                         max_impact* 1.1, 
                                          n_params, 
                                          0, 
                                          n_params))

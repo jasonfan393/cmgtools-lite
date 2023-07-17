@@ -541,7 +541,7 @@ ttW_diff_gen_info = lambda : selectParticleAndPartonInfo( dresslepSel_ = lambda 
 
 ) 
 
-#from CMGTools.TTHAnalysis.tools.nanoAOD.chargeAsymmetry import ChargeAsymmetry
+from CMGTools.TTHAnalysis.tools.nanoAOD.chargeAsymmetry import ChargeAsymmetry
                                                
 from CMGTools.TTHAnalysis.tools.nanoAOD.topRecoSemiLept import TopRecoSemiLept
 topRecoModule = lambda : TopRecoSemiLept(constraints=['kWHadMass','kWLepMass','kTopLepMass','kTopHadMass'])

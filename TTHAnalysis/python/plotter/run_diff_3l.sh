@@ -35,10 +35,10 @@ elif [[ $what == *"plot"* ]]; then
     echo ====== $var ===== 
     if [[ ! $submit == "do-submit" ]]; then 
         echo " >> Printing command "
-        python ttW_multilepton/ttW_plots.py $var all 3l_tight_data_frdata_diff_unc$extra --sP $var
+        python ttW_multilepton/ttW_plots.py $var all 3l_tight_data_frdata_diff_unc_blinddata$extra --sP $var
     else
         echo " >> Submitting command "
-        python ttW_multilepton/ttW_plots.py $var all 3l_tight_data_frdata_diff_unc$extra --sP $var | bash
+        python ttW_multilepton/ttW_plots.py $var all 3l_tight_data_frdata_diff_unc_blinddata$extra --sP $var | bash
         echo " >> Job submitted "
     fi
     echo ================== 

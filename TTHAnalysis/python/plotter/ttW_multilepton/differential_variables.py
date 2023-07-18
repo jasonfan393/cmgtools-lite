@@ -78,7 +78,7 @@ for OBSERVABLE in ["njets","nbjets","lep1_pt","lep2_pt","dR_ll","lep1_eta","max_
         CATBINS_Gen    ="[0, 1.0, 1.5, 2.0, 2.5, 3.0,3.5,4.0]"
     
     elif OBSERVABLE == "mindr_lep1_jet25":
-        FUNCTION_2L="mindr_DressSelLep1_DressSelJet"
+        FUNCTION_2L="mindr_DressSelLep_JetDressSel"
         FUNCTION_2Lreco="mindr_lep1_jet25"
         CATBINS    ="[0,0.375,0.75,0.875,1.0,1.125,1.25,1.375,1.5,1.625,1.75,1.875,2.0,2.25,2.5,2.75,3.0]"
         CATBINS_Gen    ="[0, 0.75,1.0,1.25, 1.5,1.75, 2.0,2.5, 3.0]"

@@ -110,9 +110,9 @@ class selectParticleAndPartonInfo(Module):
         otherVarsDict["Gen_HT"] =  sum([dressjets[i].pt for i in self.listdressjet] ) 
 
         if len(self.listdressjet)>1:
-           otherVarsDict["mindr_DressSelLep1_DressSelJet"] = min([deltaR(dressjets[i],dressleps[self.listdresslep[0]]) for i in self.listdressjet]) if nlep>=1 else 0;  
+           otherVarsDict["mindr_DressSelLep_JetDressSel"] = min([deltaR(dressjets[i],dressleps[self.listdresslep[0]]) for i in self.listdressjet]) if nlep>=1 else 0;  
         else:
-           otherVarsDict["mindr_DressSelLep1_DressSelJet"] = -99
+           otherVarsDict["mindr_DressSelLep_JetDressSel"] = -99
   
 
         if len(self.listdressBjet) >= 1 and nlep >=1 :

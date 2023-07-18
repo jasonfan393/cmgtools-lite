@@ -111,7 +111,7 @@ if REGION == "2lss" or REGION ==  "2lss_chargesplit":
         TORUN = TORUN.replace("ttW_multilepton/2lss_tight.txt","ttW_multilepton/2lss_fiducial.txt")
     if "chargesplit" in REGION:
         print( submit.format(command=TORUN.replace("chargebiname","_positive")+ " -E ^plusplus")) #tra-tra
-        print( submit.format(command=TORUN.replace("chargebiname","_negative")+ " -E ^minusminus"))
+        print( submit.format(command=TORUN.replace("chargebiname","_negative")+ " -E ^minusminus")) #malamente
         os.system(submit.format(command=TORUN.replace("chargebiname","_positive")+ " -E ^plusplus"))
         os.system(submit.format(command=TORUN.replace("chargebiname","_negative")+ " -E ^minusminus"))
 

@@ -6,12 +6,12 @@ def do_mca_for_var( OBSERVABLE ):
     OBSERVABLE_NAME = OBSERVABLE.replace("_%s"%REGION, "")
     
     full_mca_template='''incl_sig : + ; IncludeMca="ttW_multilepton/mca-includes/mca-{REGION}-sigprompt-{OBSERVABLE}.txt"
-incl_bkg : + ; IncludeMca="ttW_multilepton/mca-includes/mca-2lss-bkgprompt.txt"
-incl_convs     : + ; IncludeMca="ttW_multilepton/mca-includes/mca-2lss-convs.txt"
-incl_datafakes  : + ; IncludeMca="ttW_multilepton/mca-includes/mca-data.txt", FakeRate="ttW_multilepton/fakeRate-2lss-frdata.txt", Label="Non-prompt", FillColor=ROOT.kBlack, FillStyle=3005, PostFix='_fakes'
-incl_promptsub : + ; IncludeMca="ttW_multilepton/mca-includes/mca-2lss-sigprompt-inclusive.txt", FakeRate="ttW_multilepton/fakeRate-2lss-frdata.txt", PostFix='_promptsub', AddWeight="-1"
-incl_promptsub : + ; IncludeMca="ttW_multilepton/mca-includes/mca-2lss-bkgprompt.txt", FakeRate="ttW_multilepton/fakeRate-2lss-frdata.txt", PostFix='_promptsub', AddWeight="-1"
-incl_dataflips  : + ; IncludeMca="ttW_multilepton/mca-includes/mca-data-forFlips.txt", FakeRate="ttW_multilepton/flipRate-2lss-frdata.txt", Label="Charge mis-m.", FillColor=ROOT.kBlack, FillStyle=3006, PostFix='_flips'
+incl_bkg : + ; IncludeMca="ttW_multilepton/mca-includes/mca-{REGION}-bkgprompt.txt"
+incl_convs     : + ; IncludeMca="ttW_multilepton/mca-includes/mca-{REGION}-convs.txt"
+incl_datafakes  : + ; IncludeMca="ttW_multilepton/mca-includes/mca-data.txt", FakeRate="ttW_multilepton/fakeRate-{REGION}-frdata.txt", Label="Non-prompt", FillColor=ROOT.kBlack, FillStyle=3005, PostFix='_fakes'
+incl_promptsub : + ; IncludeMca="ttW_multilepton/mca-includes/mca-{REGION}-sigprompt-inclusive.txt", FakeRate="ttW_multilepton/fakeRate-{REGION}-frdata.txt", PostFix='_promptsub', AddWeight="-1"
+incl_promptsub : + ; IncludeMca="ttW_multilepton/mca-includes/mca-{REGION}-bkgprompt.txt", FakeRate="ttW_multilepton/fakeRate-{REGION}-frdata.txt", PostFix='_promptsub', AddWeight="-1"
+incl_dataflips  : + ; IncludeMca="ttW_multilepton/mca-includes/mca-data-forFlips.txt", FakeRate="ttW_multilepton/flipRate-{REGION}-frdata.txt", Label="Charge mis-m.", FillColor=ROOT.kBlack, FillStyle=3006, PostFix='_flips'
 
 incl_data : + ; IncludeMca="ttW_multilepton/mca-includes/mca-data.txt"'''
 

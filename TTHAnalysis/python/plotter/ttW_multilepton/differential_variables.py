@@ -45,11 +45,11 @@ for REGION in ["2lss", "3l"]:
             FUNCTION_2L="GenDressedLepton_pt[iDressSelLep[1]]"
             FUNCTION_2Lreco="LepGood2_conePt"
             if REGION == "2lss":
-                CATBINS    = "[25,50,70,85,100,120,150,200,300]"
-                CATBINS_Gen  ="[25,70,100,150,300]"
+                CATBINS    ="[15,30,45,70,100,200]"
+                CATBINS_Gen    ="[15,45,100,200]"
             elif REGION == "3l":
-                CATBINS    = "[25,50,70,85,100,120,150,200,300]"
-                CATBINS_Gen  ="[25,70,100,150,300]"
+                CATBINS    ="[15,30,45,70,100,200]"
+                CATBINS_Gen    ="[15,45,100,200]"
                 
         elif OBSERVABLE == "dR_ll":
             FUNCTION_2L="deltaR(GenDressedLepton_eta[iDressSelLep[0]],GenDressedLepton_phi[iDressSelLep[0]],GenDressedLepton_eta[iDressSelLep[1]],GenDressedLepton_phi[iDressSelLep[1]])"

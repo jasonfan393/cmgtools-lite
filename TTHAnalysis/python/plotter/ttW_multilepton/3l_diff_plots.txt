@@ -1,0 +1,9 @@
+# vim: syntax=sh
+### 3l differential plots (some are repeated but this is just to keep names consisten with cards and plots...)
+njets   :  nJet25                              : [1.5,2.5,3.5,4.5,5.5]; XTitle='N(jet\, p_{T} > 25 GeV)', XNDiv=5, xBinLabels="2\, 3\,4\,#geq 5",YMin=0, YMax=1000.
+nbjets  :  nBJetLoose25                        : [0.5,1.5,2.5]; XTitle='N(jet\, p_{T} > 25 GeV\, DeepFlavB)', XNDiv=5, xBinLabels="1\,#geq 2", YMin=0, YMax=1000
+jet1_pt :  JetSel_Recl_pt[0]                   : [25,40,50,75,100,125,150,187,225,350,500]; XTitle="Leading jet p_{T} (GeV)" ,YMin=0, YMax=400.
+HT      :  htJet25j_Recl                       : [25, 100, 150, 200, 250, 300, 350, 400, 450, 500, 1000]; XTitle="H_{T} (GeV)" ,YMin=0, YMax=300.
+pt3l    :  LepGood1_pt+LepGood2_pt+LepGood3_pt : [0.0, 100, 150, 200, 250, 300, 350, 400, 800]; XTitle="P_{T} (3l) (GeV)", YMin=0, YMax=600.
+m3l     :  mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi): [10, 50., 100., 150., 200., 250., 300., 350., 400., 600.]; XTitle="M_{3l} (GeV)", YMin=0, YMax=600
+lep1_pt : LepGood1_conePt				 : [25,40,50,75,100,125,150,187,225,350,500]; XTitle="Leading lepton cone p_{T} (GeV)"

@@ -23,7 +23,7 @@ class selectParticleAndPartonInfo(Module):
 
         self.branches = ["Top1_pt", "Top1_eta", "Top1_phi","Top1_mass", ("Top1_charge", "I"),
                          "Top2_pt", "Top2_eta", "Top2_phi","Top2_mass", ("Top2_charge", "I"),
-                         ("nDressBSelJet", "I"), ("nDressBSelLooseJet", "I"), ("DressBSelJet_pt", "F"),("dR_DressBSelJet_DressSelLep1","F"),("Gen_HT","F"),("mindr_DressSelLep1_DressSelJet","F")]
+                         ("nDressBSelJet", "I"), ("nDressBSelLooseJet", "I"), ("DressBSelJet_pt", "F"),("dR_DressBSelJet_DressSelLep1","F"),("Gen_HT","F"),("mindr_DressSelLep_JetDressSel","F")]
 
         self.vars_common       = ["pt", "eta", "phi", "mass"]
         self.vars_dressleptons = ["pdgId", "hasTauAnc"]
@@ -110,9 +110,9 @@ class selectParticleAndPartonInfo(Module):
         otherVarsDict["Gen_HT"] =  sum([dressjets[i].pt for i in self.listdressjet] ) 
 
         if len(self.listdressjet)>1:
-           otherVarsDict["mindr_DressSelLep1_DressSelJet"] = min([deltaR(dressjets[i],dressleps[self.listdresslep[0]]) for i in self.listdressjet]) if nlep>=1 else 0;  
+           otherVarsDict["mindr_DressSelLep_JetDressSel"] = min([deltaR(dressjets[i],dressleps[self.listdresslep[0]]) for i in self.listdressjet]) if nlep>=1 else 0;  
         else:
-           otherVarsDict["mindr_DressSelLep1_DressSelJet"] = -99
+           otherVarsDict["mindr_DressSelLep_JetDressSel"] = -99
   
 
         if len(self.listdressBjet) >= 1 and nlep >=1 :

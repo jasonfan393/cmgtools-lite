@@ -23,3 +23,6 @@ em: abs(LepGood1_pdgId) != abs(LepGood2_pdgId);         Disable=True
 mm: abs(LepGood1_pdgId)==13 && abs(LepGood2_pdgId)==13; Disable=True
 met:MET_pt>30 ; Disable=True
 1B: nBJetMedium25 == 1 ; Disable=True
+1b: nBJetLoose25 >= 1; Disable=True
+plusplus:    (LepGood1_charge+LepGood2_charge) > 0 ; Disable=True
+minusminus:  (LepGood1_charge+LepGood2_charge) < 0 ; Disable=True

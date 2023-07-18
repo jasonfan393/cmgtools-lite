@@ -5,8 +5,9 @@ import os,sys
 thelumi = 1. #use the lumi used to normalized the gen histos (fb-1)
 folder = sys.argv[1]
 GenInfo=folder+"/"+sys.argv[2]
-Fit=folder+"/fitDiagnosticsnominal.root"
 varn = sys.argv[3]
+Fit=folder+"/fitDiagnosticsnominal_"+varn+".root"
+
 ws=folder+"/ws_"+varn+".root"
 
 plotformat = (600,600)
@@ -26,8 +27,8 @@ tws = r.TFile.Open(ws)
 print("open")
 reference=tf.Get("x_TTW_inclusive")
 print("open")
-varname = {"lep1_pt":"p_{T} (lep)","njets":"N Jet","nbjets":"N b-tag","jet1_pt":"p_{T} (jet)","deta_llss":"#Delta #eta (ll)"}
 
+varname = {"lep1_pt":("p_{T} (lep1)"),"lep2_pt":("p_{T} (lep2)"),"lep1_eta":("#eta (lep1)"),"njets":("N Jet"),"nbjets":("N b-tag"),"jet1_pt":("p_{T} (jet)"),"deta_llss":("#Delta #eta (ll)"),"HT":("HT"),"dR_ll":("#Delta R (ll)"),"max_eta":("max(#eta) (ll)"),"dR_lbloose":("#Delta R (l bloose)"),"dR_lbmedium":("#Delta R (l medium)"),"mindr_lep1_jet25":("min (#Delta R (lj)) "),"HT":("HT ")}
 #get matrix
 
 fitResult = tff.Get('fit_s')

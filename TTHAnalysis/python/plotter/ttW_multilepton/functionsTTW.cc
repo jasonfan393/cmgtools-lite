@@ -123,6 +123,45 @@ float ttW_charge_asymmetry_v4(int hasOSSF, int nJet, float lepton_eta, int nb, f
   return iLeptonEta+(iJet+iBJet)*4+hasOSSF*8 + 12*imZ;
 }
 
+float ttW_charge_asymmetry_v5(int hasOSSF, int nJet, float lepton_eta, int nb, float mZ )
+{
+  // just a reimplementation of v4, with human-readable ordering
+  // 4 lepton_eta bins
+  int iLeptonEta=0;
+  if      (lepton_eta < -0.5) iLeptonEta=0;
+  else if (lepton_eta < 0.  ) iLeptonEta=1;
+  else if (lepton_eta < 0.5 ) iLeptonEta=2;
+  else                        iLeptonEta=3;
+   
+  int index=0;
+  if (!hasOSSF){
+    if (nJet < 4) index = 0;
+    else          index = 1;
+  }
+  else{
+    if (mZ < 110){
+      if (nJet < 4){
+	if (nb < 2) index = 2;
+	else         index = 3;
+      }
+      else{
+	index = 4;
+      }
+    }
+    else {
+      if (nJet < 4){
+	if (nb < 2) index = 5;
+	else         index = 6;
+      }
+      else{
+	index=7;
+      }
+    }
+  }
+
+  return iLeptonEta+4*index;
+}
+
 float ttW_ATLAS_selection( int nJet, int nbjets, float met )
 {
 

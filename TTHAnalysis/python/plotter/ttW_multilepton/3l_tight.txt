@@ -11,7 +11,9 @@ q1: abs(LepGood1_charge + LepGood2_charge + LepGood3_charge) == 1
 ele conv cuts: (abs(LepGood1_pdgId)!=11 || (LepGood1_convVeto && LepGood1_lostHits==0)) && (abs(LepGood2_pdgId)!=11 || (LepGood2_convVeto && LepGood2_lostHits==0)) && (abs(LepGood3_pdgId)!=11 || (LepGood3_convVeto && LepGood3_lostHits==0))
 
 2j: nJet25>=2
-2b1B: nBJetMedium25 >= 1
+
+nbtagdiff: nBJetLoose25 >= 2; Disable=True
+2b1B: : nBJetMedium25 >= 1
 
 met : (!hasOSSF) || (nJet25>=4) || (nBJetMedium25 >= 2) || (MET_pt > 50); Disable=True
 hasOSSF : hasOSSF; Disable=True

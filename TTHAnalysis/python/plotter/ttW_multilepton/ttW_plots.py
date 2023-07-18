@@ -2,6 +2,7 @@
 import sys
 import re
 import os
+from differential_variables import all_vars
 
 ODIR=sys.argv[1]
 YEAR=sys.argv[2]
@@ -52,7 +53,7 @@ def base(selection):
     LEGEND=" --legendColumns 2 --legendWidth 0.25 "
     LEGEND2=" --legendFontSize 0.042 "
     SPAM=" --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' "
-    if dowhat == "plots": CORE+=RATIO+RATIO2+LEGEND+LEGEND2+SPAM+"  --showMCError --rebin 4 --xP 'nT_.*' --xP 'debug_.*' -L ttH-multilepton/functionsTTH.cc"
+    if dowhat == "plots": CORE+=RATIO+RATIO2+LEGEND+LEGEND2+SPAM+"  --showMCError --rebin 4 --xP 'nT_.*' --xP 'debug_.*' -L ttW_multilepton/functionsTTW.cc"
 
     if selection=='2lss':
         GO="%s ttW_multilepton/mca-2lss-mc.txt ttW_multilepton/2lss_tight.txt --xp TTW_jet1_pt.*,TTW_nbjets.*,TTW_njets.*,TTW_lep1_pt.*,TTW_lep1_eta.*,TTW_deta_llss.*,TTW_ooa.*,TTW_dR_lbMedium.*,TTW_dR_lbLoose.*,TTW_mindr_lep1_jet25.*,TTW_HT_bin.*,TTW_dR_ll.*,TTW_max_eta.*"%CORE
@@ -284,7 +285,6 @@ if __name__ == '__main__':
         if '_unc' in torun:
             x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
 
-
         if '_varsFR' in torun:
             torun += "_"+sys.argv[-1]
             x = x.replace('mca-3l-mc.txt','mca-3l-data-frdata-%s.txt'%sys.argv[-1])
@@ -298,6 +298,18 @@ if __name__ == '__main__':
             x = add(x,"-E ^x2j ")
         if '_Zpeak' in torun:
             x = add(x,'-I ^Zveto')
+        if "diff" in torun:
+            # match --sP. Only one plot at a time makes sense
+            extra_given = " ".join(sys.argv[4:])
+            
+            x = x.replace('2lss_3l_plots.txt', '3l_plots_diff.txt')
+            if "genlevel" in torun:
+                if "--sP" in extra_given:
+                    plotname = re.match("--sP (.*)", extra_given).groups()[0]
+                    x = x.replace("ttW_multilepton/mca-3l-mcdata-frdata.txt", "ttW_multilepton/mca-3l-mcdata-frdata-{observable}.txt".format(observable = plotname))
+                else:
+                    print(" For differential plots you need to provide a distribution to be used. ")
+                    sys.exit()
         runIt(x,'%s'%torun)
         if '_cats' in torun:
             for cat in ['b3l_bl_neg','b3l_bl_pos','b3l_bt_neg','b3l_bt_pos']:

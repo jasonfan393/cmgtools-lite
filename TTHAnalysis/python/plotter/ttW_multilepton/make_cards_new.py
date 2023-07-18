@@ -1,6 +1,6 @@
 import os, sys, re
 from differential_variables import all_vars
-nCores=16
+nCores=32
 
 
 if 'psi' in os.environ['HOSTNAME']:       
@@ -37,7 +37,7 @@ else:
 
 
 #print "Normalizing to {LUMI}/fb".format(LUMI=LUMI);
-OPTIONS=" --tree NanoAOD --s2v -j {J} -l {LUMI} -f --WA prescaleFromSkim --split-factor=-1 ".format(LUMI=LUMI,J=nCores)
+OPTIONS=" --tree NanoAOD  -j {J} -l {LUMI}  --s2v -f --WA prescaleFromSkim --split-factor=-1 ".format(LUMI=LUMI,J=nCores)
 os.system("test -d cards/{OUTNAME} || mkdir -p cards/{OUTNAME}".format(OUTNAME=OUTNAME))
 OPTIONS="{OPTIONS} --od cards/{OUTNAME} ".format(OPTIONS=OPTIONS, OUTNAME=OUTNAME)
 if "gen" in OTHER:
@@ -95,19 +95,29 @@ if "gen" in OTHER:
     SYSTS=""
 
 
-if REGION == "2lss":
+if REGION == "2lss" or REGION ==  "2lss_chargesplit":
     OPT_2L='{T2L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_2lss"'.format(T2L=T2L, OPTIONS=OPTIONS, YEAR=YEAR)
     if "gen" in OTHER:
         OPT_2L = OPT_2L.replace('-W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_2lss"','')
     CATPOSTFIX=""
+    CHARGE = ""
+    if "chargesplit" in REGION:
+       CHARGE = "chargebiname"
 
-    TORUN='''python {SCRIPT} {DOFILE} ttW_multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}{OBSERVABLE}.txt ttW_multilepton/2lss_tight.txt "{FUNCTION_2L}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttW_2lss_0tau_{GEN}{OBS}_{YEAR} --year {YEAR}  '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, OBSERVABLE="-"+OBSERVABLE, FUNCTION_2L=FUNCTION_2L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_2L=OPT_2L, YEAR=YEAR, GEN=GENN,OBS=OBSERVABLE)
+    TORUN='''python {SCRIPT} {DOFILE} ttW_multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}{OBSERVABLE}.txt ttW_multilepton/2lss_tight.txt "{FUNCTION_2L}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttW_2lss_0tau_{GEN}{OBS}_{YEAR}{CHARGE} --year {YEAR}  '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, OBSERVABLE="-"+OBSERVABLE, FUNCTION_2L=FUNCTION_2L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_2L=OPT_2L, YEAR=YEAR, GEN=GENN,OBS=OBSERVABLE,CHARGE = CHARGE)
     if "gen" in OTHER:
         MCA = '''ttW_multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}{OBSERVABLE}.txt'''.format(MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, OBSERVABLE="-"+OBSERVABLE)
         TORUN = TORUN.replace(MCA,"ttW_multilepton/mca-includes/mca-2lss-sigprompt-gen.txt")
         TORUN = TORUN.replace("ttW_multilepton/2lss_tight.txt","ttW_multilepton/2lss_fiducial.txt")
-    os.system( submit.format(command=TORUN))
-    print( submit.format(command=TORUN))
+    if "chargesplit" in REGION:
+        print( submit.format(command=TORUN.replace("chargebiname","_positive")+ " -E ^plusplus")) #tra-tra
+        print( submit.format(command=TORUN.replace("chargebiname","_negative")+ " -E ^minusminus")) #malamente
+        os.system(submit.format(command=TORUN.replace("chargebiname","_positive")+ " -E ^plusplus"))
+        os.system(submit.format(command=TORUN.replace("chargebiname","_negative")+ " -E ^minusminus"))
+
+    else:
+        #os.system( submit.format(command=TORUN))
+        print( submit.format(command=TORUN))
 
 if REGION == "3l" and "diff" in OTHER:
     OPT_2L='{T2L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_3l*triggerSF_3l"'.format(T2L=T2L, OPTIONS=OPTIONS, YEAR=YEAR)

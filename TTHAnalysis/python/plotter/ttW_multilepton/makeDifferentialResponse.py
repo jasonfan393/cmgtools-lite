@@ -13,7 +13,7 @@ Fit=folder+"/fitDiagnosticsnominal_"+var+".root"
 fit_st = folder+"/fitDiagnosticsfreezing_"+var+".root"
 
 lumi =200.68 #use the lumi used to normalized the gen histos (fb-1)
-varname = {"lep1_pt":("p_{T} (lep1)"),"lep2_pt":("p_{T} (lep2)"),"lep1_eta":("#eta (lep1)"),"njets":("N Jet"),"nbjets":("N b-tag"),"jet1_pt":("p_{T} (jet)"),"deta_llss":("#Delta #eta (ll)"),"HT":("HT"),"dR_ll":("#Delta R (ll)"),"max_eta":("max(#eta) (ll)"),"dR_lbloose":("#Delta R (l bloose)"),"dR_lbmedium":("#Delta R (l medium)"),"mindr_lep1_jet25":("min (#Delta R (lj)) "),"HT":("HT ")}
+varname = {"lep1_pt":("p_{T} (lep1)"),"lep1_eta":("#eta (lep1)"),"njets":("N Jet"),"nbjets":("N b-tag"),"jet1_pt":("p_{T} (jet)"),"deta_llss":("#Delta #eta (ll)"),"HT":("HT"),"dR_ll":("#Delta R (ll)"),"max_eta":("max(#eta) (ll)"), "pt3l": ("p_{T} 3l"), "m3l":("m_{3l}")}
 
 r.gROOT.ProcessLine(".x tdrstyle.cc")
 r.gStyle.SetOptStat(0)

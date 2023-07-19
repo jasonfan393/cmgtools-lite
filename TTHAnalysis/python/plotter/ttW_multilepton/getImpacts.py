@@ -372,9 +372,9 @@ def makeImpacts(task):
     inpath, varName, ncores, pretend, verbose, extra, doobs, doblind = task
 
     print '\n> Creating impacts for variable', varName,
-    bins_detector = eval(all_vars[varName].CATBINS)
+    bins_detector = eval(all_vars[(varName,'2lss')].CATBINS)
     ndetectorbins   = len(bins_detector) - 1
-    bins_particle = eval(all_vars[varName].CATBINS_Gen)
+    bins_particle = eval(all_vars[(varName,'2lss')].CATBINS_Gen)
     nparticlebins   = len(bins_particle) - 1
 
     thepois = ",".join( ["r_TTW_%s_bin%d"%(varName,i) for i in range(nparticlebins)] )

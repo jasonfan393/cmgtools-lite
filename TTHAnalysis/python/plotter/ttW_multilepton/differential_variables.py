@@ -55,8 +55,8 @@ for OBSERVABLE in ["njets","nbjets","lep1_pt","lep2_pt","dR_ll","lep1_eta","max_
     elif OBSERVABLE == "jet1_pt":
         FUNCTION_2L="GenJet_pt[iDressSelJet[0]]"
         FUNCTION_2Lreco="JetSel_Recl_pt[0]"
-        CATBINS        ="[25,95,150,200,300,450]"
-        CATBINS_Gen    ="[25,150,300,450]"
+        CATBINS        ="[25,65,95,150,200,300,450]"
+        CATBINS_Gen    ="[25,95,200,450]"
     
     elif OBSERVABLE == "deta_llss":
         FUNCTION_2L="abs(GenDressedLepton_eta[iDressSelLep[0]]-GenDressedLepton_eta[iDressSelLep[1]])"
@@ -86,8 +86,8 @@ for OBSERVABLE in ["njets","nbjets","lep1_pt","lep2_pt","dR_ll","lep1_eta","max_
     elif OBSERVABLE == "HT":
         FUNCTION_2L="Gen_HT"
         FUNCTION_2Lreco="htJet25j_Recl"
-        CATBINS    ="[0.0,100,200,250,300.,337.50,375.,412.50,450,487.5,525,562.5,600.,700,800,900,2000.]"
-        CATBINS_Gen    ="[0.0,200,300.,375.,450,525,600.,800,2000.]"
+        CATBINS    ="[0.0,100,200,250,300.,375,450,525,600.,1400.,2000.]"
+        CATBINS_Gen    ="[0.0,200,300.,450,600.,2000.]"
 
     all_vars[OBSERVABLE]=Observable(FUNCTION_2L, FUNCTION_2Lreco,CATBINS)
 

@@ -28,7 +28,7 @@ def Get_Genhisto(fil,fil2,fil3,fil4):
     reference3=fil3.Get("x_TTW_inclusive")
     reference4=fil4.Get("x_TTW_inclusive")
     reference = reference1.Clone()
-
+   
     reference.Add(reference2)
     reference.Add(reference3)
     reference.Add(reference4)
@@ -142,6 +142,7 @@ results = {}
 results_st = {}
 count =0
 print("g")
+numbbins = reference.GetNbinsX()
 print(reference.GetNbinsX(),fitResult.floatParsFinal())
 #print("hey:",fitResult_stat.floatParsFinal().Print())
 #print("hey:",fitResult.floatParsFinal().Print())
@@ -253,7 +254,9 @@ print("#frac{d#sigma}{d %s}"%varname[var])
 frame.GetYaxis().SetTitle("#frac{d#sigma}{d %s}"%varname[var])
 frame.GetXaxis().SetNdivisions(510)
 frame.GetYaxis().SetRangeUser(0,maxY)
-
+lowedge = reference.GetBinLowEdge(1)
+upperedge =reference.GetBinLowEdge(numbbins+1)
+frame.GetXaxis().SetRangeUser(lowedge,upperedge)
 
 frame.Draw()
 
@@ -261,11 +264,14 @@ referencen = reference.Clone()
 referencen.SetLineColor(r.kOrange+1);
 referencen.SetLineWidth(3)
 referencen.Scale(1./lumi)
+reference.GetXaxis().SetRangeUser(lowedge,upperedge)
 referencen.Draw("Hsame")
+
 totalError = doShadedUncertainty(reference,lumi)  
 totalError.Draw("PE2 SAME")
 gr.SetLineWidth(3)
 gr.Draw("PE,same")
+
 grst.SetLineWidth(3)
 grst.SetLineColor(r.kAzure-2)
 grst.Draw("PE,same")
@@ -310,8 +316,9 @@ frame.GetYaxis().SetLabelOffset(0.007)
 
 
 p2.cd()
-
+frameratio.GetXaxis().SetRangeUser(lowedge,upperedge)
 frameratio.Draw()
+
 ratio.SetLineWidth(3)
 ratio.Draw("p,E,same")
 

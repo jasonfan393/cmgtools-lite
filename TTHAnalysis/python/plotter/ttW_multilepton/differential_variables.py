@@ -151,6 +151,4 @@ for REGION in ["2lss", "3l"]:
             elif REGION == "3l":
                 CATBINS    ="[0.0, 150., 250., 350., 800.]"
         
-        all_vars[OBSERVABLE+"_%s"%REGION]=Observable(FUNCTION_2L, FUNCTION_2Lreco, CATBINS, CATBINS_Gen, REGION)
-
-
+        all_vars[(OBSERVABLE,REGION)]=Observable(FUNCTION_2L, FUNCTION_2Lreco, CATBINS, CATBINS_Gen, REGION)

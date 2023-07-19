@@ -120,9 +120,9 @@ def calculateRelativeUncertainties(task):
     inpath, varName, ncores, pretend, verbose, extra, doobs, doblind = task
 
     redo=True
-    bins_detector = eval(all_vars[varName].CATBINS)
+    bins_detector = eval(all_vars[(varName,'2lss')].CATBINS)
     ndetectorbins   = len(bins_detector) - 1
-    bins_particle = eval(all_vars[varName].CATBINS_Gen)
+    bins_particle = eval(all_vars[(varName,'2lss')].CATBINS_Gen)
     nparticlebins   = len(bins_particle) - 1
 
     npoints = 20

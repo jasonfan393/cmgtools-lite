@@ -10,7 +10,7 @@ TTZ	: TTSemi_pow : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCh
 TTZ   	: TTLep_pow : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kSpring+2
 
 
-WZ     : WZTo3LNu_fxfx : 4.43 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ;  FillColor=ROOT.kViolet-4
+WZ     : WZTo3LNu_fxfx : 5.28 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ;  FillColor=ROOT.kViolet-4
 ZZ     : ZZTo4L : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ;  FillColor=ROOT.kViolet-4
 
 Rares: GGHZZ4L_new: xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kAzure-9

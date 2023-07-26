@@ -54,7 +54,8 @@ if "gen" in OTHER:
 T3L=T2L
 T4L=T2L
 
-SYSTS="--unc ttW_multilepton/systsUnc.txt --amc --xu CMS_ttWl_WZ_lnU,CMS_ttWl_ZZ_lnU,QCDscale_ttW,CMS_ttHl_TTW_lnU,CMS_ttHl_TTZ_lnU"
+#SYSTS="--unc ttW_multilepton/systsUnc.txt --amc --xu CMS_ttWl_WZ_lnU,CMS_ttWl_ZZ_lnU,QCDscale_ttW,CMS_ttHl_TTW_lnU,CMS_ttHl_TTZ_lnU"
+SYSTS="--unc ttW_multilepton/systsUnc.txt --amc --xu  QCDscale_ttW,CMS_ttHl_TTW_lnU,CMS_ttHl_TTZ_lnU"
 MCAOPTION=""
 MCAOPTION=""
 ASIMOV="--asimov signal"
@@ -76,6 +77,8 @@ GENN = ""
 if OBSERVABLE == "inclusive":
     FUNCTION_2L="0"
     CATBINS    ="[-0.5,0.5]"
+    FUNCTION_CR_3L='''"ttH_3l_clasifier(nJet25,nBJetMedium25)" "[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5]" '''
+    FUNCTION_CR_4L='''"ttH_4l_clasifier(nJet25,nBJetMedium25,mZ2)" "[0.5,1.5,2.5,3.5,4.5]" '''
 
 elif OBSERVABLE == "asymmetry":
     FUNCTION_3L="ttW_charge_asymmetry_v4(hasOSSF,nJet30, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30, mZ_OSSF)"
@@ -112,8 +115,8 @@ if REGION == "2lss":
     if "chargesplit" in OTHER:
         print( submit.format(command=TORUN.replace("chargebiname","_positive")+ " -E ^plusplus")) #tra-tra
         print( submit.format(command=TORUN.replace("chargebiname","_negative")+ " -E ^minusminus")) #malamente
-        os.system(submit.format(command=TORUN.replace("chargebiname","_positive")+ " -E ^plusplus"))
-        os.system(submit.format(command=TORUN.replace("chargebiname","_negative")+ " -E ^minusminus"))
+        #os.system(submit.format(command=TORUN.replace("chargebiname","_positive")+ " -E ^plusplus"))
+        #os.system(submit.format(command=TORUN.replace("chargebiname","_negative")+ " -E ^minusminus"))
 
     else:
         #os.system( submit.format(command=TORUN))
@@ -137,3 +140,21 @@ if REGION == "3l" and not("diff" in OTHER):
     OPT_3L='{T2L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_3l*triggerSF_3l"'.format(T2L=T2L, OPTIONS=OPTIONS, YEAR=YEAR)
     TORUN='''python {SCRIPT} {DOFILE} ttW_multilepton/mca-3l-mcdata-frdata-leptoncharge.txt ttW_multilepton/3l_tight.txt "{FUNCTION_3L}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttW_3l_{OBS}_{YEAR} --year {YEAR}{CATPOSTFIX} '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_3L=FUNCTION_3L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_3L=OPT_3L, YEAR=YEAR, OBS=OBSERVABLE, CATPOSTFIX=CATPOSTFIX)
     print( submit.format(command=TORUN))
+
+if  REGION == "cr_3l" and OBSERVABLE == "inclusive":
+    OPT_3L='{T3L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_3l*triggerSF_3l"'.format(T3L=T3L,OPTIONS=OPTIONS)
+    CATPOSTFIX="_cr"
+    OPT_3L="{OPT_3L} -I ^Zveto -E ^underflowVeto3l -X ^2j -X ^2b1B".format(OPT_3L=OPT_3L)
+    CATFUNC="ttH_3l_ifflav(LepGood1_pdgId,LepGood2_pdgId,LepGood3_pdgId)"
+    CATBINS="[0.5,1.5,2.5,3.5,4.5]"
+    CATNAMES=",".join( map( lambda x : x+CATPOSTFIX, 'eee,eem,emm,mmm'.split(',')))
+    TORUN = '''python {SCRIPT} {DOFILE} ttW_multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}{OBSERVABLE}.txt ttW_multilepton/3l_tight.txt {FUNCTION_CR_3L} {SYSTS} {OPT_3L} --binname ttW_cr_3l_{YEAR} --categorize "{CATFUNC}" "{CATBINS}" {CATNAMES} --year {YEAR}'''.format( SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX,MCAOPTION=MCAOPTION,OBSERVABLE="-"+OBSERVABLE,FUNCTION_CR_3L=FUNCTION_CR_3L,SYSTS=SYSTS,OPT_3L=OPT_3L,YEAR=YEAR,CATFUNC=CATFUNC,CATBINS=CATBINS,CATNAMES=CATNAMES)
+    print( submit.format(command=TORUN))
+
+if REGION == "cr_4l" and OBSERVABLE == "inclusive":
+    OPT_4L='{T4L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_4l*triggerSF_3l"'.format(T4L=T4L,OPTIONS=OPTIONS)
+    OPT_4L="{OPT_4L} -I ^Zveto  -E ^underflowVeto4l -X 2j -X 2b1B".format(OPT_4L=OPT_4L)
+    CATPOSTFIX="_cr_4l";
+    TORUN = 'python {SCRIPT} {DOFILE} ttW_multilepton/mca-4l-{MCASUFFIX}{MCAOPTION}.txt ttW_multilepton/4l_tight.txt {FUNCTION_CR_4L} {SYSTS} {OPT_4L} --binname ttW{CATPOSTFIX}_{YEAR} --year {YEAR} '.format(SCRIPT=SCRIPT, DOFILE=DOFILE,MCASUFFIX=MCASUFFIX,MCAOPTION=MCAOPTION, FUNCTION_CR_4L=FUNCTION_CR_4L,SYSTS=SYSTS,OPT_4L=OPT_4L,CATPOSTFIX=CATPOSTFIX,YEAR=YEAR)
+    print submit.format(command=TORUN)
+

@@ -13,7 +13,15 @@ ele conv cuts: (abs(LepGood1_pdgId)!=11 || (LepGood1_convVeto && LepGood1_lostHi
 2j: nJet25>=2
 
 nbtagdiff: nBJetLoose25 >= 2; Disable=True
-2b1B: : nBJetMedium25 >= 1
+2b1B:  nBJetMedium25 >= 1
 
 met : (!hasOSSF) || (nJet25>=4) || (nBJetMedium25 >= 2) || (MET_pt > 50); Disable=True
 hasOSSF : hasOSSF; Disable=True
+underflowVeto3l: ttH_3l_clasifier(nJet25, nBJetMedium25) > 0 ; Disable=True
+
+#chanels
+eee : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId) + abs(LepGood3_pdgId)) == 33 ; Disable=True
+eem :(abs(LepGood1_pdgId) + abs(LepGood2_pdgId) + abs(LepGood3_pdgId)) == 35 ; Disable=True
+emm : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId) + abs(LepGood3_pdgId)) == 37 ; Disable=True
+mmm : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId) + abs(LepGood3_pdgId)) == 39; Disable=True
+

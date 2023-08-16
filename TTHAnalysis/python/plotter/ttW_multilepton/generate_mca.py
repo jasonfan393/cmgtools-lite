@@ -47,7 +47,7 @@ TTW_ooa+     : TTWJetsToLNu_EWK_5f_NLO_withGen : 0.016 : LepGood1_isMatchRightCh
     
     elif REGION == "3l":
         signal_mca+='''TTW_ooa+     : TTWToLNu_fxfx_withGen :0.2269: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge && !((nDressSelLep > 2) && (GenDressedLepton_pt[iDressSelLep[0]] > 25 && GenDressedLepton_pt[iDressSelLep[1]] >  15 && GenDressedLepton_pt[iDressSelLep[1]] >  10) && (nDressSelJet >= 2) && (nDressBSelJet >=1)) ;  FillColor=ROOT.kGreen-5, Label="ttW (<2 leps)", FriendsSimple="{P}/A_ttW_diff_info_extended_25gev/"  
-TTW_ooa+     : TTWJetsToLNu_EWK_5f_NLO_withGen : 0.016 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood1_isMatchRightCharge && !((nDressSelLep > 2) && (GenDressedLepton_pt[iDressSelLep[0]] > 25 && GenDressedLepton_pt[iDressSelLep[1]] >  15 && GenDressedLepton_pt[iDressSelLep[0]] > 10) && (nDressSelJet >= 2) && (nDressBSelJet >=1)) ; FillColor=ROOT.kGreen-5, Label="ttW (<2 leps)", FriendsSimple="{P}/A_ttW_diff_info_extended_25gev/" \n'''
+TTW_ooa+     : TTWJetsToLNu_EWK_5f_NLO_withGen : 0.016 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge && LepGood1_isMatchRightCharge && !((nDressSelLep > 2) && (GenDressedLepton_pt[iDressSelLep[0]] > 25 && GenDressedLepton_pt[iDressSelLep[1]] >  15 && GenDressedLepton_pt[iDressSelLep[0]] > 10) && (nDressSelJet >= 2) && (nDressBSelJet >=1)) ; FillColor=ROOT.kGreen-5, Label="ttW (<2 leps)", FriendsSimple="{P}/A_ttW_diff_info_extended_25gev/" \n'''
 
     outf2=open("ttW_multilepton/mca-includes/mca-{REGION}-sigprompt-{OBSERVABLE}.txt".format(OBSERVABLE=OBSERVABLE_NAME, REGION=REGION),'w')
     outf2.write( signal_mca.lstrip() )

@@ -9,6 +9,7 @@ class Observable:
 
 
 all_vars={}
+
 for REGION in ["2lss", "3l"]:
     for OBSERVABLE in ["njets","nbjets","lep1_pt","lep2_pt","dR_ll","lep1_eta","max_eta","jet1_pt","deta_llss","dR_lbmedium","dR_lbloose","mindr_lep1_jet25","HT"]:
         if OBSERVABLE == "njets":
@@ -83,8 +84,8 @@ for REGION in ["2lss", "3l"]:
             FUNCTION_2L="GenJet_pt[iDressSelJet[0]]"
             FUNCTION_2Lreco="JetSel_Recl_pt[0]"
             if REGION == "2lss":
-                CATBINS        ="[25,95,150,200,300,450]"
-                CATBINS_Gen    ="[25,150,300,450]"
+                CATBINS        ="[25,65,95,150,200,300,450]"
+                CATBINS_Gen    ="[25,95,200,450]"
             elif REGION == "3l":
                 CATBINS        ="[25,95,150,200,300,450]"
                 CATBINS_Gen    ="[25,150,300,450]"
@@ -129,11 +130,11 @@ for REGION in ["2lss", "3l"]:
             FUNCTION_2L="Gen_HT"
             FUNCTION_2Lreco="htJet25j_Recl"
             if REGION == "2lss":
-                CATBINS    ="[0.0,100,200,250,300.,337.50,375.,412.50,450,487.5,525,562.5,600.,700,800,900,2000.]"
-                CATBINS_Gen    ="[0.0,200,300.,375.,450,525,600.,800,2000.]"
+                CATBINS    ="[0.0,100,200,250,300.,375,450,525,600.,1400.,2000.]"
+                CATBINS_Gen    ="[0.0,200,300.,450,600.,2000.]"
             elif REGION == "3l":
-                CATBINS    ="[0.0,100,200,250,300.,337.50,375.,412.50,450,487.5,525,562.5,600.,700,800,900,2000.]"
-                CATBINS_Gen    ="[0.0,200,300.,375.,450,525,600.,800,2000.]"
+                CATBINS    ="[0.0,100,200,250,300.,375,450,525,600.,1400.,2000.]"
+                CATBINS_Gen    ="[0.0,200,300.,450,600.,2000.]"
         
         elif OBSERVABLE == "m3l":
             FUNCTION_2L="mass_3_cheap(GenDressedLepton_pt[iDressSelLep[0]],GenDressedLepton_eta[iDressSelLep[0]],GenDressedLepton_pt[iDressSelLep[1]],GenDressedLepton_eta[iDressSelLep[1]],GenDressedLepton_phi[iDressSelLep[1]]-GenDressedLepton_phi[iDressSelLep[0]],GenDressedLepton_pt[iDressSelLep[2]],GenDressedLepton_eta[iDressSelLep[2]],GenDressedLepton_phi[iDressSelLep[2]]-GenDressedLepton_phi[iDressSelLep[0]])"

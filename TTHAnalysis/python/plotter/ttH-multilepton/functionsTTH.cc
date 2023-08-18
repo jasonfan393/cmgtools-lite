@@ -1038,22 +1038,39 @@ float ttH_4l_clasifier(float nJet25,float nBJetMedium25,float mZ2){
   else return -1;
 }
 
+//float ttH_3l_clasifier(float nJet25,float nBJetMedium25){
+//
+//  if (nJet25 == 0) return 0;
+//  if ((nJet25 == 1)*(nBJetMedium25 == 0)) return 1;
+//  if ((nJet25 == 2)*(nBJetMedium25 == 0)) return 2;
+//  if ((nJet25 == 3)*(nBJetMedium25 == 0)) return 3;
+//  if ((nJet25>3)*(nBJetMedium25 == 0))    return 4;
+//  if ((nJet25 == 1)*(nBJetMedium25 == 1)) return 5;
+//  if ((nJet25 == 2)*(nBJetMedium25 == 1)) return 6;
+//  if ((nJet25 == 3)*(nBJetMedium25 == 1)) return 7;
+//  if ((nJet25 == 4)*(nBJetMedium25 == 1)) return 8;
+//  if ((nJet25>4)*(nBJetMedium25 == 1))    return 9;
+//  if ((nJet25 == 2)*(nBJetMedium25>1))    return 10;
+//  if ((nJet25 == 3)*(nBJetMedium25>1))    return 11;
+//  if ((nJet25 == 4)*(nBJetMedium25>1))    return 12;
+//  if ((nJet25>4)*(nBJetMedium25>1))       return 13;
+//  else return -1;
+//}
+
 float ttH_3l_clasifier(float nJet25,float nBJetMedium25){
 
-  if (nJet25 == 0) return 0;
   if ((nJet25 == 1)*(nBJetMedium25 == 0)) return 1;
   if ((nJet25 == 2)*(nBJetMedium25 == 0)) return 2;
   if ((nJet25 == 3)*(nBJetMedium25 == 0)) return 3;
   if ((nJet25>3)*(nBJetMedium25 == 0))    return 4;
-  if ((nJet25 == 1)*(nBJetMedium25 == 1)) return 5;
-  if ((nJet25 == 2)*(nBJetMedium25 == 1)) return 6;
-  if ((nJet25 == 3)*(nBJetMedium25 == 1)) return 7;
-  if ((nJet25 == 4)*(nBJetMedium25 == 1)) return 8;
-  if ((nJet25>4)*(nBJetMedium25 == 1))    return 9;
-  if ((nJet25 == 2)*(nBJetMedium25>1))    return 10;
-  if ((nJet25 == 3)*(nBJetMedium25>1))    return 11;
-  if ((nJet25 == 4)*(nBJetMedium25>1))    return 12;
-  if ((nJet25>4)*(nBJetMedium25>1))       return 13;
+  if ((nJet25 == 2)*(nBJetMedium25 == 1)) return 5;
+  if ((nJet25 == 3)*(nBJetMedium25 == 1)) return 6;
+  if ((nJet25 == 4)*(nBJetMedium25 == 1)) return 7;
+  if ((nJet25>4)*(nBJetMedium25 == 1))    return 8;
+  if ((nJet25 == 2)*(nBJetMedium25>1))    return 9;
+  if ((nJet25 == 3)*(nBJetMedium25>1))    return 10;
+  if ((nJet25 == 4)*(nBJetMedium25>1))    return 11;
+  if ((nJet25>4)*(nBJetMedium25>1))       return 12;
   else return -1;
 }
 

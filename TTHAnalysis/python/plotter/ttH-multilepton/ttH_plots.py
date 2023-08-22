@@ -34,9 +34,11 @@ if 'cism.ucl.ac.be' in os.environ['HOSTNAME']:
     P0   = "/nfs/user/pvischia/tth/ul/" 
 
 if ".psi.ch" in os.environ['HOSTNAME']:
+    nCores = 8
+    #submit = 'sbatch -c %d   --wrap "{command}"'%nCores
     P0 = "/pnfs/psi.ch/cms/trivcat/store/user/sesanche"
 
-TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW --FMCs {P}/0_jmeUnc_v1 --FMCs {P}/2_btagSF_newSFs_withsysts --FMCs {P}/2_scalefactors_lep/ --Fs {P}/3_tauCount " 
+TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW --FMCs {P}/0_jmeUnc_v1 --FMCs {P}/2_btagSF/ --FMCs {P}/2_scalefactors_lep/ --Fs {P}/3_tauCount " 
 YEARDIR=YEAR if YEAR != 'all' else ''
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_UL_v2_060422/%s          --Fs  {P}/1_recl_new "%(YEARDIR,)         
 TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_newfts_skim2lss/%s  --Fs {P}/1_recl "%(YEARDIR,) #--FDs {P}/1_recl_new --FMCs {P}/1_recl_allvars_new
@@ -162,7 +164,7 @@ if __name__ == '__main__':
             x = x.replace('mca-2lss-mc.txt','mca-2lss-mc-closuretest.txt')
             x = x.replace("--maxRatioRange 0.6  1.99 --ratioYNDiv 210", "--maxRatioRange 0.0 2.49 --fixRatioRange ")
             x = x.replace("--legendColumns 3", "--legendColumns 2")
-            x = add(x,"--AP --plotmode nostack --sP 2lep_catIndex_nosign --sP 2lep_catIndex --sP kinMVA_2lss_ttbar --sP kinMVA_2lss_ttV --sP nBJetMedium25 --sP 2lep_nJet25_from4 --sP lep1_conePt --sP lep2_conePt --sP lep1_eta --sP lep2_eta  --sP kinMVA_2lss_MVA --sP kinMVA_2lss_score_.* ") # 
+            x = add(x,"--AP --plotmode nostack --sP 2lep_catIndex_nosign --sP 2lep_catIndex --sP nBJetMedium25 --sP 2lep_nJet25_from4 --sP lep1_conePt --sP lep2_conePt --sP lep1_eta --sP lep2_eta ") # 
             x = add(x,"-p TT_FR_QCD -p TT_FR_TT -p TT_fake --ratioDen TT_FR_QCD --ratioNums TT_fake,TT_FR_TT --errors ")
             if '_closuretest_norm' in torun:
                 x = x.replace("--plotmode nostack","--plotmode norm")

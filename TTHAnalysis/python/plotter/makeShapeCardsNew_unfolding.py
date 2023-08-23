@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-from mcAnalysis import *
-from histoWithNuisances import _cloneNoDir
+from CMGTools.TTHAnalysis.plotter.mcAnalysis import *
+from CMGTools.TTHAnalysis.plotter.histoWithNuisances import _cloneNoDir
 import re, sys, os, os.path
 systs = {}
 

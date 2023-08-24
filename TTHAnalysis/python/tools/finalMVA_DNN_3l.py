@@ -13,39 +13,62 @@ import ROOT as r
 
 
 class finalMVA_DNN_3l(Module):
-    def __init__(self, variations=[], doSystJEC=True):
+    def __init__(self, variations=[], fillInputs=False, doSystJEC=True):
         self.outVars = []
-        self._MVAs   = []
-        cats_3l =  ["predictions_ttH",  "predictions_rest", "predictions_tH"]
-        varorder = ['lep1_conePt', 'lep1_eta', 'lep1_phi', 'lep2_conePt', 'lep2_eta', 'lep2_phi', 'lep3_conePt', 'lep3_eta', 'lep3_phi', 'mindr_lep1_jet', 'mindr_lep2_jet', 'mindr_lep3_jet', 'min_dr_Lep', 'avg_dr_jet', 'met_LD', 'mbb_loose',  'leadFwdJet_eta', 'leadFwdJet_pt', 'min_Deta_leadfwdJet_jet', 'jet1_pt', 'jet1_eta', 'jet1_phi', 'jet2_pt', 'jet2_eta', 'jet2_phi', 'jet3_pt', 'jet3_eta', 'jet3_phi', 'sum_Lep_charge', 'HadTop_pt', 'res_HTT', 'nJet',   'nBJetLoose', 'nBJetMedium', 'nJetForward', 'nElectron', 'has_SFOS' ]
-        self.systsJEC = {0:"",\
-                         1:"_jesTotalCorrUp"  , -1:"_jesTotalCorrDown",\
-                         2:"_jesTotalUnCorrUp", -2: "_jesTotalUnCorrDown",\
-                         3:"_jerUp", -3: "_jerDown",\
-                     } if doSystJEC else {0:""}
+        self._MVAs   = {}
+        self.vars_3l = {}
+        self.fillInputs = fillInputs
+        self.cats_3l =  ['predictions_ttH_low_Higgs_pt', 'predictions_ttH_high_Higgs_pt', "predictions_tH", "predictions_rest"]
+        self.varorder = ['lep1_conePt', 'lep1_eta', 'lep1_phi', 'lep2_conePt', 'lep2_eta', 'lep2_phi', 'lep3_conePt', 'lep3_eta', 'lep3_phi',
+                         'mindr_lep1_jet', 'mindr_lep2_jet', 'mindr_lep3_jet', 'min_dr_Lep', 'avg_dr_jet', 'met_LD', 'mbb_loose',
+                         'leadFwdJet_eta', 'leadFwdJet_pt', 'min_Deta_leadfwdJet_jet', 'jet1_pt', 'jet1_eta', 'jet1_phi', 'jet2_pt', 'jet2_eta',
+                         'jet2_phi', 'jet3_pt', 'jet3_eta', 'jet3_phi', 'sum_Lep_charge', 'HadTop_pt', 'res_HTT', 'nJet', 'nBJetLoose',
+                         'nBJetMedium', 'nJetForward', 'nElectron', 'has_SFOS']
+
+        if fillInputs:
+            self.outVars.extend(self.varorder+['nEvent'])
+            self.inputHelper = self.getVarsForVariation('')
+            self.inputHelper['nEvent'] = lambda ev : ev.event
+
+        self.systsJEC = {0:""}
         if len(variations): 
             self.systsJEC = {0:""}
-            for i,var in enumerate(variations):
-                self.systsJEC[i+1]   ="_%sUp"%var
-                self.systsJEC[-(i+1)]="_%sDown"%var
+            if len(variations) > 0:
+                for i, var in enumerate(variations):
+                    self.systsJEC[i + 1] = "_%sUp" % var
+                    self.systsJEC[-(i + 1)] = "_%sDown" % var
                 
-        for var in self.systsJEC: 
-            self._MVAs.append( TFTool('DNN_3l%s'%self.systsJEC[var], os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/test_sig_2_rest_2_th_2_withWZ_2.pb',
-                                      self.getVarsForVariation(self.systsJEC[var]), cats_3l, varorder))
+        input_shapes = r.vector(r.vector('float'))()
 
-            self.outVars.extend( ['DNN_3l%s_'%self.systsJEC[var] + x for x in cats_3l])
+        for var in self.systsJEC:
+            input_names = r.vector('string')()
+            input_names.push_back('input_1')
+            output_names = r.vector('string')()
+            output_names.push_back('Dense_output')
+            self._MVAs['DNN_3l%s'%self.systsJEC[var]] = r.ONNXInterface(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/3l_MVADiscr_UL.onnx',
+                                                                        input_shapes, input_names, output_names)
 
-        vars_3l_unclEnUp = deepcopy(self.getVarsForVariation(''))
-        vars_3l_unclEnUp['met_LD'                 ] =  lambda ev : (ev.MET_pt_unclustEnUp if ev.year != 2017 else ev.METFixEE2017_pt_unclustEnUp) *0.6 + ev.mhtJet25_Recl*0.4
+            self.vars_3l['DNN_3l%s'%self.systsJEC[var]] = self.getVarsForVariation(self.systsJEC[var])
 
-        vars_3l_unclEnDown = deepcopy(self.getVarsForVariation(''))
-        vars_3l_unclEnDown['met_LD'                 ] =  lambda ev : (ev.MET_pt_unclustEnDown if ev.year != 2017 else ev.METFixEE2017_pt_unclustEnDown) *0.6 + ev.mhtJet25_Recl*0.4
+            self.outVars.extend( ['DNN_3l%s_'%self.systsJEC[var] + x for x in self.cats_3l])
 
-        worker_3l_unclUp   = TFTool("DNN_3l_unclUp", os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/test_sig_2_rest_2_th_2_withWZ_2.pb', vars_3l_unclEnUp, cats_3l, varorder)
-        worker_3l_unclDown = TFTool("DNN_3l_unclDown", os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/test_sig_2_rest_2_th_2_withWZ_2.pb', vars_3l_unclEnDown,cats_3l,  varorder)
 
-        self._MVAs.extend( [ worker_3l_unclUp, worker_3l_unclDown])
-        self.outVars.extend( ['DNN_3l_unclUp_' + x for x in cats_3l] +  ['DNN_3l_unclDown_' + x for x in cats_3l])
+        if len(variations) > 0:
+            vars_3l_unclEnUp = deepcopy(self.getVarsForVariation(''))
+            vars_3l_unclEnUp['met_LD'                 ] =  lambda ev : ev.MET_pt_unclustEnUp*0.6 + ev.mhtJet25_Recl*0.4
+            self.outVars.extend(['DNN_3l_unclUp_' + x for x in self.cats_3l])
+
+            vars_3l_unclEnDown = deepcopy(self.getVarsForVariation(''))
+            vars_3l_unclEnDown['met_LD'                 ] =  lambda ev : ev.MET_pt_unclustEnDown*0.6 + ev.mhtJet25_Recl*0.4
+            self.outVars.extend(['DNN_3l_unclDown_' + x for x in self.cats_3l])
+
+            self._MVAs['DNN_3l_unclUp'] = r.ONNXInterface(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/3l_MVADiscr_UL.onnx', input_shapes,
+                                                          self.varorder, self.cats_3l)
+            self._MVAs['DNN_3l_unclDown'] = r.ONNXInterface(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/3l_MVADiscr_UL.onnx', input_shapes,
+                                                            self.varorder, self.cats_3l)
+
+            self.vars_3l['DNN_3l_unclUp'] = vars_3l_unclEnUp
+            self.vars_3l['DNN_3l_unclDown'] = vars_3l_unclEnDown
 
 
     def getVarsForVariation(self, var):
@@ -61,7 +84,7 @@ class finalMVA_DNN_3l(Module):
                 'nBJetMedium'            : lambda ev : getattr(ev,'nBJetMedium25%s_Recl'%var),
                 'mindr_lep3_jet'         : lambda ev : getattr(ev,'mindr_lep3_jet%s'%var), #### 
                 'mbb_loose'              : lambda ev : getattr(ev,'mbb_loose%s'%var),
-                'met_LD'                 : lambda ev : (getattr(ev,'MET_pt%s'%var) if ev.year != 2017 else getattr(ev,'METFixEE2017_pt%s'%var)) *0.6 + getattr(ev,'mhtJet25%s_Recl'%var)*0.4,
+                'met_LD'                 : lambda ev : getattr(ev,'MET_pt%s'%var)*0.6 + getattr(ev,'mhtJet25%s_Recl'%var)*0.4,
                 'lep2_conePt'            : lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[1])],
                 'jet1_eta'               : lambda ev : abs(ev.JetSel_Recl_eta[0]) if getattr(ev,'nJet25%s_Recl'%var) > 0 else 0,
                 'jet3_pt'                : lambda ev : getattr(ev,'JetSel_Recl_pt%s'%var)[2] if getattr(ev,'nJet25%s_Recl'%var) > 2 else 0,
@@ -92,18 +115,63 @@ class finalMVA_DNN_3l(Module):
 
 
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
-        print(self.outVars)
         declareOutput(self, wrappedOutputTree, self.outVars)
         
     def analyze(self,event):
         myvars = [event.iLepFO_Recl[0],event.iLepFO_Recl[1],event.iLepFO_Recl[2]]
-        ret = []
-        for worker in self._MVAs:
-            name = worker.name
-            if not hasattr(event,"nJet25_jerUp_Recl") and ('_jes' in name or  '_jer' in name or '_uncl' in name): continue # using jer bc components wont change
-            ret.extend( [(x,y) for x,y in worker(event).items()])
-            
+        ret = {}
 
-            
-        writeOutput(self, dict(ret))
+        for name in self._MVAs.keys():
+            # print(name)
+
+            if len(self.vars_3l.keys()) > 1:
+                try:
+                    _1 = hasattr(event, "nJet25_jerUp_Recl")
+                except RuntimeError:
+                    _1 = False
+                finally:
+                    if not _1 and ('_jes' in name or '_jer' in name or '_uncl' in name): continue  # using jer bc components wont change
+            #
+            # if self.fillInputs:
+            #     all_leps = [l for l in Collection(event,"LepGood")]
+            #     nFO = getattr(event,"nLepFO_Recl")
+            #     chosen = getattr(event,"iLepFO_Recl")
+            #     leps = [all_leps[chosen[i]] for i in range(nFO)]
+            #
+            #     if event.nJet25_Recl < 4 and event.MET_pt*0.6 + event.mhtJet25_Recl*0.4 < 30 + 15*(event.mZ1_Recl > 0): return False #met LD
+            #     if len(leps) < 3: return False #trilep
+            #     if abs(leps[0].charge + leps[1].charge + leps[2].charge) != 1: return False #q1
+            #     # print(leps[0].isLepTight_Recl) # Could be used for tight cut TTT
+            #     if event.nLepTight_Recl > 3: return False # exclusive
+            #     if leps[0].conePt < 25 or leps[1].conePt < 15 or leps[2].conePt < 10: return False #pt251515
+            #     if abs(event.mZ1_Recl-91.2) < 10: return False #ZVeto
+            #     if event.minMllAFAS_Recl <= 12: return False #cleanup
+            #     if event.nBJetLoose25_Recl < 2 or event.nBJetMedium25_Recl <1: return False #2b1B
+            #     if event.mZ2_Recl > 0 and event.m4l < 140: return False #vetottHZZ
+            #     if event.nTauSel_Recl_Tight != 0: return False #tauveto
+            #     if event.nJet25_Recl < 2: return False #2j
+
+            inputs = r.vector(r.vector('float'))()
+            subinputs = r.vector('float')()
+            for var in self.varorder:
+                # print(f'  {var}')
+                subinputs.push_back(self.vars_3l[name][var](event))
+                if self.fillInputs:
+                    ret[var] = self.vars_3l[name][var](event)
+            inputs.push_back(subinputs)
+
+            worker = self._MVAs[name]
+
+            _output = worker.run(inputs)[0]
+            del inputs
+            del subinputs
+
+            i = 0
+            for output_name in self.cats_3l:
+                ret[f'{name}_{output_name}'] = _output[i]
+                i += 1
+
+        writeOutput(self, ret)
+
         return True
+

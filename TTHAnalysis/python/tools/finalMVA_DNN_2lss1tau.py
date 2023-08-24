@@ -36,50 +36,72 @@ def massL3( ev, var ):
     l2.SetPtEtaPhiM(leps[1].conePt, leps[1].eta, leps[1].phi, 0)
     part = l1 + l2 + taus[int(ev.Tau_tight2lss1tau_idx)].p4()
     
-    met_pt  = (getattr(ev,'MET_pt%s'%var)  if ev.year != 2017 else getattr(ev,'METFixEE2017_pt%s'%var))
-    met_phi = (getattr(ev,'MET_phi%s'%var) if ev.year != 2017 else getattr(ev,'METFixEE2017_phi%s'%var))
+    met_pt  = getattr(ev,'MET_pt%s'%var)
+    met_phi = getattr(ev,'MET_phi%s'%var)
 
     return sqrt(part.Pt()*met_pt*(1-cos(part.Phi()-met_phi)))
 
 
 class finalMVA_DNN_2lss1tau(Module):
-    def __init__(self, variations=[], doSystJEC=True):
+    def __init__(self, variations=[], doSystJEC=True, fillInputs=False):
         self.outVars = []
-        self._MVAs   = []
-        cats_2lss1tau =  ["predictions_ttH",  "predictions_rest", "predictions_tH"]
-        varorder = ["lep1_conePt", "lep1_eta", "lep1_phi", "mT_lep1", "mindr_lep1_jet", "lep2_conePt", "lep2_eta", "lep2_phi", "mT_lep2", "mindr_lep2_jet", "tau1_pt", "tau1_eta", "tau1_phi", "mindr_tau_jet", "avg_dr_jet", "mbb_loose", "min_dr_Lep", "mTauTauVis1", "mTauTauVis2", "res_HTT", "HadTop_pt", "massL3", "min_Deta_leadfwdJet_jet", "leadFwdJet_eta", "leadFwdJet_pt", "met_LD", "jet1_pt", "jet1_eta", "jet1_phi", "jet2_pt", "jet2_eta", "jet2_phi", "jet3_pt", "jet3_eta", "jet3_phi", "nJet", "nBJetLoose", "nBJetMedium", "nJetForward", "nElectron", "sum_Lep_charge"]
-        self.systsJEC = {0:"",\
-                         1:"_jesTotalCorrUp"  , -1:"_jesTotalCorrDown",\
-                         2:"_jesTotalUnCorrUp", -2: "_jesTotalUnCorrDown",\
-                         3:"_jerUp", -3: "_jerDown",\
-                     } if doSystJEC else {0:""}
-        if len(variations): 
-            self.systsJEC = {0:""}
+        self._MVAs   = {}
+        self.vars_2lss1tau = {}
+        self.fillInputs = fillInputs
+        self.cats_2lss1tau =  ['predictions_ttH_low_Higgs_pt', 'predictions_ttH_high_Higgs_pt', "predictions_tH", "predictions_rest"]
+        self.varorder = ["lep1_conePt", "lep1_eta", "lep1_phi", "mT_lep1", "mindr_lep1_jet", "lep2_conePt", "lep2_eta", "lep2_phi",
+                    "mT_lep2", "mindr_lep2_jet", "tau1_pt", "tau1_eta", "tau1_phi", "mindr_tau_jet", "avg_dr_jet",
+                    "mbb_loose", "min_dr_Lep", "mTauTauVis1", "mTauTauVis2", "res_HTT", "HadTop_pt", "massL3",
+                    "min_Deta_leadfwdJet_jet", "leadFwdJet_eta", "leadFwdJet_pt", "met_LD", "jet1_pt", "jet1_eta",
+                    "jet1_phi", "jet2_pt", "jet2_eta", "jet2_phi", "jet3_pt", "jet3_eta", "jet3_phi", "nJet",
+                    "nBJetLoose", "nBJetMedium", "nJetForward", "nElectron", "sum_Lep_charge"]
+
+        if fillInputs:
+            self.outVars.extend(self.varorder+['nEvent'])
+            self.inputHelper = self.getVarsForVariation('')
+            self.inputHelper['nEvent'] = lambda ev : ev.event
+
+        self.systsJEC = {0:""}
+
+        if len(variations) > 0:
             for i,var in enumerate(variations):
                 self.systsJEC[i+1]   ="_%sUp"%var
                 self.systsJEC[-(i+1)]="_%sDown"%var
                 
-        for var in self.systsJEC: 
-            self._MVAs.append( TFTool('DNN_2lss1tau%s'%self.systsJEC[var], os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/2lss_1tau_DNN_legacy.pb',
-                                      self.getVarsForVariation(self.systsJEC[var]), cats_2lss1tau, varorder))
+        input_shapes = r.vector(r.vector('float'))()
 
-            self.outVars.extend( ['DNN_2lss1tau%s_'%self.systsJEC[var] + x for x in cats_2lss1tau])
+        for var in self.systsJEC:
+            input_names = r.vector('string')()
+            input_names.push_back('input_1')
+            output_names = r.vector('string')()
+            output_names.push_back('dense_7')
+            self._MVAs['DNN_2lss1tau%s'%self.systsJEC[var]] = r.ONNXInterface(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/2lss1tau_MVADiscr_UL.onnx', input_shapes,
+                                                                              input_names, output_names)
 
-        vars_2lss1tau_unclEnUp = deepcopy(self.getVarsForVariation(''))
-        vars_2lss1tau_unclEnUp['met_LD'                 ] =  lambda ev : (ev.MET_pt_unclustEnUp if ev.year != 2017 else ev.METFixEE2017_pt_unclustEnUp) *0.6 + ev.mhtJet25_Recl*0.4
-        vars_2lss1tau_unclEnUp["mT_lep1"          ] =  lambda ev : ev.MT_met_lep1_unclustEnUp
-        vars_2lss1tau_unclEnUp["mT_lep2"          ] =  lambda ev : ev.MT_met_lep2_unclustEnUp
+            self.vars_2lss1tau['DNN_2lss1tau%s'%self.systsJEC[var]] = self.getVarsForVariation(self.systsJEC[var])
 
-        vars_2lss1tau_unclEnDown = deepcopy(self.getVarsForVariation(''))
-        vars_2lss1tau_unclEnDown['met_LD'                 ] =  lambda ev : (ev.MET_pt_unclustEnDown if ev.year != 2017 else ev.METFixEE2017_pt_unclustEnDown) *0.6 + ev.mhtJet25_Recl*0.4
-        vars_2lss1tau_unclEnDown["mT_lep1"          ] =  lambda ev : ev.MT_met_lep1_unclustEnDown
-        vars_2lss1tau_unclEnDown["mT_lep2"          ] =  lambda ev : ev.MT_met_lep2_unclustEnDown
+            self.outVars.extend( ['DNN_2lss1tau%s_'%self.systsJEC[var] + x for x in self.cats_2lss1tau])
 
-        worker_2lss1tau_unclUp   = TFTool("DNN_2lss1tau_unclUp", os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/2lss_1tau_DNN_legacy.pb', vars_2lss1tau_unclEnUp, cats_2lss1tau, varorder)
-        worker_2lss1tau_unclDown = TFTool("DNN_2lss1tau_unclDown", os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/2lss_1tau_DNN_legacy.pb', vars_2lss1tau_unclEnDown,cats_2lss1tau,  varorder)
+        if len(variations) > 0:
+            vars_2lss1tau_unclEnUp = deepcopy(self.getVarsForVariation(''))
+            vars_2lss1tau_unclEnUp['met_LD'                 ] =  lambda ev : ev.MET_pt_unclustEnUp  *0.6 + ev.mhtJet25_Recl*0.4
+            vars_2lss1tau_unclEnUp["mT_lep1"          ] =  lambda ev : ev.MT_met_lep1_unclustEnUp
+            vars_2lss1tau_unclEnUp["mT_lep2"          ] =  lambda ev : ev.MT_met_lep2_unclustEnUp
+            self.outVars.extend( ['DNN_2lss1tau_unclUp_' + x for x in self.cats_2lss1tau])
 
-        self._MVAs.extend( [ worker_2lss1tau_unclUp, worker_2lss1tau_unclDown])
-        self.outVars.extend( ['DNN_2lss1tau_unclUp_' + x for x in cats_2lss1tau] +  ['DNN_2lss1tau_unclDown_' + x for x in cats_2lss1tau])
+            vars_2lss1tau_unclEnDown = deepcopy(self.getVarsForVariation(''))
+            vars_2lss1tau_unclEnDown['met_LD'                 ] =  lambda ev : ev.MET_pt_unclustEnDown*0.6 + ev.mhtJet25_Recl*0.4
+            vars_2lss1tau_unclEnDown["mT_lep1"          ] =  lambda ev : ev.MT_met_lep1_unclustEnDown
+            vars_2lss1tau_unclEnDown["mT_lep2"          ] =  lambda ev : ev.MT_met_lep2_unclustEnDown
+            self.outVars.extend( ['DNN_2lss1tau_unclDown_' + x for x in self.cats_2lss1tau])
+
+            self._MVAs['DNN_2lss1tau_unclUp'] = r.ONNXInterface(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/2lss1tau_MVADiscr_UL.onnx', input_shapes,
+                                                                input_names, output_names)
+            self._MVAs['DNN_2lss1tau_unclDown'] = r.ONNXInterface(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/2lss1tau_MVADiscr_UL.onnx', input_shapes,
+                                                                  input_names, output_names)
+
+            self.vars_2lss1tau['DNN_2lss1tau_unclUp'] = vars_2lss1tau_unclEnUp
+            self.vars_2lss1tau['DNN_2lss1tau_unclDown'] = vars_2lss1tau_unclEnDown
 
 
     def getVarsForVariation(self, var):
@@ -93,7 +115,7 @@ class finalMVA_DNN_2lss1tau(Module):
                 'mindr_lep2_jet'         : lambda ev : getattr(ev,'mindr_lep2_jet%s'%var),                   
                 'nBJetMedium'            : lambda ev : getattr(ev,'nBJetMedium25%s_Recl'%var),
                 'mbb_loose'              : lambda ev : getattr(ev,'mbb_loose%s'%var),
-                'met_LD'                 : lambda ev : (getattr(ev,'MET_pt%s'%var) if ev.year != 2017 else getattr(ev,'METFixEE2017_pt%s'%var)) *0.6 + getattr(ev,'mhtJet25%s_Recl'%var)*0.4,
+                'met_LD'                 : lambda ev : getattr(ev,'MET_pt%s'%var) *0.6 + getattr(ev,'mhtJet25%s_Recl'%var)*0.4,
                 'lep2_conePt'            : lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[1])],
                 'jet1_eta'               : lambda ev : abs(ev.JetSel_Recl_eta[0]) if getattr(ev,'nJet25%s_Recl'%var) > 0 else 0,
                 'jet3_pt'                : lambda ev : getattr(ev,'JetSel_Recl_pt%s'%var)[2] if getattr(ev,'nJet25%s_Recl'%var) > 2 else 0,
@@ -130,18 +152,46 @@ class finalMVA_DNN_2lss1tau(Module):
 
 
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
-        print(self.outVars)
+        # print(self.outVars)
         declareOutput(self, wrappedOutputTree, self.outVars)
         
     def analyze(self,event):
         myvars = [event.iLepFO_Recl[0],event.iLepFO_Recl[1],event.iLepFO_Recl[2]]
-        ret = []
-        for worker in self._MVAs:
-            name = worker.name
-            if not hasattr(event,"nJet25_jerUp_Recl") and ('_jes' in name or  '_jer' in name or '_uncl' in name): continue # using jer bc components wont change
-            ret.extend( [(x,y) for x,y in worker(event).items()])
-            
 
-            
-        writeOutput(self, dict(ret))
+        ret = {}
+
+        for name in self._MVAs.keys():
+
+            # print(name)
+
+            if len(self.vars_2lss1tau.keys()) > 1:
+                try:
+                    _1 = hasattr(event, "nJet25_jerUp_Recl")
+                except RuntimeError:
+                    _1 = False
+                finally:
+                    if not _1 and ('_jes' in name or '_jer' in name or '_uncl' in name): continue  # using jer bc components wont change
+
+            inputs = r.vector(r.vector('float'))()
+            subinputs = r.vector('float')()
+            for var in self.varorder:
+                # print(f'  {var}')
+                subinputs.push_back(self.vars_2lss1tau[name][var](event))
+                if self.fillInputs:
+                    ret[var] = self.vars_2lss1tau[name][var](event)
+            inputs.push_back(subinputs)
+
+            worker = self._MVAs[name]
+            _output = worker.run(inputs)[0]
+            # print(_output)
+            del inputs
+            del subinputs
+
+            i = 0
+            for output_name in self.cats_2lss1tau:
+                ret[f'{name}_{output_name}'] = _output[i]
+                i += 1
+
+        writeOutput(self, ret)
+
         return True

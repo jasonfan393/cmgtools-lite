@@ -62,10 +62,10 @@ class finalMVA_DNN_3l(Module):
             vars_3l_unclEnDown['met_LD'                 ] =  lambda ev : ev.MET_T1_pt_unclustEnDown*0.6 + ev.mhtJet25_Recl*0.4
             self.outVars.extend(['DNN_3l_unclDown_' + x for x in self.cats_3l])
 
-            self._MVAs['DNN_3l_unclUp'] = r.ONNXInterface(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/3l_MVADiscr_UL.onnx', input_shapes,
-                                                          self.varorder, self.cats_3l)
-            self._MVAs['DNN_3l_unclDown'] = r.ONNXInterface(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/3l_MVADiscr_UL.onnx', input_shapes,
-                                                            self.varorder, self.cats_3l)
+            self._MVAs['DNN_3l_unclUp'] = r.ONNXInterface(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/3l_MVADiscr_UL.onnx',
+                                                          input_shapes, input_names, output_names)
+            self._MVAs['DNN_3l_unclDown'] = r.ONNXInterface(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/kinMVA/tth/3l_MVADiscr_UL.onnx',
+                                                            input_shapes, input_names, output_names)
 
             self.vars_3l['DNN_3l_unclUp'] = vars_3l_unclEnUp
             self.vars_3l['DNN_3l_unclDown'] = vars_3l_unclEnDown
@@ -84,7 +84,7 @@ class finalMVA_DNN_3l(Module):
                 'nBJetMedium'            : lambda ev : getattr(ev,'nBJetMedium25%s_Recl'%var),
                 'mindr_lep3_jet'         : lambda ev : getattr(ev,'mindr_lep3_jet%s'%var), #### 
                 'mbb_loose'              : lambda ev : getattr(ev,'mbb_loose%s'%var),
-                "met_LD": lambda ev: (getattr(ev, 'MET_pt') if var == '' else getattr(ev,'MET_T1_pt%s' % var)) * 0.6 + getattr(ev, 'mhtJet25%s_Recl' % var) * 0.4,
+                "met_LD"                 : lambda ev: (getattr(ev, 'MET_pt') if var == '' else getattr(ev,'MET_T1_pt%s' % var)) * 0.6 + getattr(ev, 'mhtJet25%s_Recl' % var) * 0.4,
                 'lep2_conePt'            : lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[1])],
                 'jet1_eta'               : lambda ev : abs(ev.JetSel_Recl_eta[0]) if getattr(ev,'nJet25%s_Recl'%var) > 0 else 0,
                 'jet3_pt'                : lambda ev : getattr(ev,'JetSel_Recl_pt%s'%var)[2] if getattr(ev,'nJet25%s_Recl'%var) > 2 else 0,
@@ -154,7 +154,6 @@ class finalMVA_DNN_3l(Module):
             inputs = r.vector(r.vector('float'))()
             subinputs = r.vector('float')()
             for var in self.varorder:
-                # print(f'  {var}')
                 subinputs.push_back(self.vars_3l[name][var](event))
                 if self.fillInputs:
                     ret[var] = self.vars_3l[name][var](event)

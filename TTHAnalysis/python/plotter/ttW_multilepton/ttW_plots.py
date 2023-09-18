@@ -39,7 +39,7 @@ if ".psi.ch" in os.environ['HOSTNAME']:
     P0 = "/pnfs/psi.ch/cms/trivcat/store/user/sesanche"
     #submit = 'sbatch -c %d -p short --wrap "{command}"'%nCores
 
-TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW --Fs {P}/3_tauCount/ --FMCs {P}/0_jmeUnc_v1  --FMCs {P}/2_btagSF_fixedWP/ --FMCs {P}/2_scalefactors_lep/  --Fs {P}/4_evtVars --Fs {P}/1_recl --Fs {P}/6_ttWforlepton  " 
+TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW  --FMCs {P}/0_jmeUnc_v1  --FMCs {P}/2_btagSF_fixedWP/ --FMCs {P}/2_scalefactors_lep/  --Fs {P}/4_evtVars --Fs {P}/1_recl --Fs {P}/6_ttWforlepton  " 
 YEARDIR=YEAR if YEAR not in ['all','2016APV_2016'] else ''
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_UL_v2_060422/%s          --Fs  {P}/1_recl_new "%(YEARDIR,)         
 TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_newfts_skim2lss/%s  --Fs {P}/1_recl  "%(YEARDIR,)
@@ -254,7 +254,7 @@ if __name__ == '__main__':
             x = x.replace('mca-3l-mc.txt','mca-3l-mc-table.txt')
 
         if '_chargeasymmetry' in torun:
-            x = x + " -E ^met + --sP ^ttW_charge_asymmetry_v4 " 
+            x = x + " -E ^met --sP ^ttW_charge_asymmetry_v4 " 
 
         if '_DNNnodes' in torun:
             x = add(x, "--sP 'kinMVA_3l_cat.*'")

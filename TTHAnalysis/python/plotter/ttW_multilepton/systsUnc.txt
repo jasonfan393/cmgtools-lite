@@ -11,7 +11,7 @@ $alias : TTW : TTW|TTW_.*
 $alias : ttV  : $TTW|TTZ
 $alias : ZH   : ZH|ZH_h[a-z]+
 $alias : WH   : WH|WH_h[a-z]+
-$alias : PromptFromMC : $ttHX|$ttV|$ZH|$WH|Rares|Convs|WZ|ZZ|EWK|tZq|ttVV|VVV   
+$alias : PromptFromMC : $ttHX|$ttV|$ZH|$WH|Rares|WZ|ZZ|EWK|tZq|ttVV|VVV   
 $alias : FRData : data_fakes|.*_promptsub
 $alias : FRAll  : data_fakes|.*_promptsub|TT_FR_QCD
 

@@ -641,9 +641,9 @@ class HistoWithNuisances:
         self._rooFit["templates"] = templates
         self._rooFit["scaleFactors"] = {}
 
-    def buildEnvelopes(self):
-        for var in self.getVariationList():
-            if len( self.getVariation(var) ) < 3: continue
+    def buildEnvelopes(self,var):
+            if len( self.getVariation(var) ) < 3: 
+               raise RuntimeError("FATAL: envelope unc. requested, but less than three extra inputs given for unc. " + var)
             up   = _cloneNoDir( self.central, self.central.GetName() + 'envUp' )
             down = _cloneNoDir( self.central, self.central.GetName() + 'envDown' )
             for x in range(1, self.central.GetNbinsX()+1):
@@ -660,6 +660,44 @@ class HistoWithNuisances:
             del self.variations[var]
             self.addVariation( var, 'up', up)
             self.addVariation( var, 'down', down)
+            return 
+    def buildEnvelopesForPDFs(self, var):
+                #print(self.getVariation(var),var,len(self.getVariation(var)))
+                #### NOTE: we will assume that ALL the entries, except the last two, correspond with
+                # the variations of the PDF weights, and the last two are the ones that relate with
+                # the alphaS uncertainties. You should NOT consider the nominal variation here (although,
+                # hopefully and a priori, it should not affect the result).
+            
+                up   = _cloneNoDir( self.central, self.central.GetName() + 'envUp' )
+                down = _cloneNoDir( self.central, self.central.GetName() + 'envDown' )
+                if not var  in self.variations:
+                   return
+                nvars = len(self.getVariation(var))
+                if nvars == 2:
+                   if self.getVariation(var)[0].GetName() == self.central.GetName() + 'envUp': # already processed, probably in a multi-year processing
+                    return
+        
+    
+                for x in range(1, self.central.GetNbinsX() + 1):
+                    for y in range(1, self.central.GetNbinsY() + 1):
+                       ibin    = self.central.GetBin(x, y)
+                       nomVal  = self.central.GetBinContent(ibin)
+                       deltaUp = 0; deltaDn = 0
+                       for iV in range(1,nvars - 2):
+                           cont = self.getVariation(var)[iV].GetBinContent(ibin)
+                           deltaUp += (cont - nomVal)**2
+                           #if cont >= nomVal: deltaUp += (cont - nomVal)**2
+                           #else:              deltaDn += (nomVal - cont)**2
+                       alphaSunc = (self.getVariation(var)[nvars-1].GetBinContent(ibin) - self.getVariation(var)[nvars - 2].GetBinContent(ibin)) / 2.
+                       
+                       up.SetBinContent(  ibin, nomVal + sqrt(deltaUp + alphaSunc**2))
+                       down.SetBinContent(ibin, nomVal - sqrt(deltaUp + alphaSunc**2))
+#                        down.SetBinContent(ibin, nomVal - sqrt(deltaDn + alphaSunc**2))
+                
+                del self.variations[var]
+                self.addVariation( var, 'up', up)
+                self.addVariation( var, 'down', down)
+                return
 
 
     def _dropPdfAndNorm(self):

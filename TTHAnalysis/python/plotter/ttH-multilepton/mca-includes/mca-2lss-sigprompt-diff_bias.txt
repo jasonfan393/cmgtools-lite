@@ -6,7 +6,7 @@ ttH_pt_120_200+    : TTH_ctcvcp : 0.5071*weight_ttH_EFT1_ctG.dat : LepGood1_isMa
 
 ttH_pt_200_300+    : TTH_ctcvcp : 0.5071*weight_ttH_EFT1_ctG.dat : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && (HTXS_Higgs_pt >= 200) && (HTXS_Higgs_pt < 300); FillColor=ROOT.kOrange+6, genSumWeightName="genEventSumw", FriendsSimple="{P}/A_EFTweights"
 
-ttH_pt_300_450+    : TTH_ctcvcp : 0.5071*weight_ttH_EFT1_ctG.dat : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && (HTXS_Higgs_pt >= 300) && (HTXS_Higgs_pt < 450); FillColor=ROOT.kOrange+10, genSumWeightName="genEventSumw", FriendsSimple="{P}/A_EFTweights"
+ttH_pt_300_450+    : TTH_ctcvcp : 0.5071*weight_ttH_EFT1_ctG.dat : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && (HTXS_Higgs_pt >= 300) && (HTXS_Higgs_pt < 450); FillColor=ROOT.kOrange+6, genSumWeightName="genEventSumw", FriendsSimple="{P}/A_EFTweights"
 
 ttH_pt_450_inf+    : TTH_ctcvcp : 0.5071*weight_ttH_EFT1_ctG.dat : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && (HTXS_Higgs_pt >= 450); FillColor=ROOT.kOrange+6, genSumWeightName="genEventSumw", FriendsSimple="{P}/A_EFTweights"
 

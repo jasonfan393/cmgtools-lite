@@ -154,6 +154,8 @@ kinMVA_2lss_score_all_highest_part : class_max_p_2lss_all(LepGood1_pdgId, LepGoo
 # 2lss Binning used for datacards (ttH in Higgs_pt bins)
 kinMVA_2lss_score_all_highest_part_HiggsPt : catIndex_2lss_all_HiggsPt(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest, Hreco_dnn_prediction) : 121,-0.5,120.5; XTitle="2lss DNN score (all nodes highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=200.0
 
+kinMVA_2lss_score_all_highest_part_HiggsPt_check : catIndex_2lss_all_HiggsPt(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest, Hreco_dnn_prediction) : 121,-0.5,120.5; XTitle="2lss DNN score (all nodes highest)",  LegendCutoff=1e-5
+
 
 
 # 2lss1tau Classifier output scores for plots and to calculate ROC with framework data

@@ -2175,10 +2175,10 @@ int class_2lss_tth_mttH_binning(float mttH)
     }
 	
 	// Split gen bin [400,inf] into reco bins [400,500,inf]
-	cut += 100
+	cut += 100;
 	if (mttH < cut) return 16;
 	
-    return 17
+    return 17;
   }
 
 int catIndex_2lss_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest, float mttH)
@@ -2225,7 +2225,7 @@ int class_2lss1tau_tth_mttH_binning(float mttH)
     }
 	
 	// Keep highest gen bin and dont split it
-    return 8
+    return 8;
   }
 
 int catIndex_2lss1tau_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest, float mttH)
@@ -2268,7 +2268,7 @@ int class_3l_tth_mttH_binning(float mttH)
         bin_counter = bin_counter + 1;
     }
 	
-    return 4
+    return 4;
   }
 
 int catIndex_3l_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest, float mttH, int nBMedium )
@@ -2279,9 +2279,9 @@ int catIndex_3l_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pd
   // 10 ttH bins
   if ((tth_low > rest && tth_low > thq) || (tth_high > rest && tth_high > thq)) {
     if (nBMedium < 2)
-      return class_max_p_3l_tth_mttH(mttH); // ttH_bl
+      return class_3l_tth_mttH_binning(mttH); // ttH_bl
     else
-      return 5+class_max_p_3l_tth_mttH(mttH); // ttH_bt
+      return 5+class_3l_tth_mttH_binning(mttH); // ttH_bt
   }
   
   else if (thq > rest && thq > tth_low && thq > tth_high) {

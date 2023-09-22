@@ -11,7 +11,7 @@ TTZ   	: TTLep_pow : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRight
 
 
 WZ     : WZTo3LNu_fxfx : 5.28 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ;  FillColor=ROOT.kViolet-4
-ZZ     : ZZTo4L : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ;  FillColor=ROOT.kViolet-4
+ZZ     : ZZTo4L : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ;  FillColor=ROOT.kViolet-3
 
 Rares: GGHZZ4L_new: xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kAzure-9
 Rares: VHToNonbb : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kAzure-9
@@ -35,9 +35,9 @@ ttVV: TTWH : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge &
 
 tZq: TZQToLL : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kOrange-9
 
-VVV: WWW_ll : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kViolet-4
-VVV: WWZ : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kViolet-4
-VVV: WZG : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kViolet-4
-VVV: WZZ : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kViolet-4
-VVV: ZZZ : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kViolet-4
+VVV: WWW_ll : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kMagenta-10
+VVV: WWZ : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kMagenta-10
+VVV: WZG : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kMagenta-10
+VVV: WZZ : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kMagenta-10
+VVV: ZZZ : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge ; FillColor=ROOT.kMagenta-10
 

@@ -11,7 +11,7 @@ class Observable:
 all_vars={}
 
 for REGION in ["2lss", "3l"]:
-    for OBSERVABLE in ["njets","nbjets","lep1_pt","lep2_pt","dR_ll","lep1_eta","max_eta","jet1_pt","deta_llss","dR_lbmedium","dR_lbloose","mindr_lep1_jet25","HT"]:
+    for OBSERVABLE in ["njets","nbjets","lep1_pt","lep2_pt","dR_ll","lep1_eta","max_eta","jet1_pt","deta_llss","dR_lbmedium","dR_lbloose","mindr_lep1_jet25","HT","m3l","pt3l"]:
         if OBSERVABLE == "njets":
             FUNCTION_2L="nDressSelJet"
             FUNCTION_2Lreco="nJet25"
@@ -131,7 +131,9 @@ for REGION in ["2lss", "3l"]:
             FUNCTION_2Lreco="htJet25j_Recl"
             if REGION == "2lss":
                 CATBINS    ="[0.0,100,200,250,300.,375,450,525,600.,1400.,2000.]"
-                CATBINS_Gen    ="[0.0,200,300.,450,600.,2000.]"
+                #CATBINS_Gen    ="[0.0,200,300.,450,600.,2000.]"
+                CATBINS_Gen    ="[0.0,200,300.,375,450,525,600.,800,2000.]"
+
             elif REGION == "3l":
                 CATBINS    ="[0.0,100,200,250,300.,375,450,525,600.,1400.,2000.]"
                 CATBINS_Gen    ="[0.0,200,300.,450,600.,2000.]"

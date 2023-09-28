@@ -9,6 +9,7 @@ YEAR=sys.argv[2]
 lumis = {
     '2016APV': '19.5',
     '2016': '16.8',
+    '2016APV_2016': '19.5,16.8',
     '2017': '41.5',
     '2018': '59.7',
     'all' : '19.5,16.8,41.4,59.7',
@@ -23,7 +24,7 @@ dowhat = "plots"
 dojeccomps=True
 P0="/eos/cms/store/cmst3/group/tthlep/peruzzi/"
 #if 'cmsco01'   in os.environ['HOSTNAME']: P0="/data1/peruzzi"
-nCores = 8
+nCores = 16
 if 'fanae' in os.environ['HOSTNAME']:
     nCores = 32
     #submit = 'sbatch -c %d -p cpupower  --wrap "{command}"'%nCores
@@ -36,18 +37,18 @@ if 'cism.ucl.ac.be' in os.environ['HOSTNAME']:
 
 if ".psi.ch" in os.environ['HOSTNAME']:
     P0 = "/pnfs/psi.ch/cms/trivcat/store/user/sesanche"
-    submit = 'sbatch -c %d  --wrap "{command}"'%nCores
+    #submit = 'sbatch -c %d -p short --wrap "{command}"'%nCores
 
-TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW --FMCs {P}/0_jmeUnc_v1  --FMCs {P}/2_btagSF_fixedWP/ --FMCs {P}/2_scalefactors_lep/  --Fs {P}/4_evtVars --Fs {P}/1_recl --Fs {P}/6_ttWforlepton  " 
-YEARDIR=YEAR if YEAR != 'all' else ''
+TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW  --FMCs {P}/0_jmeUnc_v1  --FMCs {P}/2_btagSF_fixedWP/ --FMCs {P}/2_scalefactors_lep/  --Fs {P}/4_evtVars --Fs {P}/1_recl --Fs {P}/6_ttWforlepton  " 
+YEARDIR=YEAR if YEAR not in ['all','2016APV_2016'] else ''
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_UL_v2_060422/%s          --Fs  {P}/1_recl_new "%(YEARDIR,)         
-TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_skim2lss_newfts/%s  --Fs {P}/1_recl  "%(YEARDIR,)
+TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_newfts_skim2lss/%s  --Fs {P}/1_recl  "%(YEARDIR,)
 
 
 def base(selection):
     THETREES = TREESALL
     CORE=' '.join([THETREES,TREESONLYSKIM])
-    CORE+=" -f -j %d -l %s  --tree NanoAOD --mcc ttW_multilepton/lepchoice-ttW-FO.txt --split-factor=-1 --WA prescaleFromSkim --year %s  --mcc ttW_multilepton/mcc-METchoice-prefiring.txt"%(nCores, lumis[YEAR],YEAR if YEAR!='all' else '2016APV,2016,2017,2018')# --neg" --s2v 
+    CORE+=" -f -j %d -l %s  --tree NanoAOD --mcc ttW_multilepton/lepchoice-ttW-FO.txt --split-factor=-1 --WA prescaleFromSkim --year %s  --mcc ttW_multilepton/mcc-METchoice-prefiring.txt"%(nCores, lumis[YEAR],YEAR if YEAR not in ['all','2016APV_2016'] else '2016APV,2016,2017,2018' if YEAR == 'all' else '2016APV,2016' if YEAR == '2016APV_2016' else '')# --neg" --s2v 
     RATIO= " --maxRatioRange 0.0  1.99 --ratioYNDiv 505 "
     RATIO2=" --showRatio --attachRatioPanel --fixRatioRange "
     LEGEND=" --legendColumns 2 --legendWidth 0.25 "
@@ -58,7 +59,7 @@ def base(selection):
     if selection=='2lss':
         GO="%s ttW_multilepton/mca-2lss-mc.txt ttW_multilepton/2lss_tight.txt --xp TTW_jet1_pt.*,TTW_nbjets.*,TTW_njets.*,TTW_lep1_pt.*,TTW_lep1_eta.*,TTW_deta_llss.*,TTW_ooa.*,TTW_dR_lbMedium.*,TTW_dR_lbLoose.*,TTW_mindr_lep1_jet25.*,TTW_HT_bin.*,TTW_dR_ll.*,TTW_max_eta.*"%CORE
         GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_2lss'"%GO
-        if dowhat in ["plots","ntuple"]: GO+=" ttW_multilepton/2lss_3l_plots_diff.txt --xP '^lep(3|4)_.*' --xP '^(3|4)lep_.*' --xP 'kinMVA_3l_.*' "
+        if dowhat in ["plots","ntuple"]: GO+=" ttW_multilepton/2lss_3l_plots.txt --xP '^lep(3|4)_.*' --xP '^(3|4)lep_.*' --xP 'kinMVA_3l_.*' "
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.52 ")
         if dowhat == "plots": GO=GO.replace(RATIO,  " --maxRatioRange 0.6  1.99 --ratioYNDiv 210 ")
         GO += " --binname 2lss "
@@ -134,7 +135,7 @@ if __name__ == '__main__':
                 x = x.replace('mca-2lss-mc.txt','mca-2lss-mcdata.txt')
                 x = add(x,'--xp data')
             elif not '_data' in torun: raise RuntimeError
-            x = x.replace('mca-2lss-mcdata.txt','mca-2lss-mcdata-frdata.txt')
+            x = x.replace('mca-2lss-mcdata.txt','mca-2lss-mcdata-frdata-inclusive.txt')
             if '_table' in torun:
                 x = x.replace('mca-2lss-mcdata-frdata.txt','mca-2lss-mcdata-frdata-table.txt')
 
@@ -251,6 +252,9 @@ if __name__ == '__main__':
                 x = x.replace('mca-3l-mcdata-frdata.txt','mca-3l-mcdata-frdata-table.txt')
         if '_table' in torun:
             x = x.replace('mca-3l-mc.txt','mca-3l-mc-table.txt')
+
+        if '_chargeasymmetry' in torun:
+            x = x + " -E ^met --sP ^ttW_charge_asymmetry_v4 " 
 
         if '_DNNnodes' in torun:
             x = add(x, "--sP 'kinMVA_3l_cat.*'")
@@ -523,7 +527,8 @@ if __name__ == '__main__':
             x = promptsub(x)
             if not '_data' in torun: raise RuntimeError
             x = x.replace('mca-3l-mcdata.txt','mca-3l-mcdata-frdata.txt')
-        plots = ['cr_3l']
+        plots = []#['cr_3l']
+        x = x.replace('--maxRatioRange 0.0  1.99','--maxRatioRange 0.8 1.2')
         if '_unc' in torun:
             x = add(x,"--unc ttW_multilepton/systsUnc.txt  --xu CMS_ttWl_TTZ_lnU,CMS_ttWl_TTW_lnU")
             if '_postfit' in torun:

@@ -147,11 +147,12 @@ for REGION in ["2lss", "3l"]:
                 CATBINS    ="[0., 50., 150., 250., 350., 600.]"
                 
         elif OBSERVABLE == "pt3l":
-            FUNCTION_2L="GenDressedLepton_pt[iDressSelLep[0]] + GenDressedLepton_pt[iDressSelLep[1]] + GenDressedLepton_pt[iDressSelLep[2]]"
+            FUNCTION_2L="(GenDressedLepton_pt[iDressSelLep[0]] + GenDressedLepton_pt[iDressSelLep[1]] + GenDressedLepton_pt[iDressSelLep[2]])"
             FUNCTION_2Lreco="LepGood1_pt+LepGood2_pt+LepGood3_pt"
             if REGION == "2lss":
                 continue # Not implemented
             elif REGION == "3l":
-                CATBINS    ="[0.0, 150., 250., 350., 800.]"
+                CATBINS    ="[0.0, 100,150.,200., 250.,300 ,350.,450. ,800.]"
+                CATBINS_Gen    ="[0.0, 150., 250., 350., 800.]"
         
         all_vars[(OBSERVABLE,REGION)]=Observable(FUNCTION_2L, FUNCTION_2Lreco, CATBINS, CATBINS_Gen, REGION)

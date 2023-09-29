@@ -393,7 +393,9 @@ hasOSSF : hasOSSF : 2,-0.5,1.5
 mZ_OSSF : mZ_OSSF : 20,0,200
 full_asymmetry : ttW_charge_asymmetry(hasOSSF,nJet30, LepGood1_charge+LepGood2_charge+LepGood3_charge, even_lepton_1_score-even_lepton_2_score, abs(positive_lepton_eta)-abs(negative_lepton_eta)) : 64,-0.5,63.5; Wide=True
 atlas_sr : ttW_ATLAS_selection( nJet30, nBJetMedium30, MET_pt ) : [-1.5,-0.5,0.5,1.5,2.5,3.5]; XTitle="Regions"
-simple_asymmetry : ttW_charge_asymmetry_simple(hasOSSF,nJet30, LepGood1_charge+LepGood2_charge+LepGood3_charge, abs(positive_lepton_eta)-abs(negative_lepton_eta)) : 32,-0.5,31.5; Wide=True
+simple_asymmetry : ttW_charge_asymmetry_sim
+ple(hasOSSF,nJet30, LepGood1_charge+LepGood2_charge+LepGood3_charge, abs(positive_lepton_eta)-abs(negative_lepton_eta)) : 32,-0.5,31.5; Wide=True
 simple_asymmetry_bees : ttW_charge_asymmetry_simple_withbees(hasOSSF,nJet30, LepGood1_charge+LepGood2_charge+LepGood3_charge, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30) : 40,-0.5,39.5; Wide=True
 smart_strategy_nocharge : ttW_charge_asymmetry_simple_withbees_nocharge(hasOSSF,nJet30, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30) : 20,-0.5,19.5; Wide=True, Legend="TL"
 ttW_charge_asymmetry_v4 : ttW_charge_asymmetry_v4(hasOSSF,nJet30, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30, mZ_OSSF) : 32,-0.5,31.5; Wide=True
+njets_23       : if3( nJet25_Recl == 2, 0, 1) : [-0.5,0.5,1.5];  XTitle="2 or 3 jets" 

@@ -109,6 +109,8 @@ htJet25j:   	htJet25j 				: 40,0,1000 ; XTitle="H_{T}(jet p_{T} > 25) (GeV)"
 mhtJet25:   	mhtJet25 				: 40,0,400 ; XTitle="H_{T}^{miss}(p_{T} > 25) (GeV)"
 met: 		MET_pt					: 40,0,400 ; XTitle="E_{T}^{miss} (GeV)"
 metLD:		MET_pt*0.6 + mhtJet25*0.4  	        : 40,0,400; XTitle="E_{T}^{miss} LD (GeV)"
+MET_T1_pt: 			$DATA{MET_pt} $MC{MET_T1_pt} 				: 40,0,400 ; XTitle="E_{T}^{miss} T1 (GeV)"
+MET_T1Smear_pt: 			$DATA{MET_pt} $MC{MET_T1Smear_pt} 				: 40,0,400 ; XTitle="E_{T}^{miss} T1 smeared (GeV)"
 minMllAFAS:	minMllAFAS				: 20,0,200; XTitle="min M_{ll} (GeV)", Legend='TR'
 minMllAFOS:     minMllAFOS                              : 20,0,200; XTitle="min M_{ll} (GeV)", Legend='TR'
 minMllSFOS:     minMllSFOS                              : 20,0,200; XTitle="min M_{ll} (GeV)", Legend='TR'
@@ -116,10 +118,98 @@ mZ1:		mZ1					: 80,50,130; XTitle="Best Z candidate mass (GeV)"
 mH1mm:		mH1mm					: 60,110,140; XTitle="Best H #rightarrow #mu #mu candidate mass (GeV)", IncludeOverflows=False, MoreY=2.0
 nVert:		PV_npvsGood				: 240,0.5,60.5; XTitle="N_{vtx}"
 
-kinMVA_2lss_score_ttH : DNN_2lss_predictions_ttH : 40,0,1; XTitle="2lss DNN score (ttH node)"
-kinMVA_2lss_score_rest : DNN_2lss_predictions_Rest : 40,0,1; XTitle="2lss DNN score (rest node)"
-kinMVA_2lss_score_ttW : DNN_2lss_predictions_ttW : 40,0,1; XTitle="2lss DNN score (ttW node)"
-kinMVA_2lss_score_tHq : DNN_2lss_predictions_tHQ : 40,0,1; XTitle="2lss DNN score (tHq node)"
+
+# 2lss Classifier output scores for plots and to calculate ROC with framework data
+kinMVA_2lss_score_ttH_low : DNN_2lss_predictions_ttH_low_Higgs_pt : 40,0,1; XTitle="2lss DNN score (ttH_low node)",  LegendCutoff=1e-5
+kinMVA_2lss_score_ttH_high : DNN_2lss_predictions_ttH_high_Higgs_pt : 40,0,1; XTitle="2lss DNN score (ttH_high node)",  LegendCutoff=1e-5
+kinMVA_2lss_score_ttH_old : DNN_2lss_predictions_ttH : 40,0,1; XTitle="2lss DNN score (ttH node)",  LegendCutoff=1e-5
+kinMVA_2lss_score_rest : DNN_2lss_predictions_Rest : 40,0,1; XTitle="2lss DNN score (rest node)",  LegendCutoff=1e-5
+kinMVA_2lss_score_ttW : DNN_2lss_predictions_ttW : 40,0,1; XTitle="2lss DNN score (ttW node)",  LegendCutoff=1e-5
+kinMVA_2lss_score_tHq : DNN_2lss_predictions_tHQ : 40,0,1; XTitle="2lss DNN score (tHq node)",  LegendCutoff=1e-5
+
+kinMVA_2lss_score_ttH_low_ROC : DNN_2lss_predictions_ttH_low_Higgs_pt : 100,0,1; XTitle="2lss DNN score (ttH_low node)",  LegendCutoff=1e-5
+kinMVA_2lss_score_ttH_high_ROC : DNN_2lss_predictions_ttH_high_Higgs_pt : 100,0,1; XTitle="2lss DNN score (ttH_high node)",  LegendCutoff=1e-5
+kinMVA_2lss_score_ttH_old_ROC : DNN_2lss_predictions_ttH : 100,0,1; XTitle="2lss DNN score (ttH node)",  LegendCutoff=1e-5
+kinMVA_2lss_score_rest_ROC : DNN_2lss_predictions_Rest : 100,0,1; XTitle="2lss DNN score (rest node)",  LegendCutoff=1e-5
+kinMVA_2lss_score_ttW_ROC : DNN_2lss_predictions_ttW : 100,0,1; XTitle="2lss DNN score (ttW node)",  LegendCutoff=1e-5
+kinMVA_2lss_score_tHq_ROC : DNN_2lss_predictions_tHQ : 100,0,1; XTitle="2lss DNN score (tHq node)",  LegendCutoff=1e-5
+
+
+# 2lss Classifier scores finely binned
+kinMVA_2lss_score_ttH_low_highest_fine : ttH_max_2lss_tth_low(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 300,0,3; XTitle="2lss DNN score (ttH_low node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=100.0
+kinMVA_2lss_score_ttH_high_highest_fine : ttH_max_2lss_tth_high(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 300,0,3; XTitle="2lss DNN score (ttH_high node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=100.0
+kinMVA_2lss_score_rest_highest_fine : ttH_max_2lss_rest(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 300,0,3; XTitle="2lss DNN score (rest node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=100.0
+kinMVA_2lss_score_ttw_highest_fine : ttH_max_2lss_ttw(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 300,0,3; XTitle="2lss DNN score (ttW node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=100.0
+kinMVA_2lss_score_thq_highest_fine : ttH_max_2lss_thq(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 300,0,3; XTitle="2lss DNN score (thq node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=100.0
+
+kinMVA_2lss_score_ttH_low_highest_part : class_max_p_2lss_ttH_low(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 16,-1.5,14.5; XTitle="2lss DNN score (ttH_low node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=200.0
+kinMVA_2lss_score_ttH_high_highest_part : class_max_p_2lss_ttH_high(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 6,-1.5,4.5; XTitle="2lss DNN score (ttH_high node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=200.0
+kinMVA_2lss_score_thq_highest_part : class_max_p_2lss_thq(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 23,-1.5,21.5; XTitle="2lss DNN score (tHq node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=200.0
+kinMVA_2lss_score_rest_highest_part : class_max_p_2lss_rest(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 28,-1.5,26.5; XTitle="2lss DNN score (rest node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=200.0
+kinMVA_2lss_score_ttw_highest_part : class_max_p_2lss_ttw(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 41,-1.5,39.5; XTitle="2lss DNN score (ttW node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=200.0
+
+kinMVA_2lss_score_all_highest_part : class_max_p_2lss_all(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 97,-0.5,96.5; XTitle="2lss DNN score (all nodes highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=200.0
+
+
+# 2lss Binning used for datacards (ttH in Higgs_pt bins)
+kinMVA_2lss_score_all_highest_part_HiggsPt : catIndex_2lss_all_HiggsPt(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest, Hreco_dnn_prediction) : 121,-0.5,120.5; XTitle="2lss DNN score (all nodes highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=200.0
+
+kinMVA_2lss_score_all_highest_part_HiggsPt_check : catIndex_2lss_all_HiggsPt(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest, Hreco_dnn_prediction) : 121,-0.5,120.5; XTitle="2lss DNN score (all nodes highest)",  LegendCutoff=1e-5
+
+
+
+# 2lss1tau Classifier output scores for plots and to calculate ROC with framework data
+kinMVA_2lss1tau_score_ttH_low : DNN_2lss1tau_predictions_ttH_low_Higgs_pt : 40,0,1; XTitle="2lss1tau DNN score (ttH_low node)",  LegendCutoff=1e-5
+kinMVA_2lss1tau_score_ttH_high : DNN_2lss1tau_predictions_ttH_high_Higgs_pt : 40,0,1; XTitle="2lss1tau DNN score (ttH_high node)",  LegendCutoff=1e-5
+kinMVA_2lss1tau_score_ttH_old : DNN_2lss1tau_predictions_ttH : 40,0,1; XTitle="2lss DNN score (ttH incl node)",  LegendCutoff=1e-5
+kinMVA_2lss1tau_score_rest : DNN_2lss1tau_predictions_rest : 40,0,1; XTitle="2lss1tau DNN score (rest node)",  LegendCutoff=1e-5
+kinMVA_2lss1tau_score_tHq : DNN_2lss1tau_predictions_tH : 40,0,1; XTitle="2lss1tau DNN score (tHq node)",  LegendCutoff=1e-5
+
+kinMVA_2lss1tau_score_ttH_low_ROC : DNN_2lss1tau_predictions_ttH_low_Higgs_pt : 100,0,1; XTitle="2lss1tau DNN score (ttH_low node)",  LegendCutoff=1e-5
+kinMVA_2lss1tau_score_ttH_high_ROC : DNN_2lss1tau_predictions_ttH_high_Higgs_pt : 100,0,1; XTitle="2lss1tau DNN score (ttH_high node)",  LegendCutoff=1e-5
+kinMVA_2lss1tau_score_ttH_old_ROC : DNN_2lss1tau_predictions_ttH : 100,0,1; XTitle="2lss DNN score (ttH incl node)",  LegendCutoff=1e-5
+kinMVA_2lss1tau_score_rest_ROC : DNN_2lss1tau_predictions_rest : 100,0,1; XTitle="2lss1tau DNN score (rest node)",  LegendCutoff=1e-5
+kinMVA_2lss1tau_score_tHq_ROC : DNN_2lss1tau_predictions_tH : 100,0,1; XTitle="2lss1tau DNN score (tHq node)",  LegendCutoff=1e-5
+
+
+# 2lss1tau Classifier scores finely binned
+kinMVA_2lss1tau_score_ttH_low_highest_fine : ttH_max_2lss1tau_tth_low(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss1tau_predictions_ttH_low_Higgs_pt, DNN_2lss1tau_predictions_ttH_high_Higgs_pt, DNN_2lss1tau_predictions_tH, DNN_2lss1tau_predictions_rest) : 300,0,3; XTitle="2lss1tau DNN score (ttH_low node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=10.0
+kinMVA_2lss1tau_score_ttH_high_highest_fine : ttH_max_2lss1tau_tth_high(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss1tau_predictions_ttH_low_Higgs_pt, DNN_2lss1tau_predictions_ttH_high_Higgs_pt, DNN_2lss1tau_predictions_tH, DNN_2lss1tau_predictions_rest) : 300,0,3; XTitle="2lss1tau DNN score (ttH_high node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=10.0
+kinMVA_2lss1tau_score_rest_highest_fine : ttH_max_2lss1tau_rest(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss1tau_predictions_ttH_low_Higgs_pt, DNN_2lss1tau_predictions_ttH_high_Higgs_pt, DNN_2lss1tau_predictions_tH, DNN_2lss1tau_predictions_rest) : 300,0,3; XTitle="2lss1tau DNN score (rest node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=10.0
+kinMVA_2lss1tau_score_thq_highest_fine : ttH_max_2lss1tau_thq(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss1tau_predictions_ttH_low_Higgs_pt, DNN_2lss1tau_predictions_ttH_high_Higgs_pt, DNN_2lss1tau_predictions_tH, DNN_2lss1tau_predictions_rest) : 300,0,3; XTitle="2lss1tau DNN score (thq node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=10.0
+
+# 2lss1tau Binning used for datacards (ttH in Higgs_pt bins)
+kinMVA_2lss1tau_score_all_highest_part_HiggsPt : catIndex_2lss1tau_all_HiggsPt(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss1tau_predictions_ttH_low_Higgs_pt, DNN_2lss1tau_predictions_ttH_high_Higgs_pt, DNN_2lss1tau_predictions_tH, DNN_2lss1tau_predictions_rest, ttH_higgs_pt_2lss1tau_) : 21,-0.5,20.5; XTitle="2lss1tau DNN score (all nodes highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=80.0
+
+
+
+# 3l Classifier output scores for plots and to calculate ROC with framework data
+kinMVA_3l_score_ttH_low  : DNN_3l_predictions_ttH_low_Higgs_pt  : 40,0,1; XTitle="3l DNN score (ttH_low node)",  LegendCutoff=1e-5
+kinMVA_3l_score_ttH_low_ROC  : DNN_3l_predictions_ttH_low_Higgs_pt  : 100,0,1; XTitle="3l DNN score (ttH_low node)",  LegendCutoff=1e-5
+kinMVA_3l_score_ttH_high  : DNN_3l_predictions_ttH_high_Higgs_pt  : 40,0,1; XTitle="3l DNN score (ttH_high node)",  LegendCutoff=1e-5
+kinMVA_3l_score_ttH_high_ROC  : DNN_3l_predictions_ttH_high_Higgs_pt  : 100,0,1; XTitle="3l DNN score (ttH_high node)",  LegendCutoff=1e-5
+kinMVA_3l_score_ttH_tot  : DNN_3l_predictions_ttH_high_Higgs_pt + DNN_3l_predictions_ttH_low_Higgs_pt  : 40,0,1; XTitle="3l DNN score (ttH_high + ttH_low node)",  LegendCutoff=1e-5
+kinMVA_3l_score_ttH_tot_ROC  : DNN_3l_predictions_ttH_high_Higgs_pt + DNN_3l_predictions_ttH_low_Higgs_pt  : 100,0,1; XTitle="3l DNN score (ttH_high + ttH_low node)",  LegendCutoff=1e-5
+kinMVA_3l_score_ttH_old  : DNN_3l_predictions_ttH  : 40,0,1; XTitle="3l DNN score (ttH_old node)",  LegendCutoff=1e-5
+kinMVA_3l_score_ttH_old_ROC  : DNN_3l_predictions_ttH  : 100,0,1; XTitle="3l DNN score (ttH_old node)",  LegendCutoff=1e-5
+kinMVA_3l_score_tH   : DNN_3l_predictions_tH   : 40,0,1; XTitle="3l DNN score (tH node)",  LegendCutoff=1e-5
+kinMVA_3l_score_tH_ROC   : DNN_3l_predictions_tH   : 100,0,1; XTitle="3l DNN score (tH node)",  LegendCutoff=1e-5
+kinMVA_3l_score_rest : DNN_3l_predictions_rest : 40,0,1; XTitle="3l DNN score (rest node)",  LegendCutoff=1e-5
+kinMVA_3l_score_rest_ROC : DNN_3l_predictions_rest : 100,0,1; XTitle="3l DNN score (rest node)",  LegendCutoff=1e-5
+
+# 3l Classifier scores finely binned
+kinMVA_3l_score_ttH_low_highest_fine : ttH_max_3l_tth_low(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId, DNN_3l_predictions_ttH_low_Higgs_pt, DNN_3l_predictions_ttH_high_Higgs_pt, DNN_3l_predictions_tH, DNN_3l_predictions_rest) : 400,0,4; XTitle="3l DNN score (ttH_low node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=20.0
+kinMVA_3l_score_ttH_high_highest_fine : ttH_max_3l_tth_high(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId, DNN_3l_predictions_ttH_low_Higgs_pt, DNN_3l_predictions_ttH_high_Higgs_pt, DNN_3l_predictions_tH, DNN_3l_predictions_rest) : 400,0,4; XTitle="3l DNN score (ttH_high node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=20.0
+kinMVA_3l_score_rest_highest_fine : ttH_max_3l_rest(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId, DNN_3l_predictions_ttH_low_Higgs_pt, DNN_3l_predictions_ttH_high_Higgs_pt, DNN_3l_predictions_tH, DNN_3l_predictions_rest) : 400,0,4; XTitle="3l DNN score (rest node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=20.0
+kinMVA_3l_score_thq_highest_fine : ttH_max_3l_thq(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId, DNN_3l_predictions_ttH_low_Higgs_pt, DNN_3l_predictions_ttH_high_Higgs_pt, DNN_3l_predictions_tH, DNN_3l_predictions_rest) : 400,0,4; XTitle="3l DNN score (thq node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=20.0
+
+# 3l Binning used for datacards (ttH in Higgs_pt bins)
+kinMVA_3l_score_all_highest_part_HiggsPt : catIndex_3l_all_HiggsPt(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId, DNN_3l_predictions_ttH_low_Higgs_pt, DNN_3l_predictions_ttH_high_Higgs_pt, DNN_3l_predictions_tH, DNN_3l_predictions_rest, Hreco_dnn_prediction_3l, nBJetMedium25_Recl) : 21,-0.5,20.5; XTitle="3l DNN score (all nodes highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=250.0
+
+kinMVA_2lss_score_cat : ttH_catIndex_2lss_test(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5] ; XTitle="2lss cat sep DNN score",  LegendCutoff=1e-5, YMin=0.0 , YMax=1.2e3
+
+kinMVA_2lss1tau_score_cat : ttH_catIndex_2lss1tau_test(DNN_2lss1tau_predictions_ttH_low_Higgs_pt, DNN_2lss1tau_predictions_ttH_high_Higgs_pt, DNN_2lss1tau_predictions_tH, DNN_2lss1tau_predictions_rest) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="2lss1tau cat sep DNN score",  LegendCutoff=1e-5, YMin=0.0 , YMax=2.0e2
+
 kinMVA_2lss_discCats : ttH_catIndex_2lss( LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH , DNN_2lss_predictions_ttW , DNN_2lss_predictions_tHQ , DNN_2lss_predictions_Rest) : 12,0.5,12.5; XTitle="2lss DNN classes"
 kinMVA_2lss_MVA : ttH_catIndex_2lss_MVA( LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH , DNN_2lss_predictions_ttW , DNN_2lss_predictions_tHQ , DNN_2lss_predictions_Rest) : 120,0.5,120.5; XTitle="2lss DNN classes"
 kinMVA_2lss_score_max : max(max(DNN_2lss_predictions_ttH,DNN_2lss_predictions_Rest),max(DNN_2lss_predictions_ttW,DNN_2lss_predictions_tHQ)) : 10,0.25,1; XTitle="2lss maximum DNN score"
@@ -160,12 +250,7 @@ kinMVA_2lss_input_jet3_phi       : if3( nJet25_Recl>2, JetSel_Recl_phi[2] , -9)	
 kinMVA_2lss_input_maxeta         : max(abs(LepGood_eta[int(iLepFO_Recl[0])]), abs(LepGood_eta[int(iLepFO_Recl[1])]))          : 40,0,2.4	                ; XTitle="maxeta"          
 kinMVA_2lss_input_jet1_eta       : if3(nJet25_Recl > 0, abs(JetSel_Recl_eta[0]),  -9)				                : 40,0,2.4                      ; XTitle="jet1_eta"        
 
-kinMVA_3l_score_max  : max(max(DNN_3l_predictions_ttH,DNN_3l_predictions_tH),DNN_3l_predictions_rest) : 10,0.33,1; XTitle="3l maximum DNN score"
-kinMVA_3l_score_ttH  : DNN_3l_predictions_ttH  : 40,0,1; XTitle="3l DNN score (ttH node)"
-kinMVA_3l_score_tH   : DNN_3l_predictions_tH   : 40,0,1; XTitle="3l DNN score (tH node)"
-kinMVA_3l_score_rest : DNN_3l_predictions_rest : 40,0,1; XTitle="3l DNN score (rest node)"
-kinMVA_3l_score_catBinIndex : ttH_catIndex_3l(DNN_3l_predictions_ttH, DNN_3l_predictions_tH, DNN_3l_predictions_rest, LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId, nBJetMedium25 ) : 8,0.5,8.5 ; XTitle="3l category"
-kinMVA_3l_catBinIndex_MVA : ttH_catIndex_3l_MVA(DNN_3l_predictions_ttH, DNN_3l_predictions_tH, DNN_3l_predictions_rest, LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId, nBJetMedium25 ) : 38,0.5,38.5 ; XTitle="3l category"
+kinMVA_3l_score_max  : max(max(max(DNN_3l_predictions_ttH_low_Higgs_pt,DNN_3l_predictions_tH),DNN_3l_predictions_rest),DNN_3l_predictions_ttH_high_Higgs_pt) : 10,0.25,1; XTitle="3l maximum DNN score"
 
 kinMVA_3l_input_avg_dr_jet : avg_dr_jet : 40,0,4;   XTitle="avg_dr_jet"					   
 kinMVA_3l_input_min_dr_Lep : min(min(drlep12, drlep13), drlep23) : 40,0,4; XTitle="min_dr_Lep"					   

@@ -22,7 +22,7 @@ class lepScaleFactors(Module):
             self.recoToLoose['%s,e,extra'%year]= loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF/elec/egammaEffi%s_recoToloose_EGM2D.root'%(year), 'EGamma_SF2D')
 
             self.electronReco [year] = [loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF/elec/egammaEffi%s_ptAbove20_EGM2D.root'%year, "EGamma_SF2D"),
-                        loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF/elec/egammaEffi%s_ptAbove20_EGM2D.root'%year, "EGamma_SF2D")] # first Et > 20, second Et < 20
+                        loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF/elec/egammaEffi%s_ptBelow20_EGM2D.root'%year, "EGamma_SF2D")] # first Et > 20, second Et < 20
 
         for year in '2016APV,2016,2017,2018'.split(','):
             for channel in ['sf_2l_ee','sf_2l_em', 'sf_2l_mm', 'sf_3l_eee','sf_3l_eem', 'sf_3l_emm','sf_3l_mmm']:
@@ -104,25 +104,14 @@ class lepScaleFactors(Module):
                 hist_2lss=self.triggerSF['%s %s'%(year,channel)]
                 thebin=hist_2lss.FindBin( min(199.,leps[0].pt), min(199.,leps[1].pt) ) 
                 shift= 0 if var == '' else 1 if 'up' in var else -1 
-                self.out.fillBranch('triggerSF_2lss%s'%var, hist_2lss.GetBinContent(thebin) + shift*hist_2lss.GetBinContent(thebin))
+                self.out.fillBranch('triggerSF_2lss%s'%var, hist_2lss.GetBinContent(thebin) + shift*hist_2lss.GetBinError(thebin))
             else:
                 self.out.fillBranch('triggerSF_2lss%s'%var, 1)
 
         for var in ',_up,_dn'.split(","):
             if len(leps)>=3:
-                comb = abs(leps[0].pdgId) + abs(leps[1].pdgId) + abs(leps[2].pdgId)
-                if (comb == 33): channel = 'sf_3l_eee'
-                if (comb == 35): channel = 'sf_3l_eem'
-                if (comb == 37): channel = 'sf_3l_emm'
-                if (comb == 39): channel = 'sf_3l_mmm'
-
-                hist_3l=self.triggerSF['%s %s'%(year,channel)]
-                thebin=hist_3l.FindBin( min(299.,leps[0].pt), abs(leps[0].eta ) )
                 shift= 0 if var == '' else 1 if 'up' in var else -1 
-                if channel == 'sf_3l_eee' and year == '2016APV' and leps[0].pt < 80 and abs(leps[0].eta) > 1.4:
-                    scale_factor=1
-                else:
-                    scale_factor=hist_3l.GetBinContent(thebin) + shift*hist_3l.GetBinContent(thebin)
+                scale_factor=1+shift*0.02
                 self.out.fillBranch('triggerSF_3l%s'%var, scale_factor)
 
             else:

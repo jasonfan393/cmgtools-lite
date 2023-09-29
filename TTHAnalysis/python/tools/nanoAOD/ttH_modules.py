@@ -97,7 +97,7 @@ tightLeptonSel = lambda lep,year,era : clean_and_FO_selection_TTH(lep,year,era) 
 
 foTauSel = lambda tau: tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy) < 1000 and abs(tau.dz) < 0.2  and (int(tau.idDeepTau2017v2p1VSjet)>>1 & 1) # VVLoose WP
 tightTauSel = lambda tau: (int(tau.idDeepTau2017v2p1VSjet)>>2 & 1) # VLoose WP
-jevariations=['jes%s'%x for x in ["FlavorQCD", "RelativeBal", "HF", "BBEC1", "EC2", "Absolute", "BBEC1_year", "EC2_year", "Absolute_year", "HF_year", "RelativeSample_year" ]] + ['jer%d'%j for j in range(6)]
+jevariations=['jes%s'%x for x in ["FlavorQCD", "RelativeBal", "HF", "BBEC1", "EC2", "Absolute", "BBEC1_year", "EC2_year", "Absolute_year", "HF_year", "RelativeSample_year", "HEMIssue" ]] + ['jer%d'%j for j in range(6)]
 from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaning import CombinedObjectTaggerForCleaning
 from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleaner import fastCombinedObjectRecleaner
 recleaner_step1 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
@@ -129,7 +129,7 @@ recleaner_step2_mc = lambda : fastCombinedObjectRecleaner(label="Recl", inlabel=
                                                           cleanJetsWithFOTaus=True,
                                                           doVetoZ=False, doVetoLMf=False, doVetoLMt=False,
                                                           jetPts=[25,30],
-                                                          jetPtsFwd=[25,60], # second number for 2.7 < abseta < 3, the first for the rest
+                                                          jetPtsFwd=[40,40], # second number for 2.7 < abseta < 3, the first for the rest
                                                           btagL_thr=99, # they are set at runtime 
                                                           btagM_thr=99,
                                                           isMC = True,
@@ -140,7 +140,7 @@ recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label="Recl", inlabe
                                          cleanJetsWithFOTaus=True,
                                          doVetoZ=False, doVetoLMf=False, doVetoLMt=False,
                                          jetPts=[25,30],
-                                         jetPtsFwd=[25,60], # second number for 2.7 < abseta < 3, the first for the rest
+                                         jetPtsFwd=[40,40], # second number for 2.7 < abseta < 3, the first for the rest
                                          btagL_thr=-99., # they are set at runtime  
                                          btagM_thr=-99., # they are set at runtime  
                                          isMC = False,
@@ -182,15 +182,15 @@ mcMatch_seq   = [ isMatchRightCharge, mcMatchId ,mcPromptGamma]
 from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 import createJMECorrector
 
 
-jetmetUncertainties2016APVAll = createJMECorrector(dataYear='UL2016_preVFP', jesUncert="Merged", splitJER=True)
-jetmetUncertainties2016All = createJMECorrector(dataYear='UL2016', jesUncert="Merged", splitJER=True)
-jetmetUncertainties2017All = createJMECorrector(dataYear='UL2017', jesUncert="Merged", splitJER=True)
-jetmetUncertainties2018All = createJMECorrector(dataYear='UL2018', jesUncert="Merged", splitJER=True, applyHEMfix=True)
+jetmetUncertainties2016APVAll = createJMECorrector(dataYear='UL2016_preVFP', jesUncert="Merged", splitJER=True, applyHEMfix=True)
+jetmetUncertainties2016All    = createJMECorrector(dataYear='UL2016'       , jesUncert="Merged", splitJER=True, applyHEMfix=True)
+jetmetUncertainties2017All    = createJMECorrector(dataYear='UL2017'       , jesUncert="Merged", splitJER=True, applyHEMfix=True)
+jetmetUncertainties2018All    = createJMECorrector(dataYear='UL2018'       , jesUncert="Merged", splitJER=True, applyHEMfix=True)
 
-jetmetUncertainties2016APVTotal = createJMECorrector(dataYear='UL2016_preVFP', jesUncert="Total")
-jetmetUncertainties2016Total = createJMECorrector(dataYear='UL2016', jesUncert="Total")
-jetmetUncertainties2017Total = createJMECorrector(dataYear='UL2017', jesUncert="Total")
-jetmetUncertainties2018Total = createJMECorrector(dataYear='UL2018', jesUncert="Total", applyHEMfix=True)
+jetmetUncertainties2016APVTotal = createJMECorrector(dataYear='UL2016_preVFP', jesUncert="Total", applyHEMfix=True)
+jetmetUncertainties2016Total    = createJMECorrector(dataYear='UL2016'       , jesUncert="Total", applyHEMfix=True)
+jetmetUncertainties2017Total    = createJMECorrector(dataYear='UL2017'       , jesUncert="Total", applyHEMfix=True)
+jetmetUncertainties2018Total    = createJMECorrector(dataYear='UL2018'       , jesUncert="Total", applyHEMfix=True)
 
 
 
@@ -381,10 +381,12 @@ finalMVA_input = lambda : finalMVA_DNN(doSystJEC=False, fillInputs=True) # use t
 from CMGTools.TTHAnalysis.tools.finalMVA_DNN_3l import finalMVA_DNN_3l
 finalMVA3L = lambda : finalMVA_DNN_3l() # use this for data
 finalMVA3L_allVars = lambda : finalMVA_DNN_3l(variations = jevariations )
+finalMVA3L_input = lambda : finalMVA_DNN_3l(doSystJEC=False, fillInputs=True)
 
 from CMGTools.TTHAnalysis.tools.finalMVA_DNN_2lss1tau import finalMVA_DNN_2lss1tau
 finalMVA2lss1tau = lambda : finalMVA_DNN_2lss1tau() # use this for data
-finalMVA2lss1tau_allVars = lambda : finalMVA_DNN_2lss1tau(variations = [ 'jes%s'%v for v in jecGroups] + ['jer%s'%x for x in ['barrel','endcap1','endcap2highpt','endcap2lowpt' ,'forwardhighpt','forwardlowpt']  ]  + ['HEM'])
+finalMVA2lss1tau_allVars = lambda : finalMVA_DNN_2lss1tau(variations = jevariations)
+finalMVA2lss1tau_input = lambda : finalMVA_DNN_2lss1tau(doSystJEC=False, fillInputs=True)
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.finalMVA_4l import FinalMVA_4L
 finalMVA_4l = lambda : FinalMVA_4L()
@@ -466,6 +468,14 @@ from CMGTools.TTHAnalysis.tools.higgsDiffGenTTH import higgsDiffGenTTH
 from CMGTools.TTHAnalysis.tools.higgsDiffRecoTTH import higgsDiffRecoTTH, higgsDiffRecoTTH_noWmassConstraint
 from CMGTools.TTHAnalysis.tools.higgsDiffCompTTH import higgsDiffCompTTH, higgsDiffCompTTH_noWmassConstraint
 from CMGTools.TTHAnalysis.tools.higgsDiffRegressionTTH import higgsDiffRegressionTTH
+from CMGTools.TTHAnalysis.tools.higgsDiffRegressionTTH_2lss1tau import higgsDiffRegressionTTH_2lss1tau
+from CMGTools.TTHAnalysis.tools.ttH_2lss_dnn_pt_regression import Class_ttH_2lss_dnn_pt_regression
+from CMGTools.TTHAnalysis.tools.ttH_2lss1tau_ptregression import ttH_2lss1tau_ptregression
+
+ttH_2lss_dnn_pt_regression = lambda : Class_ttH_2lss_dnn_pt_regression(label='Hreco_',
+                                                                       variations=jevariations,
+                                                         btagDeepCSVveto = 'M')
+pt_regression_2lss1tau_allvars = lambda : ttH_2lss1tau_ptregression(variations=jevariations)
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.ttH_genericTreeVarForSR import ttH_genericTreeVarForSR
 
@@ -525,11 +535,13 @@ MVAcp_2lss1tau_allvars = lambda : mvaCP_2lss1tau(variations = [ 'jes%s'%v for v 
 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.selectParticleAndPartonInfo import selectParticleAndPartonInfo
-ttW_diff_gen_info = lambda : selectParticleAndPartonInfo( dresslepSel_ = lambda x : x.pt>20 and abs(x.eta) < 2.4,
+ttW_diff_gen_info = lambda : selectParticleAndPartonInfo( dresslepSel_ = lambda x : x.pt>10 and ((abs(x.eta) < 2.4 and abs(x.pdgId)==13 ) or (abs(x.eta) < 2.5 and abs(x.pdgId)==11 )),
                                                           dressjetSel_ = lambda x : x.pt>25 and abs(x.eta) < 2.4 ,
-                                                          dressfwdSel_ = lambda x : x.pt>40 and abs(x.eta) < 4.7 and abs(x.eta) > 2.4, 
+                                                          #dressfwdSel_ = lambda x : x.pt>40 and abs(x.eta) < 4.7 and abs(x.eta) > 2.4, 
 
 ) 
+
+from CMGTools.TTHAnalysis.tools.nanoAOD.chargeAsymmetry import ChargeAsymmetry
                                                
 from CMGTools.TTHAnalysis.tools.nanoAOD.topRecoSemiLept import TopRecoSemiLept
 topRecoModule = lambda : TopRecoSemiLept(constraints=['kWHadMass','kWLepMass','kTopLepMass','kTopHadMass'])

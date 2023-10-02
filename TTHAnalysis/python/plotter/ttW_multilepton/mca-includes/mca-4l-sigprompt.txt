@@ -1,5 +1,5 @@
 TTW+     : TTWToLNu_fxfx : 0.2357 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0 ;  FillColor=ROOT.kGreen-5, Label="ttW"
-TTW+     : TTWJetsToLNu_EWK_5f_NLO_withGen : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge  && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kGreen-5, Label="ttW"
+TTW+     : TTWJetsToLNu_EWK_5f_NLO_withGen : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0  && LepGood4_mcMatchId!=0 ; FillColor=ROOT.kGreen-5, Label="ttW"
 
 ttH   : TTHnobb_pow : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0; FillColor=ROOT.kOrange+10
 

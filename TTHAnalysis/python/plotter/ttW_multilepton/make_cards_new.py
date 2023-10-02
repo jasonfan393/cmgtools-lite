@@ -135,7 +135,6 @@ if (REGION == "3l" and "diff" in OTHER):
         MCA = '''ttW_multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}{OBSERVABLE}.txt'''.format(MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, OBSERVABLE="-"+OBSERVABLE)
         TORUN = TORUN.replace(MCA,"ttW_multilepton/mca-includes/mca-3l-sigprompt-gen.txt")
         TORUN = TORUN.replace("ttW_multilepton/3l_tight.txt","ttW_multilepton/3l_fiducial.txt")
-    #os.system( submit.format(command=TORUN))
     print( submit.format(command=TORUN))
     #os.system(submit.format(command=TORUN))
 

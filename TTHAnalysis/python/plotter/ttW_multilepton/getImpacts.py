@@ -54,7 +54,7 @@ def GetRounded(nom, e_hi, e_lo):
     return (s_nom, s_hi, s_lo)
 
 
-def plotImpacts(inputjson, outputname, outputpath, npois, doBlind, varName):
+def plotImpacts(inputjson, outputname, outputpath, npois, doBlind, varName, regName):
     left_margin   = 0.2
     pullsprop     = 0.37
     label_size    = 0.021
@@ -369,12 +369,12 @@ def plotImpacts(inputjson, outputname, outputpath, npois, doBlind, varName):
 
 
 def makeImpacts(task):
-    inpath, varName, ncores, pretend, verbose, extra, doobs, doblind = task
+    inpath, varName, ncores, pretend, verbose, extra, doobs, doblind, regName = task
 
-    print '\n> Creating impacts for variable', varName,
-    bins_detector = eval(all_vars[(varName,'2lss')].CATBINS)
+    print '\n> Creating impacts for variable', varName,regName
+    bins_detector = eval(all_vars[(varName,regName)].CATBINS)
     ndetectorbins   = len(bins_detector) - 1
-    bins_particle = eval(all_vars[(varName,'2lss')].CATBINS_Gen)
+    bins_particle = eval(all_vars[(varName,regName)].CATBINS_Gen)
     nparticlebins   = len(bins_particle) - 1
 
     thepois = ",".join( ["r_TTW_%s_bin%d"%(varName,i) for i in range(nparticlebins)] )
@@ -390,11 +390,11 @@ def makeImpacts(task):
 
     firstcomm = comm1.format(ncores = ("--parallel " + str(ncores)) if ncores else "",
                              asimov = asimov_,
-                             incard = "ws_"+varName+'.root',
-                             outdir = "./",
+                             incard = "../ws_"+varName+"_"+regName+'.root',
+                             outdir = "./"+regName,
                              var    = varName,
                              extra  = extra,
-                             prefix = varName,
+                             prefix = varName+"_"+regName,
                              pois   = thepois,
     )
 
@@ -402,17 +402,19 @@ def makeImpacts(task):
         print "First command:", firstcomm, "\n"
 
     if not pretend:
-        outstat = os.system("cd " + inpath + "; " + firstcomm + "; cd -")
+        if not os.path.exists(inpath + "/impacts_"+regName):
+               os.system("mkdir "+inpath + "/impacts_"+regName)
+        outstat = os.system("cd " + inpath + "/impacts_"+regName+"; " + firstcomm + "; cd -")
         if outstat:
             raise RuntimeError("FATAL: first command failed to execute for variable {v}.".format(v = varName))
 
     secondcomm = comm2.format(ncores = ("--parallel " + str(ncores)) if ncores else "",
                              asimov = asimov_,
-                             incard = "ws_"+varName+'.root',
-                             outdir = "./",
+                             incard = "../ws_"+varName+"_"+regName+'.root',
+                             outdir = "./"+regName,
                              var    = varName,
                              extra  = extra,
-                             prefix = varName,
+                             prefix = varName+"_"+regName,
                              pois   = thepois,
     )
 
@@ -420,17 +422,17 @@ def makeImpacts(task):
         print "Second command:", secondcomm, "\n"
 
     if not pretend:
-        outstat = os.system("cd " + inpath + "; " + secondcomm + "; cd -")
+        outstat = os.system("cd " + inpath + "/impacts_"+regName+"; " + secondcomm + "; cd -")
         if outstat:
             raise RuntimeError("FATAL: second command failed to execute for variable {v}.".format(v = varName))
 
     thirdcomm = comm3.format(ncores = ("--parallel " + str(ncores)) if ncores else "",
                              asimov = asimov_,
-                             incard = "ws_"+varName+'.root',
+                             incard = "../ws_"+varName+"_"+regName+'.root',
                              outdir = "./",
                              var    = varName,
                              extra  = extra,
-                             prefix = varName,
+                             prefix = varName+"_"+regName,
                              pois   = thepois,
     )
 
@@ -438,13 +440,12 @@ def makeImpacts(task):
         print "Third command:", thirdcomm, "\n"
 
     if not pretend:
-        outstat = os.system("cd " + inpath + "; " + thirdcomm + "; cd -")
+        outstat = os.system("cd " + inpath + "/impacts_"+regName+"; " + thirdcomm + "; cd -")
         if outstat:
             raise RuntimeError("FATAL: third command failed to execute for variable {v}.".format(v = varName))
 
     
-    plotImpacts(inpath + "/impacts{v}.json".format(v = varName), "impacts{v}".format(v = varName), inpath, nparticlebins, doblind, varName)
-    
+    plotImpacts(inpath+"/impacts_"+regName+ "/impacts{v}.json".format(v = varName+"_"+regName), "impacts{v}".format(v = varName+"_"+regName), inpath, nparticlebins, doblind, varName,regName)
     print '\n> Variable', varName, "' impacts produced.\n"
     return
 
@@ -457,6 +458,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--inpath',     '-i', metavar = 'inpath',     dest = "inpath",   required = False, default = "./temp/differential/")
     parser.add_argument('--variable',   '-v', metavar = 'variable',   dest = "variable", required = False, default = "all")
+    parser.add_argument('--region',     '-r', metavar = 'region',     dest = "region",   required = False, default = "2lss")
     parser.add_argument('--extraArgs',  '-e', metavar = 'extra',      dest = "extra",    required = False, default = "")
     parser.add_argument('--nthreads',   '-j', metavar = 'nthreads',   dest = "nthreads", required = False, default = 0, type = int)
     parser.add_argument('--pretend',    '-p', action  = "store_true", dest = "pretend",  required = False, default = False)
@@ -470,6 +472,7 @@ if __name__ == '__main__':
     pretend  = args.pretend
     inpath   = args.inpath
     varName  = args.variable
+    regName  = args.region
     verbose  = args.verbose
     extra    = args.extra
     doobs    = args.doobs
@@ -478,5 +481,5 @@ if __name__ == '__main__':
     
 
 
-    task=inpath, varName, ncores, pretend, verbose, extra, doobs, doblind
+    task=inpath, varName, ncores, pretend, verbose, extra, doobs, doblind,regName
     makeImpacts(task)

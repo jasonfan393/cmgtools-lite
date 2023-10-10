@@ -2186,7 +2186,7 @@ int catIndex_2lss_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low
 {
   // 135 bins [0,134]
   
-  // Merge ttH_low and ttH_high classes into one ttH class (44 bins)
+  // Merge ttH_low and ttH_high classes into one ttH class (46 bins)
   if ((tth_low > ttw && tth_low > rest && tth_low > thq) || (tth_high > ttw && tth_high > rest && tth_high > thq)) {
       return class_2lss_tth_mttH_binning(mttH);
   }
@@ -2209,88 +2209,6 @@ int catIndex_2lss_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low
  return -99;
 }
 
-// test area
-
-int class_2lss_ttH_mttH_cuts(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
-{
-  std::vector<float> PrecentileCuts = {0.0, 0.5065760880898458};
-  
-  //cout << tth_low << "\n";
-  if (!((tth_low > ttw && tth_low > rest && tth_low > thq) || (tth_high > ttw && tth_high > rest && tth_high > thq))) {
-	  //cout << "Dropped \n\n";
-	  return -99;
-  }
-   
-  int bin_counter = PrecentileCuts.size()-1;
-  
-  if ((tth_high > ttw && tth_high > rest && tth_high > thq)) {
-	  return bin_counter;
-  }
-  
-  while (bin_counter >= 0) {
-	  if (tth_low > PrecentileCuts[bin_counter]) return bin_counter;
-	  bin_counter = bin_counter - 1;
-  }
-  
-  cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
-
- return -99;
- 
-}
-
-int class_2lss_tth_mttH_binning_test(float mttH, int ttH_idx)
-{
-	// 44 bins in total
-    std::vector<float> mttH_cuts_0 = {0.0, 400.0, 450.0, 500.0, 550.0, 575.0, 600.0, 625.0, 650.0, 675.0, 700.0, 725.0, 750.0, 800.0, 850.0, 900.0, 1000.0, 1100.0, 1200.0}; //19
-	std::vector<float> mttH_cuts_1 = {0.0, 500.0, 550.0, 600.0, 625.0, 650.0, 675.0, 700.0, 725.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0, 1050.0, 1100.0, 1150.0, 1200.0, 1250.0, 1300.0, 1400.0, 1500.0, 1600.0, 1800.0, 2000.0, 2300.0}; //27
-
-	if (ttH_idx < 1){
-		int bin_counter = mttH_cuts_0.size()-1;
-		while (bin_counter >= 0) {    
-			  if (mttH > mttH_cuts_0[bin_counter]) return bin_counter;
-			  bin_counter = bin_counter - 1;
-		  }
-	}
-	else {
-		int bin_counter = mttH_cuts_1.size()-1;
-		while (bin_counter >= 0) {    
-			  if (mttH > mttH_cuts_1[bin_counter]) return mttH_cuts_0.size()+bin_counter;
-			  bin_counter = bin_counter - 1;
-		  }
-	}
-	
-	return -99;
-	
-  }
-
-int catIndex_2lss_all_mttH_test(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest, float mttH)
-{
-  // 135 bins [0,134]
-  int ttH_idx = 0;
-  
-  // Merge ttH_low and ttH_high classes into one ttH class (19+27=46 bins)
-  if ((tth_low > ttw && tth_low > rest && tth_low > thq) || (tth_high > ttw && tth_high > rest && tth_high > thq)) {
-	  ttH_idx = class_2lss_ttH_mttH_cuts(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
-      return class_2lss_tth_mttH_binning_test(mttH, ttH_idx);
-  }
-  
-  // 22 thq bins
-  else if (thq > ttw && thq > rest && thq > tth_low && thq > tth_high) {
-      return 46 + class_max_p_2lss_thq(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
-  }
-  
-  // 40 ttW bins
-  else if (ttw > tth_high && ttw > rest && ttw > tth_low && ttw > thq) {
-      return 68 + class_max_p_2lss_ttw(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
-  }
-  
-  // 27 rest bins
-  else if (rest > tth_low && rest > ttw && rest > tth_high && rest > thq) {
-      return 108 + class_max_p_2lss_rest(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
-  }
-    else cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
- return -99;
-}
 
 // 2lss1tau
 

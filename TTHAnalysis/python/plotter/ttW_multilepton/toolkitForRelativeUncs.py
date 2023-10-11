@@ -82,7 +82,18 @@ individual_scaff = {
         "pdf_TTWW", 
         "CMS_ttWl_thu_shape_WZ", 
         "pdf_qqbar", 
-        "CMS_ttWl_EWK_jet"
+        "CMS_ttWl_EWK_jet",
+        "QCDpdf_ACCEPT",
+        "FSR",
+        "ISR_ttW",
+        "ISR_ttH",
+        "ISR_ttZ",
+        "ISR_tZq",
+        "QCDscale_tZq_ACCEPT",
+        "QCDscale_VVV_ACCEPT",
+        "QCDscale_ttVV_ACCEPT",
+        "QCDscale_Rares_ACCEPT",
+
     ], 
     "nonprompt": [
         "CMS_ttWl_FRm_pt", 
@@ -136,7 +147,7 @@ def calculateRelativeUncertainties(task):
     POIs    = ["r_TTW_%s_bin%d"%(varName,i) for i in range(nparticlebins)]
     indGroup = deepcopy(individual_scaff)
 
-    thecard = "../ws_"+varName+'.root'
+    thecard = "../ws_"+varName+'_2lss.root'
 
 
     ##################### OLD
@@ -211,7 +222,7 @@ def calculateRelativeUncertainties(task):
 
 
         if not os.path.isfile(inpath + "/individual/outputfit_{p}.txt".format(p = poi)) or redo:
-            thecomm = "python /work/sesanche/ttH/UL/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/ttW_multilepton/plot1DScan.py ../nominal/higgsCombinenominal_{p}.MultiDimFit.mH125.root --others {l1} --breakdown {l2},stat --POI {p} ".format( # need a better way of doing this... unfortunately CMSSW_BASE is in the combine set-up (10_2) 
+            thecomm = "python /nfs/fanae/user/clara/ttW_diff_new/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/ttW_multilepton/plot1DScan.py ../nominal/higgsCombinenominal_{p}.MultiDimFit.mH125.root --others {l1} --breakdown {l2},stat --POI {p} ".format( # need a better way of doing this... unfortunately CMSSW_BASE is in the combine set-up (10_2) 
                 p  = poi,
                 l1 = ' '.join(fileList),
                 l2 = ','.join(individual_list))

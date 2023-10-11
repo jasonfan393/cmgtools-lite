@@ -148,14 +148,17 @@ kinMVA_2lss_score_thq_highest_part : class_max_p_2lss_thq(LepGood1_pdgId, LepGoo
 kinMVA_2lss_score_rest_highest_part : class_max_p_2lss_rest(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 28,-1.5,26.5; XTitle="2lss DNN score (rest node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=200.0
 kinMVA_2lss_score_ttw_highest_part : class_max_p_2lss_ttw(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 41,-1.5,39.5; XTitle="2lss DNN score (ttW node only highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=200.0
 
-kinMVA_2lss_score_all_highest_part : class_max_p_2lss_all(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 97,-0.5,96.5; XTitle="2lss DNN score (all nodes highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=200.0
+kinMVA_2lss_score_all_highest_part : class_max_p_2lss_all(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : 97,-0.5,96.5; XTitle="2lss DNN score (all nodes highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=160.0
 
 
 # 2lss Binning used for datacards (ttH in Higgs_pt bins)
-kinMVA_2lss_score_all_highest_part_HiggsPt : catIndex_2lss_all_HiggsPt(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest, Hreco_dnn_prediction) : 121,-0.5,120.5; XTitle="2lss DNN score (all nodes highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=200.0
+kinMVA_2lss_score_all_highest_part_HiggsPt : catIndex_2lss_all_HiggsPt(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest, Hreco_dnn_prediction) : 121,-0.5,120.5; XTitle="2lss DNN score (all nodes highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=160.0
 
 kinMVA_2lss_score_all_highest_part_HiggsPt_check : catIndex_2lss_all_HiggsPt(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest, Hreco_dnn_prediction) : 121,-0.5,120.5; XTitle="2lss DNN score (all nodes highest)",  LegendCutoff=1e-5
 
+# 2lss Binning used for datacards (ttH in mttH bins)
+kinMVA_2lss_catIndex_2lss_all_mttH : catIndex_2lss_all_mttH(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest, mTTH_2lss) : 135,-0.5,134.5; XTitle="2lss mttH binning",  LegendCutoff=1e-5, YMin=0.0 , YMax=60.0
+kinMVA_2lss_mttH: mTTH_2lss : [0, 600, 700, 900, 1100, 10000] ; XTitle="2lss mttH reco",  LegendCutoff=1e-5, XMin=0.0 , XMax=2000.0
 
 
 # 2lss1tau Classifier output scores for plots and to calculate ROC with framework data
@@ -181,6 +184,9 @@ kinMVA_2lss1tau_score_thq_highest_fine : ttH_max_2lss1tau_thq(LepGood1_pdgId, Le
 # 2lss1tau Binning used for datacards (ttH in Higgs_pt bins)
 kinMVA_2lss1tau_score_all_highest_part_HiggsPt : catIndex_2lss1tau_all_HiggsPt(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss1tau_predictions_ttH_low_Higgs_pt, DNN_2lss1tau_predictions_ttH_high_Higgs_pt, DNN_2lss1tau_predictions_tH, DNN_2lss1tau_predictions_rest, ttH_higgs_pt_2lss1tau_) : 21,-0.5,20.5; XTitle="2lss1tau DNN score (all nodes highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=80.0
 
+# 2lss1tau Binning used for datacards (ttH in mttH bins)
+kinMVA_2lss1tau_catIndex_2lss1tau_all_mttH : catIndex_2lss1tau_all_mttH(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss1tau_predictions_ttH_low_Higgs_pt, DNN_2lss1tau_predictions_ttH_high_Higgs_pt, DNN_2lss1tau_predictions_tH, DNN_2lss1tau_predictions_rest, mTTH_2lss1tau) : 18,-0.5,17.5; XTitle="2lss1tau mttH binning",  LegendCutoff=1e-5, YMin=0.0 , YMax=80.0
+kinMVA_2lss1tau_mttH: mTTH_2lss1tau : [0,750,1000,10000] ; XTitle="2lss1tau mttH reco",  LegendCutoff=1e-5, XMin=0.0 , XMax=2000.0
 
 
 # 3l Classifier output scores for plots and to calculate ROC with framework data
@@ -205,6 +211,10 @@ kinMVA_3l_score_thq_highest_fine : ttH_max_3l_thq(LepGood1_pdgId, LepGood2_pdgId
 
 # 3l Binning used for datacards (ttH in Higgs_pt bins)
 kinMVA_3l_score_all_highest_part_HiggsPt : catIndex_3l_all_HiggsPt(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId, DNN_3l_predictions_ttH_low_Higgs_pt, DNN_3l_predictions_ttH_high_Higgs_pt, DNN_3l_predictions_tH, DNN_3l_predictions_rest, Hreco_dnn_prediction_3l, nBJetMedium25_Recl) : 21,-0.5,20.5; XTitle="3l DNN score (all nodes highest)",  LegendCutoff=1e-5, YMin=0.0 , YMax=250.0
+
+# 3l Binning used for datacards (ttH in mttH bins)
+kinMVA_3l_catIndex_3l_all_mttH : catIndex_3l_all_mttH(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId, DNN_3l_predictions_ttH_low_Higgs_pt, DNN_3l_predictions_ttH_high_Higgs_pt, DNN_3l_predictions_tH, DNN_3l_predictions_rest, mTTH_3l, nBJetMedium25_Recl) : 28,-0.5,27.5; XTitle="2lss1tau mttH binning",  LegendCutoff=1e-5, YMin=0.0 , YMax=220.0
+kinMVA_3l_mttH: mTTH_3l : [0,600,750,1000,10000] ; XTitle="3l mttH reco",  LegendCutoff=1e-5, XMin=0.0 , XMax=2000.0
 
 kinMVA_2lss_score_cat : ttH_catIndex_2lss_test(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5] ; XTitle="2lss cat sep DNN score",  LegendCutoff=1e-5, YMin=0.0 , YMax=1.2e3
 

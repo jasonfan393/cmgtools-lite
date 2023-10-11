@@ -26,9 +26,9 @@ nCores = 8
 if 'fanae' in os.environ['HOSTNAME']:
     nCores = 32
     #submit = 'sbatch -c %d -p cpupower  --wrap "{command}"'%nCores
-    P0     = "/beegfs/data/nanoAODv9/ttH_differential/"
+    P0     = "/lustrefs/hdd_pool_dir/nanoAODv9/ttH_differential/"
 if 'gae' in os.environ['HOSTNAME']: 
-    P0     = "/beegfs/data/nanoAODv9/ttH_differential/"
+    P0     = "/lustrefs/hdd_pool_dir/nanoAODv9/ttH_differential/"
 
 if 'cism.ucl.ac.be' in os.environ['HOSTNAME']:
     P0   = "/nfs/user/pvischia/tth/ul/" 
@@ -42,7 +42,8 @@ TREESALL = "--xf GGHZZ4L_new,qqHZZ4L,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo
 YEARDIR=YEAR if YEAR != 'all' else ''
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_UL_v2_060422/%s          --Fs  {P}/1_recl_new "%(YEARDIR,)         
 TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_newfts_skim2lss/%s  --Fs {P}/1_recl "%(YEARDIR,) #--FDs {P}/1_recl_new --FMCs {P}/1_recl_allvars_new
-
+if 'fanae' in os.environ['HOSTNAME'] or 'gae' in os.environ['HOSTNAME']:
+    TREESONLYSKIM     = "-P "+P0+"/NanoTrees_UL_v2_060422_skim2lss_newfts/%s  --Fs {P}/1_recl "%(YEARDIR,) #--FDs {P}/1_recl_new --FMCs {P}/1_recl_allvars_new
 
 def base(selection):
     THETREES = TREESALL

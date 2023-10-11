@@ -397,3 +397,4 @@ simple_asymmetry : ttW_charge_asymmetry_simple(hasOSSF,nJet30, LepGood1_charge+L
 simple_asymmetry_bees : ttW_charge_asymmetry_simple_withbees(hasOSSF,nJet30, LepGood1_charge+LepGood2_charge+LepGood3_charge, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30) : 40,-0.5,39.5; Wide=True
 smart_strategy_nocharge : ttW_charge_asymmetry_simple_withbees_nocharge(hasOSSF,nJet30, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30) : 20,-0.5,19.5; Wide=True, Legend="TL"
 ttW_charge_asymmetry_v4 : ttW_charge_asymmetry_v4(hasOSSF,nJet30, abs(positive_lepton_eta)-abs(negative_lepton_eta),nBJetMedium30, mZ_OSSF) : 32,-0.5,31.5; Wide=True
+njets_23       : if3( nJet25_Recl == 2, 0, 1) : [-0.5,0.5,1.5];  XTitle="2 or 3 jets" 

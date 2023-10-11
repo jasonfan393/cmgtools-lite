@@ -82,6 +82,10 @@ FUNCTION_SVA_2L='''"mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_ma
 FUNCTION_SVA_2L_scan='''"deltaPhi(LepGood1_phi, LepGood2_phi)" 30,-3.14,3.14 '''
 FUNCTION_SVA_3L='''"mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi)" [20.,100.,140.,190.,250.,1000.]'''
 FUNCTION_SVA_4L="m4l [70.,200.0,300.0,1000.]"
+FUNCTION_2L_MTTH="catIndex_2lss_all_mttH(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest, mTTH_2lss)"
+FUNCTION_2L1TAU_MTTH="catIndex_2lss1tau_all_mttH(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss1tau_predictions_ttH_low_Higgs_pt, DNN_2lss1tau_predictions_ttH_high_Higgs_pt, DNN_2lss1tau_predictions_tH, DNN_2lss1tau_predictions_rest, mTTH_2lss1tau)"
+FUNCTION_3L_MTTH="catIndex_3l_all_mttH(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId, DNN_3l_predictions_ttH_low_Higgs_pt, DNN_3l_predictions_ttH_high_Higgs_pt, DNN_3l_predictions_tH, DNN_3l_predictions_rest, mTTH_3l, nBJetMedium25_Recl)"
+
 ONEBIN="1 1,0.5,1.5"
 MCASUFFIX="mcdata-frdata"
 
@@ -94,6 +98,17 @@ if REGION == "2lss":
     CATBINS="[-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.5,25.5,26.5,27.5,28.5,29.5,30.5,31.5,32.5,33.5,34.5,35.5,36.5,37.5,38.5,39.5,40.5,41.5,42.5,43.5,44.5,45.5,46.5,47.5,48.5,49.5,50.5,51.5,52.5,53.5,54.5,55.5,56.5,57.5,58.5,59.5,60.5,61.5,62.5,63.5,64.5,65.5,66.5,67.5,68.5,69.5,70.5,71.5,72.5,73.5,74.5,75.5,76.5,77.5,78.5,79.5,80.5,81.5,82.5,83.5,84.5,85.5,86.5,87.5,88.5,89.5,90.5,91.5,92.5,93.5,94.5,95.5,96.5,97.5,98.5,99.5,100.5,101.5,102.5,103.5,104.5,105.5,106.5,107.5,108.5,109.5,110.5,111.5,112.5,113.5,114.5,115.5,116.5,117.5,118.5,119.5,120.5]"
     RANGES = '[1,25,33,55,95,122]'
     NAMES  = ','.join( '%s_%s'%(x,YEAR) for x in 'ttH_low,ttH_high,tHq,ttW,rest'.split(','))
+
+    TORUN='''python {SCRIPT} {DOFILE} ttH-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/2lss_tight_legacy.txt "{FUNCTION_2L}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttH_2lss_0tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_2L=FUNCTION_2L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_2L=OPT_2L,YEAR=YEAR,RANGES=RANGES,NAMES=NAMES)
+    print submit.format(command=TORUN)
+
+if REGION == "2lss_mtth":
+    OPT_2L='{T2L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_ttH(LepGood1_pdgId, LepGood1_conePt, LepGood2_pdgId, LepGood2_conePt, 2, year, suberaId)"'.format(T2L=T2L, OPTIONS=OPTIONS)
+    CATPOSTFIX=""
+
+    CATBINS="[-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.5,25.5,26.5,27.5,28.5,29.5,30.5,31.5,32.5,33.5,34.5,35.5,36.5,37.5,38.5,39.5,40.5,41.5,42.5,43.5,44.5,45.5,46.5,47.5,48.5,49.5,50.5,51.5,52.5,53.5,54.5,55.5,56.5,57.5,58.5,59.5,60.5,61.5,62.5,63.5,64.5,65.5,66.5,67.5,68.5,69.5,70.5,71.5,72.5,73.5,74.5,75.5,76.5,77.5,78.5,79.5,80.5,81.5,82.5,83.5,84.5,85.5,86.5,87.5,88.5,89.5,90.5,91.5,92.5,93.5,94.5,95.5,96.5,97.5,98.5,99.5,100.5,101.5,102.5,103.5,104.5,105.5,106.5,107.5,108.5,109.5,110.5,111.5,112.5,113.5,114.5,115.5,116.5,117.5,118.5,119.5,120.5,121.5,122.5,123.5,124.5,125.5,126.5,127.5,128.5,129.5,130.5,131.5,132.5,133.5,134.5]"
+    RANGES = '[1,46,68,108,136]'
+    NAMES  = ','.join( '%s_%s'%(x,YEAR) for x in 'ttH_mttH,tHq,ttW,rest'.split(','))
 
     TORUN='''python {SCRIPT} {DOFILE} ttH-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/2lss_tight_legacy.txt "{FUNCTION_2L}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttH_2lss_0tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_2L=FUNCTION_2L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_2L=OPT_2L,YEAR=YEAR,RANGES=RANGES,NAMES=NAMES)
     print submit.format(command=TORUN)
@@ -118,6 +133,20 @@ if REGION == "2lss1tau":
             
     TORUN='''python {SCRIPT} {DOFILE} ttH-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/2lss_1ltau.txt "{FUNCTION_2L1TAU}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttH_2lss_1tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_2L1TAU=FUNCTION_2L1TAU, CATBINS=CATBINS, SYSTS=SYSTS, OPT_2L=OPT_2L,YEAR=YEAR,RANGES=RANGES,NAMES=NAMES)
     print submit.format(command=TORUN)
+
+if REGION == "2lss1tau_mtth":
+    OPT_2L = '{T2L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_ttH(LepGood1_pdgId, LepGood1_conePt, LepGood2_pdgId, LepGood2_conePt, 2, year,suberaId)*TauSel_2lss1tau_SF"'.format(
+        T2L=T2L, OPTIONS=OPTIONS)
+    CATPOSTFIX = ""
+    CATBINS = "[-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5]"
+    RANGES = '[1,10,14,17]'
+    NAMES = ','.join('%s_%s' % (x, YEAR) for x in 'ttH_mttH,tHq,rest'.split(','))
+
+    TORUN = '''python {SCRIPT} {DOFILE} ttH-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/2lss_1ltau.txt "{FUNCTION_2L1TAU}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttH_2lss_1tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} '''.format(
+        SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_2L1TAU=FUNCTION_2L1TAU,
+        CATBINS=CATBINS, SYSTS=SYSTS, OPT_2L=OPT_2L, YEAR=YEAR, RANGES=RANGES, NAMES=NAMES)
+    print
+    submit.format(command=TORUN)
 
 if REGION == "2lss1tau_CP":
     OPT_2L='{T2L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_ttH(LepGood1_pdgId, LepGood1_conePt, LepGood2_pdgId, LepGood2_conePt, 2, year,suberaId)*TauSel_2lss1tau_SF"'.format(T2L=T2L, OPTIONS=OPTIONS)
@@ -169,6 +198,21 @@ if REGION == "3l":
     NAMES  = ','.join( '%s_%s'%(x,YEAR) for x in ['ttH_low_bl','ttH_low_bt','ttH_high','tH_bl', 'tH_bt', 'rest_eee', 'rest_eem_bl', 'rest_eem_bt', 'restemm_bl', 'rest_emm_bt',  'rest_mmm_bl', 'rest_mmm_bt'])
     TORUN = 'python {SCRIPT} {DOFILE} ttH-multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/3l_tight_legacy.txt "{FUNCTION_3L}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttH_3l_0tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} {SCAN_EXTRA}'.format(SCRIPT=SCRIPT, DOFILE=DOFILE,MCASUFFIX=MCASUFFIX,MCAOPTION=MCAOPTION,FUNCTION_3L=FUNCTION_3L,CATBINS=CATBINS,YEAR=YEAR, SYSTS=SYSTS, OPT_3L=OPT_3L,RANGES=RANGES, NAMES=NAMES,SCAN_EXTRA=SCAN_EXTRA)
     print( submit.format(command=TORUN))
+
+if REGION == "3l_mtth":
+    OPT_3L = '{T3L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*triggerSF_ttH(LepGood1_pdgId, LepGood1_conePt, LepGood2_pdgId, LepGood2_conePt, 3, year,suberaId)*leptonSF_3l"'.format(
+        T3L=T3L, OPTIONS=OPTIONS)
+    CATPOSTFIX = ""
+    CATBINS = "[-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5,23.5,24.5,25.5,26.5,27.5]"
+    RANGES = '[1,10,20,21,22,23,24,25,26,27,28,29]'
+
+    NAMES = ','.join('%s_%s' % (x, YEAR) for x in
+                     ['ttH_mttH_bl', 'ttH_mttH_high', 'tH_bl', 'tH_bt', 'rest_eee', 'rest_eem_bl',
+                      'rest_eem_bt', 'restemm_bl', 'rest_emm_bt', 'rest_mmm_bl', 'rest_mmm_bt'])
+    TORUN = 'python {SCRIPT} {DOFILE} ttH-multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/3l_tight_legacy.txt "{FUNCTION_3L}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttH_3l_0tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} {SCAN_EXTRA}'.format(
+        SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_3L=FUNCTION_3L,
+        CATBINS=CATBINS, YEAR=YEAR, SYSTS=SYSTS, OPT_3L=OPT_3L, RANGES=RANGES, NAMES=NAMES, SCAN_EXTRA=SCAN_EXTRA)
+    print(submit.format(command=TORUN))
 
 if REGION == "3l_CP":
     OPT_3L='{T3L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*triggerSF_ttH(LepGood1_pdgId, LepGood1_conePt, LepGood2_pdgId, LepGood2_conePt, 3, year,suberaId)*leptonSF_3l"'.format(T3L=T3L, OPTIONS=OPTIONS)

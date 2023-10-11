@@ -145,8 +145,7 @@ if REGION == "2lss1tau_mtth":
     TORUN = '''python {SCRIPT} {DOFILE} ttH-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/2lss_1ltau.txt "{FUNCTION_2L1TAU}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttH_2lss_1tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} '''.format(
         SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_2L1TAU=FUNCTION_2L1TAU,
         CATBINS=CATBINS, SYSTS=SYSTS, OPT_2L=OPT_2L, YEAR=YEAR, RANGES=RANGES, NAMES=NAMES)
-    print
-    submit.format(command=TORUN)
+    print submit.format(command=TORUN)
 
 if REGION == "2lss1tau_CP":
     OPT_2L='{T2L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF*leptonSF_2lss*triggerSF_ttH(LepGood1_pdgId, LepGood1_conePt, LepGood2_pdgId, LepGood2_conePt, 2, year,suberaId)*TauSel_2lss1tau_SF"'.format(T2L=T2L, OPTIONS=OPTIONS)

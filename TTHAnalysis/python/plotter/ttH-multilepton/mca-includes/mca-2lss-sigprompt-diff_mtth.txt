@@ -1,0 +1,6 @@
+ttH_mttH_0_750+    : TTHnobb_fxfx : 0.5071*0.418 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && (Hgen_mttHgen >= 0) && (Hgen_mttHgen < 750); FillColor=ROOT.kRed+0
+ttH_mttH_750_1000+    : TTHnobb_fxfx : 0.5071*0.418 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && (Hgen_mttHgen >= 750) && (Hgen_mttHgen < 1000); FillColor=ROOT.kRed+1
+ttH_mttH_1000_inf+    : TTHnobb_fxfx : 0.5071*0.418 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && (Hgen_mttHgen >= 1000); FillColor=ROOT.kRed+2
+
+tHq+	: THQ_ctcvcp : 0.07096*LHEReweightingWeight[11]  : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge; FillColor=ROOT.kBlue,genSumWeightName="LHEReweightingSumw[11]/LHEScaleSumw[4]*genEventSumw"
+tHW+	: THW_ctcvcp : 0.01561*LHEReweightingWeight[11]  : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge; FillColor=ROOT.kOrange+8,genSumWeightName="LHEReweightingSumw[11]/LHEScaleSumw[4]*genEventSumw"

@@ -2163,91 +2163,88 @@ int catIndex_3l_all_HiggsPt(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3
 
 int class_2lss_tth_mttH_binning(float mttH)
 {
-	// 18 bins in total
-    float cut = 0;
-    int bin_counter = 0;
+	// 46 bins in total
+    std::vector<float> mttH_cuts = {0.0,     400.0,  425.0,  450.0,  475.0,  500.0,  525.0,  550.0,  575.0,  600.0,
+	                                625.0,   650.0,  675.0,  700.0,  725.0,  750.0,  775.0,  800.0,  825.0,  850.0, 
+									875.0,   900.0,  933.0,  967.0, 1000.0, 1033.0, 1067.0, 1100.0, 1150.0, 1200.0, 
+									1250.0, 1300.0, 1350.0, 1400.0, 1450.0, 1500.0, 1550.0, 1600.0, 1650.0, 1700.0, 
+									1775.0, 1875.0, 2000.0, 2150.0, 2300.0, 2550.0};
+    int bin_counter = mttH_cuts.size()-1;
 	
-	// Split each gen bin in [0,100,200,300,400] into 4 reco bins -> 16 bins
-    while (bin_counter < 16) {
-        cut += 25;
-        if (mttH < cut) return bin_counter;
-        bin_counter = bin_counter + 1;
-    }
+	while (bin_counter >= 0) {
+			  if (mttH > mttH_cuts[bin_counter]) return bin_counter;
+			  bin_counter = bin_counter - 1;
+		  }
 	
-	// Split gen bin [400,inf] into reco bins [400,500,inf]
-	cut += 100;
-	if (mttH < cut) return 16;
 	
-    return 17;
+	return -99;
+	
   }
-
+  
+  
 int catIndex_2lss_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest, float mttH)
 {
-  // 107 bins [0,106]
-  int ttH_idx = 0;
+  // 135 bins [0,134]
   
-  // Merge ttH_low and ttH_high classes into one ttH class (19 bins)
+  // Merge ttH_low and ttH_high classes into one ttH class (46 bins)
   if ((tth_low > ttw && tth_low > rest && tth_low > thq) || (tth_high > ttw && tth_high > rest && tth_high > thq)) {
       return class_2lss_tth_mttH_binning(mttH);
   }
   
   // 22 thq bins
   else if (thq > ttw && thq > rest && thq > tth_low && thq > tth_high) {
-      return 18 + class_max_p_2lss_thq(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
+      return 46 + class_max_p_2lss_thq(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
   }
   
   // 40 ttW bins
   else if (ttw > tth_high && ttw > rest && ttw > tth_low && ttw > thq) {
-      return 40 + class_max_p_2lss_ttw(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
+      return 68 + class_max_p_2lss_ttw(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
   }
   
   // 27 rest bins
   else if (rest > tth_low && rest > ttw && rest > tth_high && rest > thq) {
-      return 80 + class_max_p_2lss_rest(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
+      return 108 + class_max_p_2lss_rest(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
   }
     else cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
  return -99;
 }
+
 
 // 2lss1tau
 
 int class_2lss1tau_tth_mttH_binning(float mttH)
 {
 	// 10 bins in total
-    float cut = 0;
-    int bin_counter = 0;
+    std::vector<float> mttH_cuts = {0.0, 400.0, 500.0, 600.0, 700.0, 800.0, 900.0, 1000.0, 1200.0, 1500.0};
+    int bin_counter = mttH_cuts.size()-1;
 	
-	// Split each gen bin in [0,100,200,300,400] into 2 reco bins -> 8 bins
-    while (bin_counter < 8) {
-        cut += 50;
-        if (mttH < cut) return bin_counter;
-        bin_counter = bin_counter + 1;
-    }
+	while (bin_counter >= 0) {
+			  if (mttH > mttH_cuts[bin_counter]) return bin_counter;
+			  bin_counter = bin_counter - 1;
+		  }
 	
-	// Keep highest gen bin and dont split it
-    return 8;
+	
+	return -99;
+	
   }
 
 int catIndex_2lss1tau_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest, float mttH)
 {
-  // 17 bins [0,16]
-  int ttH_idx = 0;
+  // 18 bins [0,17]
   
-  
-  // Merge ttH_low and ttH_high classes into one ttH class (9 bins)
+  // Merge ttH_low and ttH_high classes into one ttH class (10 bins)
   if ((tth_low > rest && tth_low > thq) || (tth_high > rest && tth_high > thq)) {
-	  ttH_idx = class_max_p_2lss1tau_tth_low(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
 	  return class_2lss1tau_tth_mttH_binning(mttH);
   }
   
   // 4 thq bins
   else if (thq > rest && thq > tth_low && thq > tth_high) {
-	  return 9 + class_max_p_2lss1tau_thq(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
+	  return 10 + class_max_p_2lss1tau_thq(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
   }
   
   // 4 rest bins
   else if (rest > tth_low && rest > tth_high && rest > thq) {
-	  return 13 + class_max_p_2lss1tau_rest(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
+	  return 14 + class_max_p_2lss1tau_rest(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
   }
 	else cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
  return -99;
@@ -2257,63 +2254,63 @@ int catIndex_2lss1tau_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, float tth
 
 int class_3l_tth_mttH_binning(float mttH)
 {
-	// 5 bins
-    float cut = 0;
-    int bin_counter = 0;
+	// 10 bins in total
+    std::vector<float> mttH_cuts = {0.0, 450.0, 600.0, 700.0, 800.0, 900.0, 1000.0, 1100.0, 1250.0, 1500.0};
+    int bin_counter = mttH_cuts.size()-1;
 	
-	// Keep gen bins -> 5 reco bins
-    while (bin_counter < 4) {
-        cut += 100;
-        if (mttH < cut) return bin_counter;
-        bin_counter = bin_counter + 1;
-    }
+	while (bin_counter >= 0) {
+			  if (mttH > mttH_cuts[bin_counter]) return bin_counter;
+			  bin_counter = bin_counter - 1;
+		  }
 	
-    return 4;
+	
+	return -99;
+	
   }
 
 int catIndex_3l_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest, float mttH, int nBMedium )
 {
-  // 19 bins [0,18]
+  // 28 bins [0,27]
   int ttH_idx = 0;
   
-  // 10 ttH bins
+  // 20 ttH bins
   if ((tth_low > rest && tth_low > thq) || (tth_high > rest && tth_high > thq)) {
     if (nBMedium < 2)
       return class_3l_tth_mttH_binning(mttH); // ttH_bl
     else
-      return 5+class_3l_tth_mttH_binning(mttH); // ttH_bt
+      return 10+class_3l_tth_mttH_binning(mttH); // ttH_bt
   }
   
   else if (thq > rest && thq > tth_low && thq > tth_high) {
     if (nBMedium < 2){
-      return 10; // tH_bl
+      return 20; // tH_bl
     }
     else{
-      return 11; // tH_bt
+      return 21; // tH_bt
     }}
   
   else if (rest > tth_low && rest > tth_high && rest > thq) {
     int sumpdgId = abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId);
     if ( sumpdgId == 33){ // rest_eee
-      return 12;
+      return 22;
     }
     else if (sumpdgId == 35){ 
       if (nBMedium < 2)
-	return 13; // rest_eem_bl
+	return 23; // rest_eem_bl
       else
-	return 14; // rest_eem_bt
+	return 24; // rest_eem_bt
     }
     else if (sumpdgId == 37){ // emm
       if (nBMedium < 2)
-	return 15; // rest_emm_bl
+	return 25; // rest_emm_bl
       else
-	return 16; // rest_emm_bt
+	return 26; // rest_emm_bt
     }
     else if (sumpdgId == 39){ // mmm
       if (nBMedium < 2)
-	return 17; // rest_mmm_bl
+	return 27; // rest_mmm_bl
       else
-	return 18; // rest_mmm_bt
+	return 28; // rest_mmm_bt
     }
   }
 	else cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;

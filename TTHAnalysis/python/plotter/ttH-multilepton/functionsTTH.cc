@@ -2230,7 +2230,7 @@ int class_2lss1tau_tth_mttH_binning(float mttH)
 
 int catIndex_2lss1tau_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest, float mttH)
 {
-  // 18 bins [0,17]
+  // 19 bins [0,18]
   
   // Merge ttH_low and ttH_high classes into one ttH class (10 bins)
   if ((tth_low > rest && tth_low > thq) || (tth_high > rest && tth_high > thq)) {
@@ -2242,7 +2242,7 @@ int catIndex_2lss1tau_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, float tth
 	  return 10 + class_max_p_2lss1tau_thq(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
   }
   
-  // 4 rest bins
+  // 5 rest bins
   else if (rest > tth_low && rest > tth_high && rest > thq) {
 	  return 14 + class_max_p_2lss1tau_rest(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
   }

@@ -41,7 +41,7 @@ os.system("test -d cards/{OUTNAME} || mkdir -p cards/{OUTNAME}".format(OUTNAME=O
 OPTIONS="{OPTIONS} --od cards/{OUTNAME} ".format(OPTIONS=OPTIONS, OUTNAME=OUTNAME)
 
 
-T2L="-P {ORIGIN}/{YEAR} --FMCs {{P}}/0_jmeUnc_v1  --FMCs {{P}}/2_btagSF/  --Fs {{P}}/6_HiggsPtReg_2lss1tau/ --Fs {{P}}/6_HiggsPtReg_2lss3l/ --Fs {{P}}/3_tauCount --FMCs {{P}}/2_scalefactors_lep/ --Fs {{P}}/4_evtVars --FMCs {{P}}/6_ttWforlepton --Fs {{P}}/7_Vars_forttWDiff_25 --Fs {{P}}/1_recl  --Fs {{P}}/6_mva2lss_new --Fs {{P}}/6_mva3l_new  --Fs {{P}}/6_mva2lss1tau_new  --FMCs {{P}}/6_tauSF_new/ --xf GGHZZ4L_new,qqHZZ4L,tWll,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW ".format(ORIGIN=ORIGIN, YEAR=YEAR)
+T2L="-P {ORIGIN}/{YEAR} --FMCs {{P}}/0_jmeUnc_v1  --FMCs {{P}}/2_btagSF/  --Fs {{P}}/6_HiggsPtReg_2lss1tau/ --Fs {{P}}/6_HiggsPtReg_2lss3l/ --Fs {{P}}/3_tauCount --FMCs {{P}}/2_scalefactors_lep/ --Fs {{P}}/4_evtVars --FMCs {{P}}/6_ttWforlepton --Fs {{P}}/7_Vars_forttWDiff_25 --Fs {{P}}/1_recl  --Fs {{P}}/6_mva2lss_new --Fs {{P}}/6_mva3l  --Fs {{P}}/6_mva2lss1tau  --FMCs {{P}}/6_tauSF_new/ --xf GGHZZ4L_new,qqHZZ4L,tWll,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW ".format(ORIGIN=ORIGIN, YEAR=YEAR)
 T3L=T2L
 T4L=T2L
 
@@ -66,7 +66,7 @@ if 'unblind' in OTHER:
     ASIMOV=""
 
 print "We are using the asimov dataset"
-OPTIONS="{OPTIONS} -L ttH-multilepton/functionsTTH.cc --mcc ttH-multilepton/lepchoice-ttH-FO.txt --mcc ttH-multilepton/mcc-METchoice-prefiring.txt {PROMPTSUB} --neg   --threshold 0.01 {ASIMOV} ".format(OPTIONS=OPTIONS,PROMPTSUB=PROMPTSUB,ASIMOV=ASIMOV) # neg necessary for subsequent rebin #
+OPTIONS="{OPTIONS} -L ttH-multilepton/functionsTTH.cc --filter ttH-multilepton/filter-processes.txt --mcc ttH-multilepton/lepchoice-ttH-FO.txt --mcc ttH-multilepton/mcc-METchoice-prefiring.txt {PROMPTSUB} --neg   --threshold 0.01 {ASIMOV} ".format(OPTIONS=OPTIONS,PROMPTSUB=PROMPTSUB,ASIMOV=ASIMOV) # neg necessary for subsequent rebin #
 CATPOSTFIX=""
 
 FUNCTION_2L="catIndex_2lss_all_HiggsPt(LepGood1_pdgId, LepGood2_pdgId, DNN_2lss_predictions_ttH_low_Higgs_pt, DNN_2lss_predictions_ttH_high_Higgs_pt, DNN_2lss_predictions_ttW, DNN_2lss_predictions_tHQ, DNN_2lss_predictions_Rest, Hreco_dnn_prediction)"
@@ -110,7 +110,7 @@ if REGION == "2lss_mtth":
     RANGES = '[1,46,68,108,136]'
     NAMES  = ','.join( '%s_%s'%(x,YEAR) for x in 'ttH_mttH,tHq,ttW,rest'.split(','))
 
-    TORUN='''python {SCRIPT} {DOFILE} ttH-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/2lss_tight_legacy.txt "{FUNCTION_2L}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttH_2lss_0tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_2L=FUNCTION_2L, CATBINS=CATBINS, SYSTS=SYSTS, OPT_2L=OPT_2L,YEAR=YEAR,RANGES=RANGES,NAMES=NAMES)
+    TORUN='''python {SCRIPT} {DOFILE} ttH-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/2lss_tight.txt "{FUNCTION_2L_MTTH}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttH_2lss_0tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} '''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_2L_MTTH=FUNCTION_2L_MTTH, CATBINS=CATBINS, SYSTS=SYSTS, OPT_2L=OPT_2L,YEAR=YEAR,RANGES=RANGES,NAMES=NAMES)
     print submit.format(command=TORUN)
 
 if REGION == "2lss_CP":
@@ -142,8 +142,8 @@ if REGION == "2lss1tau_mtth":
     RANGES = '[1,10,14,17]'
     NAMES = ','.join('%s_%s' % (x, YEAR) for x in 'ttH_mttH,tHq,rest'.split(','))
 
-    TORUN = '''python {SCRIPT} {DOFILE} ttH-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/2lss_1ltau.txt "{FUNCTION_2L1TAU}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttH_2lss_1tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} '''.format(
-        SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_2L1TAU=FUNCTION_2L1TAU,
+    TORUN = '''python {SCRIPT} {DOFILE} ttH-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/2lss_1ltau.txt "{FUNCTION_2L1TAU_MTTH}" "{CATBINS}" {SYSTS} {OPT_2L} --binname ttH_2lss_1tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} '''.format(
+        SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_2L1TAU_MTTH=FUNCTION_2L1TAU_MTTH,
         CATBINS=CATBINS, SYSTS=SYSTS, OPT_2L=OPT_2L, YEAR=YEAR, RANGES=RANGES, NAMES=NAMES)
     print submit.format(command=TORUN)
 
@@ -208,8 +208,8 @@ if REGION == "3l_mtth":
     NAMES = ','.join('%s_%s' % (x, YEAR) for x in
                      ['ttH_mttH_bl', 'ttH_mttH_high', 'tH_bl', 'tH_bt', 'rest_eee', 'rest_eem_bl',
                       'rest_eem_bt', 'restemm_bl', 'rest_emm_bt', 'rest_mmm_bl', 'rest_mmm_bt'])
-    TORUN = 'python {SCRIPT} {DOFILE} ttH-multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/3l_tight_legacy.txt "{FUNCTION_3L}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttH_3l_0tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} {SCAN_EXTRA}'.format(
-        SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_3L=FUNCTION_3L,
+    TORUN = 'python {SCRIPT} {DOFILE} ttH-multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/3l_tight.txt "{FUNCTION_3L_MTTH}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttH_3l_0tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} {SCAN_EXTRA}'.format(
+        SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_3L_MTTH=FUNCTION_3L_MTTH,
         CATBINS=CATBINS, YEAR=YEAR, SYSTS=SYSTS, OPT_3L=OPT_3L, RANGES=RANGES, NAMES=NAMES, SCAN_EXTRA=SCAN_EXTRA)
     print(submit.format(command=TORUN))
 

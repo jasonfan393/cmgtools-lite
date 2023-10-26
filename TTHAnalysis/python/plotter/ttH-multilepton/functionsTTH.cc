@@ -2295,8 +2295,8 @@ int class_3l_tth_mttH_binning(float mttH, float ttH_score, int nBMedium)
 {
 	// 12 bins in total
     std::vector<float> mttH_cuts = {0.0, 750, 1000};
-	std::vector<float> ttH_cuts_bl = {0.0, 0.5938573205270636};
-	std::vector<float> ttH_cuts_bt = {0.0, 0.6440354251374228};
+	std::vector<float> ttH_cuts_bl = {0.0, 0.5968831996507645};
+	std::vector<float> ttH_cuts_bt = {0.0, 0.64608214515134};
     int bin_counter = mttH_cuts.size()-1;
 	int section_counter_bl = ttH_cuts_bl.size()-1;
 	int section_counter_bt = ttH_cuts_bt.size()-1;

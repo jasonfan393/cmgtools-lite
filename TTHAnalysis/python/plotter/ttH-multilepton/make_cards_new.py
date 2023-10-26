@@ -195,7 +195,7 @@ if REGION == "3l":
     RANGES = '[1,5,9,13,14,15,16,17,18,19,20,21,22]'
 
     NAMES  = ','.join( '%s_%s'%(x,YEAR) for x in ['ttH_low_bl','ttH_low_bt','ttH_high','tH_bl', 'tH_bt', 'rest_eee', 'rest_eem_bl', 'rest_eem_bt', 'restemm_bl', 'rest_emm_bt',  'rest_mmm_bl', 'rest_mmm_bt'])
-    TORUN = 'python {SCRIPT} {DOFILE} ttH-multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/3l_tight_legacy.txt "{FUNCTION_3L}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttH_3l_0tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} {SCAN_EXTRA}'.format(SCRIPT=SCRIPT, DOFILE=DOFILE,MCASUFFIX=MCASUFFIX,MCAOPTION=MCAOPTION,FUNCTION_3L=FUNCTION_3L,CATBINS=CATBINS,YEAR=YEAR, SYSTS=SYSTS, OPT_3L=OPT_3L,RANGES=RANGES, NAMES=NAMES,SCAN_EXTRA=SCAN_EXTRA)
+    TORUN = 'python {SCRIPT} {DOFILE} ttH-multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/3l_tight.txt "{FUNCTION_3L}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttH_3l_0tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} {SCAN_EXTRA}'.format(SCRIPT=SCRIPT, DOFILE=DOFILE,MCASUFFIX=MCASUFFIX,MCAOPTION=MCAOPTION,FUNCTION_3L=FUNCTION_3L,CATBINS=CATBINS,YEAR=YEAR, SYSTS=SYSTS, OPT_3L=OPT_3L,RANGES=RANGES, NAMES=NAMES,SCAN_EXTRA=SCAN_EXTRA)
     print( submit.format(command=TORUN))
 
 if REGION == "3l_mtth":
@@ -208,7 +208,7 @@ if REGION == "3l_mtth":
     NAMES = ','.join('%s_%s' % (x, YEAR) for x in
                      ['ttH_mttH_bl', 'ttH_mttH_bt', 'tH_bl', 'tH_bt', 'rest_eee', 'rest_eem_bl',
                       'rest_eem_bt', 'restemm_bl', 'rest_emm_bt', 'rest_mmm_bl', 'rest_mmm_bt'])
-    TORUN = 'python {SCRIPT} {DOFILE} ttH-multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/3l_tight_legacy.txt "{FUNCTION_3L_MTTH}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttH_3l_0tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} {SCAN_EXTRA}'.format(
+    TORUN = 'python {SCRIPT} {DOFILE} ttH-multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/3l_tight.txt "{FUNCTION_3L_MTTH}" "{CATBINS}" {SYSTS} {OPT_3L} --binname ttH_3l_0tau --year {YEAR} --categorize-by-ranges {RANGES} {NAMES} {SCAN_EXTRA}'.format(
         SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_3L_MTTH=FUNCTION_3L_MTTH,
         CATBINS=CATBINS, YEAR=YEAR, SYSTS=SYSTS, OPT_3L=OPT_3L, RANGES=RANGES, NAMES=NAMES, SCAN_EXTRA=SCAN_EXTRA)
     print(submit.format(command=TORUN))

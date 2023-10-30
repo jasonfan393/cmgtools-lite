@@ -1425,10 +1425,10 @@ float ttH_catIndex_2lss1tau(float tth_low, float tth_high, float thq, float bkg)
 
 int class_max_p_2lss_tth_low(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
 {
-  std::vector<float> PrecentileCuts = {0.0, 0.2363853227182694, 0.3368149797051845, 0.3901109848733349, 0.4506187899733912, 0.5248424485833131};
+  std::vector<float> PrecentileCuts = {0.0, 0.21611249880558417, 0.32824897091658556, 0.3826816898190921, 0.44647013034265676, 0.5272343461421913};
   
   //cout << tth_low << "\n";
-  if (!((tth_low > ttw && tth_low > rest && tth_low > tth_high && tth_low > thq) || (tth_high > ttw && tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high < 0.5))) {
+  if (!((tth_low >= ttw && tth_low >= rest && tth_low >= tth_high && tth_low >= thq) || (tth_high >= ttw && tth_high >= rest && tth_high >= tth_low && tth_high >= thq && tth_high <= 0.5))) {
 	  //cout << "Dropped \n\n";
 	  return -99;
   }
@@ -1448,10 +1448,10 @@ int class_max_p_2lss_tth_low(int LepGood1_pdgId, int LepGood2_pdgId, float tth_l
 
 int class_max_p_2lss_tth_high(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
 {
-  std::vector<float> PrecentileCuts = {0.0, 0.6276702917791234};
+  std::vector<float> PrecentileCuts = {0.0, 0.6207864544797208};
   
   //cout << tth_low << "\n";
-  if (tth_high < tth_low || tth_high < ttw || tth_high < thq || tth_high < rest || tth_high < 0.5) {
+  if (tth_high <= tth_low || tth_high <= ttw || tth_high <= thq || tth_high <= rest || tth_high <= 0.5) {
 	  //cout << "Dropped \n\n";
 	  return -99;
   }
@@ -1470,12 +1470,12 @@ int class_max_p_2lss_tth_high(int LepGood1_pdgId, int LepGood2_pdgId, float tth_
 
 int class_max_p_2lss_thq(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
 {
-  std::vector<float> PrecentileCuts_ee = {0.0, 0.354085349458666, 0.4159274794765929, 0.5146309676033994};
-  std::vector<float> PrecentileCuts_em = {0.0, 0.30232072396170684, 0.3245198619455962, 0.3514758403887882, 0.37825277692173975, 0.4018283951125225, 0.42793959660908976, 0.45400140447258974, 0.48978830344359003, 0.5269570440242298, 0.581569164294888};
-  std::vector<float> PrecentileCuts_mm = {0.0, 0.3147166177053606, 0.35773857931831554, 0.4030518141514902, 0.45022165678166953, 0.4961459045036706, 0.5600289980746318};
+  std::vector<float> PrecentileCuts_ee = {0.0, 0.3708824191931101, 0.4464874335457502, 0.5320371232345089};
+  std::vector<float> PrecentileCuts_em = {0.0, 0.3097333058491095, 0.3427626413285112, 0.3753707209001215, 0.40330265640058416, 0.4301369069809356, 0.4541692816721255, 0.4869791761255341, 0.5170840374974207, 0.5621867495791832, 0.6120046907766119};
+  std::vector<float> PrecentileCuts_mm = {0.0, 0.3244692664207799, 0.37673389275237645, 0.42472268125003115, 0.4710934740888018, 0.5276811272749112, 0.5988588611429678};
   
   //cout << tth_low << "\n";
-  if (thq < tth_low || thq < ttw || thq < tth_high || thq < rest) {
+  if (thq <= tth_low || thq <= ttw || thq <= tth_high || thq <= rest) {
 	  //cout << "Dropped \n\n";
 	  return -99;
   }
@@ -1515,12 +1515,12 @@ int class_max_p_2lss_thq(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, 
 
 int class_max_p_2lss_rest(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
 {
-  std::vector<float> PrecentileCuts_ee = {0.0, 0.35589085145899546, 0.39473021424996413, 0.42038832283012506, 0.4458440784977981, 0.47524492874678287, 0.507630610350954, 0.5508479071234978};
-  std::vector<float> PrecentileCuts_em = {0.0, 0.34106179945631143, 0.37537384347166464, 0.40115793767147, 0.42503565936487436, 0.4506482339902208, 0.4810122285022193, 0.5210433090893043};
-  std::vector<float> PrecentileCuts_mm = {0.0, 0.3134678090024507, 0.33836150459882647, 0.35769439175065626, 0.3754963107740153, 0.39030317708146983, 0.40510413817838403, 0.4228129819708819, 0.44071421879577927, 0.46686285529431115, 0.5048887507440911};
+  std::vector<float> PrecentileCuts_ee = {0.0, 0.3625254819011199, 0.4037971877126665, 0.4351430752612535, 0.46765294629272175, 0.5030538741387026, 0.5441874894999096, 0.6069120690068895};
+  std::vector<float> PrecentileCuts_em = {0.0, 0.3241203080438684, 0.3522254211271539, 0.3738150325709814, 0.3913916762118288, 0.40687008170040606, 0.42147257323675336, 0.4367064727657708, 0.45391637549152847, 0.47181448493092953, 0.49267427824911797, 0.5175580852451453, 0.5486611088044412, 0.59822891997760};
+  std::vector<float> PrecentileCuts_mm = {0.0, 0.3181182033644745, 0.3449196822247591, 0.36638126369901297, 0.3842226013578563, 0.39937341154257766, 0.41752452133231127, 0.43607020738836855, 0.45879501348268614, 0.48987011847553036, 0.5363710192112225};
   
   //cout << tth_low << "\n";
-  if (rest < tth_low || rest < ttw || rest < tth_high || rest < thq) {
+  if (rest <= tth_low || rest <= ttw || rest <= tth_high || rest <= thq) {
 	  //cout << "Dropped \n\n";
 	  return -99;
   }
@@ -1547,7 +1547,7 @@ int class_max_p_2lss_rest(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low,
 	  //cout << "mm \n\n";
 	  int bin_counter = PrecentileCuts_mm.size()-1;
 	  while (bin_counter >= 0) {
-		  if (rest > PrecentileCuts_mm[bin_counter]) return 16 + bin_counter;
+		  if (rest > PrecentileCuts_mm[bin_counter]) return 22 + bin_counter;
 		  bin_counter = bin_counter - 1;
 	  }
   }
@@ -1560,12 +1560,12 @@ int class_max_p_2lss_rest(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low,
 
 int class_max_p_2lss_ttw(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest)
 {
-  std::vector<float> PrecentileCuts_ee = {0.0, 0.2996266728846854, 0.34408099834539285, 0.39052886380707674, 0.43193612762413575, 0.4845194241684518};
-  std::vector<float> PrecentileCuts_em = {0.0, 0.28687050899838823, 0.30416659060707585, 0.31662333873108667, 0.3295696565150568, 0.3390085122116467, 0.3496005760153689, 0.35928485684103334, 0.371812376313478, 0.38516495819060187, 0.39708568375176445, 0.4090171644549572, 0.4230154079938128, 0.43540545537103004, 0.4506397658058679, 0.4662733560022563, 0.4878304469053573, 0.5142451041074271, 0.5743363552359685};
-  std::vector<float> PrecentileCuts_mm = {0.0, 0.29260021687919296, 0.3147691482703262, 0.33120834411664923, 0.345197362204061, 0.3602847510177273, 0.3765950698152387, 0.3896580597302101, 0.40235956066633594, 0.41460333674441985, 0.4311239016212267, 0.4472832633374457, 0.4672440702434247, 0.49300905979589926, 0.5453891629375588};
+  std::vector<float> PrecentileCuts_ee = {0.0, 0.31233661084956765, 0.35915238368303704, 0.40700981559033633, 0.44744861686930393, 0.48171480298568475};
+  std::vector<float> PrecentileCuts_em = {0.0, 0.28278312775107545, 0.30076702121842463, 0.3121323852428533, 0.3248202656711275, 0.3348425930919568, 0.3452853803474727, 0.35681651318784463, 0.3693306792177417, 0.38216189964507763, 0.3949018990294624, 0.4064097352467819, 0.4189761670819128, 0.43187919763869265, 0.446745310798715, 0.46279125392445536, 0.48355381332050934, 0.512326636910444, 0.571121259022371};
+  std::vector<float> PrecentileCuts_mm = {0.0, 0.28726222529681417, 0.3074260103468811, 0.32478859046057823, 0.33647588238401777, 0.3518109108962015, 0.36836323125171194, 0.3818625571858897, 0.3950622038068929, 0.4087861787905716, 0.4233191754133209, 0.4395026474068869, 0.4575030158837862, 0.4818726347628252, 0.538359408189524};
   
   //cout << tth_low << "\n";
-  if (ttw < tth_low || ttw < rest || ttw < tth_high || ttw < thq) {
+  if (ttw <= tth_low || ttw <= rest || ttw <= tth_high || ttw <= thq) {
 	  //cout << "Dropped \n\n";
 	  return -99;
   }
@@ -1633,31 +1633,31 @@ int class_max_p_2lss_tth_to_HiggsPt(int bin_idx, float Higgs_pt)
 
 int catIndex_2lss_all_HiggsPt(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest, float Higgs_pt)
 {
-  // 121 bins [0,120]
+  // 127 bins [0,126]
   int ttH_idx = 0;
   
-  if ((tth_low > ttw && tth_low > rest && tth_low > tth_high && tth_low > thq) || (tth_high > ttw && tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high < 0.5)) {
+  if ((tth_low >= ttw && tth_low >= rest && tth_low >= tth_high && tth_low >= thq) || (tth_high >= ttw && tth_high >= rest && tth_high >= tth_low && tth_high >= thq && tth_high < 0.5)) {
 	  ttH_idx = class_max_p_2lss_tth_low(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
 	  return class_max_p_2lss_tth_to_HiggsPt(ttH_idx, Higgs_pt);
   }
   
-  else if (tth_high > ttw && tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high > 0.5) {
+  else if (tth_high >= ttw && tth_high >= rest && tth_high >= tth_low && tth_high >= thq && tth_high >= 0.5) {
 	  ttH_idx = 6 + class_max_p_2lss_tth_high(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
 	  return class_max_p_2lss_tth_to_HiggsPt(ttH_idx, Higgs_pt);
   }
   
-  else if (thq > ttw && thq > rest && thq > tth_low && thq > tth_high) {
+  else if (thq > ttw && thq >= rest && thq >= tth_low && thq >= tth_high) {
 	  return 32 + class_max_p_2lss_thq(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
   }
   
-  else if (ttw > tth_high && ttw > rest && ttw > tth_low && ttw > thq) {
+  else if (ttw >= tth_high && ttw >= rest && ttw >= tth_low && ttw >= thq) {
 	  return 54 + class_max_p_2lss_ttw(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
   }
   
-  else if (rest > tth_low && rest > ttw && rest > tth_high && rest > thq) {
+  else if (rest >= tth_low && rest >= ttw && rest >= tth_high && rest >= thq) {
 	  return 94 + class_max_p_2lss_rest(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
   }
-	else cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
+  else cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
  return -99;
  
 }
@@ -1669,7 +1669,7 @@ float ttH_max_2lss1tau_tth_low(int LepGood1_pdgId, int LepGood2_pdgId, float tth
 {
   
   //cout << tth_low << "\n";
-  if (!((tth_low > rest && tth_low > tth_high && tth_low > thq) || (tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high < 0.5))) {
+  if (!((tth_low >= rest && tth_low >= tth_high && tth_low >= thq) || (tth_high >= rest && tth_high >= tth_low && tth_high >= thq && tth_high <= 0.5))) {
 	  //cout << "Dropped \n\n";
 	  return -99;
   }
@@ -1698,7 +1698,7 @@ float ttH_max_2lss1tau_tth_low(int LepGood1_pdgId, int LepGood2_pdgId, float tth
 float ttH_max_2lss1tau_tth_high(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest)
 {
   
-  if (tth_high < tth_low || tth_high < thq || tth_high < rest || tth_high < 0.5) return -99;
+  if (tth_high <= tth_low || tth_high <= thq || tth_high <= rest || tth_high <= 0.5) return -99;
 	
   else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
 	  //ee
@@ -1722,7 +1722,7 @@ float ttH_max_2lss1tau_tth_high(int LepGood1_pdgId, int LepGood2_pdgId, float tt
 float ttH_max_2lss1tau_thq(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest)
 {
   
-  if (thq < tth_low || thq < tth_high || thq < rest) return -99;
+  if (thq <= tth_low || thq <= tth_high || thq <= rest) return -99;
 	
   else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
 	  //ee
@@ -1746,7 +1746,7 @@ float ttH_max_2lss1tau_thq(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low
 float ttH_max_2lss1tau_rest(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest)
 {
   
-  if (rest < tth_low || rest < tth_high || rest < thq) return -99;
+  if (rest <= tth_low || rest <= tth_high || rest <= thq) return -99;
 	
   else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId) == 22) {
 	  //ee
@@ -1772,7 +1772,7 @@ int class_max_p_2lss1tau_tth_low(int LepGood1_pdgId, int LepGood2_pdgId, float t
   std::vector<float> PrecentileCuts = {0.0, 0.46820808094240446};
   
   //cout << tth_low << "\n";
-  if (!(tth_low > rest && tth_low > tth_high && tth_low > thq)) {
+  if (!(tth_low >= rest && tth_low >= tth_high && tth_low >= thq)) {
 	  //cout << "Dropped \n\n";
 	  return -99;
   }
@@ -1795,7 +1795,7 @@ int class_max_p_2lss1tau_thq(int LepGood1_pdgId, int LepGood2_pdgId, float tth_l
   std::vector<float> PrecentileCuts = {0.0, 0.45035608910694963, 0.5154428669859836, 0.6468995910968893};
   
   //cout << tth_low << "\n";
-  if (thq < tth_low || thq < tth_high || thq < rest) {
+  if (thq <= tth_low || thq <= tth_high || thq <= rest) {
 	  //cout << "Dropped \n\n";
 	  return -99;
   }
@@ -1818,7 +1818,7 @@ int class_max_p_2lss1tau_rest(int LepGood1_pdgId, int LepGood2_pdgId, float tth_
   std::vector<float> PrecentileCuts = {0.0, 0.3871003602105856, 0.4414829001841132, 0.498805189523118, 0.5766101702746904};
   
   //cout << tth_low << "\n";
-  if (rest < tth_low || rest < tth_high || rest < thq) {
+  if (rest <= tth_low || rest <= tth_high || rest <= thq) {
 	  //cout << "Dropped \n\n";
 	  return -99;
   }
@@ -1868,20 +1868,20 @@ int catIndex_2lss1tau_all_HiggsPt(int LepGood1_pdgId, int LepGood2_pdgId, float 
   // 21 bins [0,20]
   int ttH_idx = 0;
   
-  if (((tth_low > rest && tth_low > tth_high && tth_low > thq) || (tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high < 0.5))) {
+  if (((tth_low >= rest && tth_low >= tth_high && tth_low >= thq) || (tth_high >= rest && tth_high >= tth_low && tth_high >= thq && tth_high <= 0.5))) {
 	  ttH_idx = class_max_p_2lss1tau_tth_low(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
 	  return class_max_p_2lss1tau_tth_to_HiggsPt(ttH_idx, Higgs_pt);
   }
   
-  else if (tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high > 0.5) {
+  else if (tth_high >= rest && tth_high >= tth_low && tth_high >= thq && tth_high >= 0.5) {
 	  return class_max_p_2lss1tau_tth_to_HiggsPt(2, Higgs_pt);
   }
   
-  else if (thq > rest && thq > tth_low && thq > tth_high) {
+  else if (thq >= rest && thq >= tth_low && thq >= tth_high) {
 	  return 12 + class_max_p_2lss1tau_thq(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
   }
   
-  else if (rest > tth_low && rest > tth_high && rest > thq) {
+  else if (rest >= tth_low && rest >= tth_high && rest >= thq) {
 	  return 16 + class_max_p_2lss1tau_rest(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
   }
 	else cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
@@ -1896,7 +1896,7 @@ float ttH_max_3l_tth_low(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pd
 {
   
   //cout << tth_low << "\n";
-  if (!((tth_low > rest && tth_low > tth_high && tth_low > thq) || (tth_high > rest && tth_high > tth_low && tth_high > thq && tth_high < 0.5))) {
+  if (!((tth_low >= rest && tth_low >= tth_high && tth_low >= thq) || (tth_high >= rest && tth_high >= tth_low && tth_high >= thq && tth_high <= 0.5))) {
 	  //cout << "Dropped \n\n";
 	  return -99;
   }
@@ -1926,7 +1926,7 @@ float ttH_max_3l_tth_low(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pd
 float ttH_max_3l_tth_high(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest)
 {
   
-  if (tth_high < tth_low || tth_high < thq || tth_high < rest || tth_high < 0.5) return -99;
+  if (tth_high <= tth_low || tth_high <= thq || tth_high <= rest || tth_high <= 0.5) return -99;
 	
   else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 33) {
 	  //eee
@@ -1954,7 +1954,7 @@ float ttH_max_3l_tth_high(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_p
 float ttH_max_3l_thq(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest)
 {
   
-  if (thq < tth_low || thq < tth_high || thq < rest) return -99;
+  if (thq <= tth_low || thq <= tth_high || thq <= rest) return -99;
 	
   else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 33) {
 	  //eee
@@ -1982,7 +1982,7 @@ float ttH_max_3l_thq(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId,
 float ttH_max_3l_rest(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest)
 {
   
-  if (rest < tth_low || rest < tth_high || rest < thq) return -99;
+  if (rest <= tth_low || rest <= tth_high || rest <= thq) return -99;
 	
   else if (abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId) == 33) {
 	  //eee
@@ -2035,7 +2035,7 @@ int class_max_p_3l_thq(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgI
   std::vector<float> PrecentileCuts = {0.0, 0.45035608910694963, 0.5154428669859836, 0.6468995910968893};
   
   //cout << tth_low << "\n";
-  if (thq < tth_low || thq < tth_high || thq < rest) {
+  if (thq <= tth_low || thq <= tth_high || thq <= rest) {
 	  //cout << "Dropped \n\n";
 	  return -99;
   }
@@ -2058,7 +2058,7 @@ int class_max_p_3l_rest(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdg
   std::vector<float> PrecentileCuts = {0.0, 0.410866806016376, 0.46782556287241234, 0.5318078974624368, 0.6110519619335995};
   
   //cout << tth_low << "\n";
-  if (rest < tth_low || rest < tth_high || rest < thq) {
+  if (rest <= tth_low || rest <= tth_high || rest <= thq) {
 	  //cout << "Dropped \n\n";
 	  return -99;
   }
@@ -2108,7 +2108,7 @@ int catIndex_3l_all_HiggsPt(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3
   // 21 bins [0,20]
   int ttH_idx = 0;
   
-  if ((tth_low > rest && tth_low > tth_high && tth_low > thq)) {
+  if ((tth_low >= rest && tth_low >= tth_high && tth_low >= thq)) {
     if (nBMedium < 2)
       ttH_idx = 0; // ttH_bl
     else
@@ -2116,11 +2116,11 @@ int catIndex_3l_all_HiggsPt(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3
     return class_max_p_3l_tth_to_HiggsPt(ttH_idx, Higgs_pt);
   }
   
-  else if (tth_high > rest && tth_high > tth_low && tth_high > thq) {
+  else if (tth_high >= rest && tth_high >= tth_low && tth_high >= thq) {
 	  return class_max_p_3l_tth_to_HiggsPt(2, Higgs_pt);
   }
   
-  else if (thq > rest && thq > tth_low && thq > tth_high) {
+  else if (thq >= rest && thq >= tth_low && thq >= tth_high) {
     if (nBMedium < 2){
       return 12; // tH_bl
     }
@@ -2128,7 +2128,7 @@ int catIndex_3l_all_HiggsPt(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3
       return 13; // tH_bt
     }}
   
-  else if (rest > tth_low && rest > tth_high && rest > thq) {
+  else if (rest >= tth_low && rest >= tth_high && rest >= thq) {
     int sumpdgId = abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId);
     if ( sumpdgId == 33){ // rest_eee
       return 14;
@@ -2161,21 +2161,43 @@ int catIndex_3l_all_HiggsPt(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3
 
 // 2lss
 
-int class_2lss_tth_mttH_binning(float mttH)
+float catIndex_2lss_all_mttH_cut_helper(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest, float mttH)
+{  
+  // Merge ttH_low and ttH_high classes into one ttH class (33 bins)
+  if ((tth_low >= ttw && tth_low >= rest && tth_low >= thq) || (tth_high >= ttw && tth_high >= rest && tth_high >= thq)) {
+	  // if (tth_high > 0.5) {
+	  //	  return tth_high;
+	  return tth_low+tth_high;
+	  // }
+	  // else {
+	  //	  return tth_low;
+	  // }
+	  // cout << "[2lss]: Scores are enough " << tth_low << " + " << tth_high  << " = " << tth_low+tth_high << endl;
+      // return (tth_low+tth_high);
+  } 
+  else return -99;
+  // cout << "[2lss]: Scores are not enough " << tth_low << " + " << tth_high  << " = " << tth_low+tth_high << endl;
+  
+}
+
+
+int class_2lss_tth_mttH_binning(float mttH, float ttH_score)
 {
-	// 46 bins in total
-    std::vector<float> mttH_cuts = {0.0,     400.0,  425.0,  450.0,  475.0,  500.0,  525.0,  550.0,  575.0,  600.0,
-	                                625.0,   650.0,  675.0,  700.0,  725.0,  750.0,  775.0,  800.0,  825.0,  850.0, 
-									875.0,   900.0,  933.0,  967.0, 1000.0, 1033.0, 1067.0, 1100.0, 1150.0, 1200.0, 
-									1250.0, 1300.0, 1350.0, 1400.0, 1450.0, 1500.0, 1550.0, 1600.0, 1650.0, 1700.0, 
-									1775.0, 1875.0, 2000.0, 2150.0, 2300.0, 2550.0};
+	// 33 bins in total
+    std::vector<float> mttH_cuts = {0.0, 750, 1000};
+	std::vector<float> ttH_cuts = {0.0, 0.3607359060124539, 0.40663118744448995, 0.45285638527305183, 0.49181143617696155, 0.5265852501678459, 0.5616030361799361, 0.6040098242316656, 0.6496241818137771, 0.7116885607007988, 0.7799816399376843};
     int bin_counter = mttH_cuts.size()-1;
+	int section_counter = ttH_cuts.size()-1;
 	
-	while (bin_counter >= 0) {
-			  if (mttH > mttH_cuts[bin_counter]) return bin_counter;
-			  bin_counter = bin_counter - 1;
-		  }
-	
+	while (section_counter >= 0) {
+		if (ttH_score > ttH_cuts[section_counter]) {
+			while (bin_counter >= 0) {
+				if (mttH > mttH_cuts[bin_counter]) return section_counter * 3 + bin_counter;
+				bin_counter = bin_counter - 1;
+			}
+		}
+		section_counter = section_counter - 1;
+	}
 	
 	return -99;
 	
@@ -2184,26 +2206,26 @@ int class_2lss_tth_mttH_binning(float mttH)
   
 int catIndex_2lss_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float ttw, float thq, float rest, float mttH)
 {
-  // 135 bins [0,134]
+  // 128 bins [0,127]
   
-  // Merge ttH_low and ttH_high classes into one ttH class (46 bins)
-  if ((tth_low > ttw && tth_low > rest && tth_low > thq) || (tth_high > ttw && tth_high > rest && tth_high > thq)) {
-      return class_2lss_tth_mttH_binning(mttH);
+  // Merge ttH_low and ttH_high classes into one ttH class (33 bins)
+  if ((tth_low >= ttw && tth_low >= rest && tth_low >= thq) || (tth_high >= ttw && tth_high >= rest && tth_high >= thq)) {
+      return class_2lss_tth_mttH_binning(mttH, tth_low + tth_high);
   }
   
   // 22 thq bins
-  else if (thq > ttw && thq > rest && thq > tth_low && thq > tth_high) {
-      return 46 + class_max_p_2lss_thq(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
+  else if (thq >= ttw && thq >= rest && thq >= tth_low && thq >= tth_high) {
+      return 33 + class_max_p_2lss_thq(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
   }
   
   // 40 ttW bins
-  else if (ttw > tth_high && ttw > rest && ttw > tth_low && ttw > thq) {
-      return 68 + class_max_p_2lss_ttw(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
+  else if (ttw >= tth_high && ttw >= rest && ttw >= tth_low && ttw > thq) {
+      return 55 + class_max_p_2lss_ttw(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
   }
   
-  // 27 rest bins
-  else if (rest > tth_low && rest > ttw && rest > tth_high && rest > thq) {
-      return 108 + class_max_p_2lss_rest(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
+  // 33 rest bins
+  else if (rest >= tth_low && rest >= ttw && rest >= tth_high && rest >= thq) {
+      return 95 + class_max_p_2lss_rest(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, ttw, thq, rest);
   }
     else cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
  return -99;
@@ -2212,16 +2234,33 @@ int catIndex_2lss_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low
 
 // 2lss1tau
 
-int class_2lss1tau_tth_mttH_binning(float mttH)
+int class_2lss1tau_tth_mttH_binning(float mttH, float ttH_score)
 {
-	// 10 bins in total
-    std::vector<float> mttH_cuts = {0.0, 400.0, 500.0, 600.0, 700.0, 800.0, 900.0, 1000.0, 1200.0, 1500.0};
+	// 12 bins in total
+    std::vector<float> mttH_cuts = {0.0, 750, 1000};
+	std::vector<float> ttH_cuts = {0.0, 0.5218422740519659, 0.5938204487829712, 0.6611920539755507};
     int bin_counter = mttH_cuts.size()-1;
+	int section_counter = ttH_cuts.size()-1;
 	
-	while (bin_counter >= 0) {
-			  if (mttH > mttH_cuts[bin_counter]) return bin_counter;
-			  bin_counter = bin_counter - 1;
-		  }
+	while (section_counter >= 0) {
+		if (ttH_score > ttH_cuts[section_counter]) {
+			while (bin_counter >= 0) {
+				if (mttH > mttH_cuts[bin_counter]) return section_counter * 3 + bin_counter;
+				bin_counter = bin_counter - 1;
+			}
+		}
+		section_counter = section_counter - 1;
+	}
+	
+	return -99;
+	
+  }
+  
+ float catIndex_2lss1tau_all_mttH_cut_helper(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest, float mttH)
+{
+    if ((tth_low >= rest && tth_low >= thq) || (tth_high >= rest && tth_high >= thq)) {
+	  return tth_low + tth_high;
+    }
 	
 	
 	return -99;
@@ -2230,21 +2269,21 @@ int class_2lss1tau_tth_mttH_binning(float mttH)
 
 int catIndex_2lss1tau_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, float tth_low, float tth_high, float thq, float rest, float mttH)
 {
-  // 18 bins [0,17]
+  // 21 bins [0,20]
   
   // Merge ttH_low and ttH_high classes into one ttH class (10 bins)
-  if ((tth_low > rest && tth_low > thq) || (tth_high > rest && tth_high > thq)) {
-	  return class_2lss1tau_tth_mttH_binning(mttH);
+  if ((tth_low >= rest && tth_low >= thq) || (tth_high >= rest && tth_high >= thq)) {
+	  return class_2lss1tau_tth_mttH_binning(mttH, tth_low + tth_high);
   }
   
   // 4 thq bins
-  else if (thq > rest && thq > tth_low && thq > tth_high) {
-	  return 10 + class_max_p_2lss1tau_thq(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
+  else if (thq >= rest && thq >= tth_low && thq >= tth_high) {
+	  return 12 + class_max_p_2lss1tau_thq(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
   }
   
-  // 4 rest bins
-  else if (rest > tth_low && rest > tth_high && rest > thq) {
-	  return 14 + class_max_p_2lss1tau_rest(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
+  // 5 rest bins
+  else if (rest >= tth_low && rest >= tth_high && rest >= thq) {
+	  return 16 + class_max_p_2lss1tau_rest(LepGood1_pdgId, LepGood2_pdgId, tth_low, tth_high, thq, rest);
   }
 	else cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;
  return -99;
@@ -2252,17 +2291,64 @@ int catIndex_2lss1tau_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, float tth
 
 // 3l
 
-int class_3l_tth_mttH_binning(float mttH)
+int class_3l_tth_mttH_binning(float mttH, float ttH_score, int nBMedium)
 {
-	// 10 bins in total
-    std::vector<float> mttH_cuts = {0.0, 450.0, 600.0, 700.0, 800.0, 900.0, 1000.0, 1100.0, 1250.0, 1500.0};
+	// 12 bins in total
+    std::vector<float> mttH_cuts = {0.0, 750, 1000};
+	std::vector<float> ttH_cuts_bl = {0.0, 0.5968831996507645};
+	std::vector<float> ttH_cuts_bt = {0.0, 0.64608214515134};
     int bin_counter = mttH_cuts.size()-1;
+	int section_counter_bl = ttH_cuts_bl.size()-1;
+	int section_counter_bt = ttH_cuts_bt.size()-1;
 	
-	while (bin_counter >= 0) {
-			  if (mttH > mttH_cuts[bin_counter]) return bin_counter;
-			  bin_counter = bin_counter - 1;
-		  }
+	if (nBMedium < 2) {
+		while (section_counter_bl >= 0) {
+			if (ttH_score > ttH_cuts_bl[section_counter_bl]) {
+				while (bin_counter >= 0) {
+					if (mttH > mttH_cuts[bin_counter]) return section_counter_bl * 3 + bin_counter;
+					bin_counter = bin_counter - 1;
+				}
+			}
+			section_counter_bl = section_counter_bl - 1;
+		}
+	}
+	else {
+		while (section_counter_bt >= 0) {
+			if (ttH_score > ttH_cuts_bt[section_counter_bt]) {
+				while (bin_counter >= 0) {
+					if (mttH > mttH_cuts[bin_counter]) return 6 + section_counter_bt * 3 + bin_counter;
+					bin_counter = bin_counter - 1;
+				}
+			}
+			section_counter_bt = section_counter_bt - 1;
+		}
+	}
+		
 	
+	return -99;
+	
+  }
+  
+  
+float catIndex_3l_all_mttH_cut_helper_bl(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest, float mttH, int nBMedium )
+{
+  if ((tth_low >= rest && tth_low >= thq) || (tth_high >= rest && tth_high >= thq)) {
+	    if (nBMedium < 2) {
+		return tth_low + tth_high;
+		}
+  }
+	
+	return -99;
+	
+  }
+  
+float catIndex_3l_all_mttH_cut_helper_bt(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest, float mttH, int nBMedium )
+{
+  if ((tth_low >= rest && tth_low >= thq) || (tth_high >= rest && tth_high >= thq)) {
+	    if (nBMedium >= 2) {
+		return tth_low + tth_high;
+		}
+  }
 	
 	return -99;
 	
@@ -2270,47 +2356,44 @@ int class_3l_tth_mttH_binning(float mttH)
 
 int catIndex_3l_all_mttH(int LepGood1_pdgId, int LepGood2_pdgId, int LepGood3_pdgId, float tth_low, float tth_high, float thq, float rest, float mttH, int nBMedium )
 {
-  // 28 bins [0,27]
+  // 21 bins [0,20] 
   int ttH_idx = 0;
   
-  // 20 ttH bins
-  if ((tth_low > rest && tth_low > thq) || (tth_high > rest && tth_high > thq)) {
-    if (nBMedium < 2)
-      return class_3l_tth_mttH_binning(mttH); // ttH_bl
-    else
-      return 10+class_3l_tth_mttH_binning(mttH); // ttH_bt
+  // 12 ttH bins
+  if ((tth_low >= rest && tth_low >= thq) || (tth_high >= rest && tth_high >= thq)) {
+      return class_3l_tth_mttH_binning(mttH, tth_low + tth_high, nBMedium); // ttH_bl and ttH_bt
   }
   
-  else if (thq > rest && thq > tth_low && thq > tth_high) {
+  else if (thq >= rest && thq >= tth_low && thq >= tth_high) {
     if (nBMedium < 2){
-      return 20; // tH_bl
+      return 12; // tH_bl
     }
     else{
-      return 21; // tH_bt
+      return 13; // tH_bt
     }}
   
-  else if (rest > tth_low && rest > tth_high && rest > thq) {
+  else if (rest >= tth_low && rest >= tth_high && rest >= thq) {
     int sumpdgId = abs(LepGood1_pdgId)+abs(LepGood2_pdgId)+abs(LepGood3_pdgId);
     if ( sumpdgId == 33){ // rest_eee
-      return 22;
+      return 14;
     }
     else if (sumpdgId == 35){ 
       if (nBMedium < 2)
-	return 23; // rest_eem_bl
+	return 15; // rest_eem_bl
       else
-	return 24; // rest_eem_bt
+	return 16; // rest_eem_bt
     }
     else if (sumpdgId == 37){ // emm
       if (nBMedium < 2)
-	return 25; // rest_emm_bl
+	return 17; // rest_emm_bl
       else
-	return 26; // rest_emm_bt
+	return 18; // rest_emm_bt
     }
     else if (sumpdgId == 39){ // mmm
       if (nBMedium < 2)
-	return 27; // rest_mmm_bl
+	return 19; // rest_mmm_bl
       else
-	return 28; // rest_mmm_bt
+	return 20; // rest_mmm_bt
     }
   }
 	else cout << "[2lss]: It shouldnt be here. pdgids are " << abs(LepGood1_pdgId) << " " << abs(LepGood2_pdgId)  << endl;

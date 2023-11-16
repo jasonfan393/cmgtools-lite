@@ -9,6 +9,8 @@ parser = OptionParser(usage="%prog [options] mc.txt cuts.txt var bins")
 addMCAnalysisOptions(parser)
 parser.add_option("--od", "--outdir", dest="outdir", type="string", default=None, help="output directory name") 
 parser.add_option("--asimov", dest="asimov", type="string", default=None, help="Use an Asimov dataset of the specified kind: including signal ('signal','s','sig','s+b') or background-only ('background','bkg','b','b-only')")
+parser.add_option("--use-alternative-signal", dest="alternative_signal", type="string", default=None, help="Select which signal to use for computing the asimov.")
+parser.add_option("--use-alternative-mca", dest="alternative_mca", type="string", default=None, help="MCA with other signal models.")
 parser.add_option("--bbb", dest="bbb", type="string", default=None, help="Options for bin-by-bin statistical uncertainties with the specified nuisance name")
 parser.add_option("--amc", "--autoMCStats", dest="autoMCStats", action="store_true", default=False, help="use autoMCStats")
 parser.add_option("--autoMCStatsThreshold", dest="autoMCStatsValue", type="int", default=10, help="threshold to put on autoMCStats")
@@ -36,6 +38,7 @@ outdir  = options.outdir+"/" if options.outdir else ""
 if not os.path.exists(outdir): os.mkdir(outdir)
 
 report={}
+
 if options.infile:
     infile = ROOT.TFile(outdir+binname+".bare.root","read")
     for p in mca.listSignals(True)+mca.listBackgrounds(True)+['data']:
@@ -57,20 +60,49 @@ if options.savefile:
     savefile.Close()
 
 if options.asimov:
+    
+    # Case 1: signal + background
     if options.asimov in ("s","sig","signal","s+b"):
         asimovprocesses = mca.listSignals() + mca.listBackgrounds()
+    
+        if options.alternative_signal and options.alternative_mca:
+            print("     - Will use signal %s for the asimov only (fit will use nominal sample)"%options.alternative_signal)
+            print("     - Will use mca %s"%options.alternative_mca)
+            otherMca = MCAnalysis(options.alternative_mca, options)
+            match = re.compile(options.alternative_signal)
+            new_signals = list(filter(match.match, otherMca.listSignals()))
+            
+            # Change the list of signals
+            asimovprocesses = new_signals + ["TTW_ooa"] + mca.listBackgrounds()
+            other_report = otherMca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov) 
+            for p,h in other_report.iteritems(): h.cropNegativeBins(threshold=1e-5)
+            report[options.alternative_signal] = other_report[options.alternative_signal]
+            
+        print(asimovprocesses) 
+    # Case 2: only background asimov
     elif options.asimov in ("b","bkg","background", "b-only"):
         asimovprocesses = mca.listBackgrounds()
-    else: raise RuntimeError("the --asimov option requires to specify signal/sig/s/s+b or background/bkg/b/b-only")
+        
+    # Case 3: raise exception
+    else: 
+        raise RuntimeError("the --asimov option requires to specify signal/sig/s/s+b or background/bkg/b/b-only")
+    
     tomerge = None
     for p in asimovprocesses:
         if p in report: 
             if tomerge is None: 
                 tomerge = report[p].raw().Clone("x_data_obs"); tomerge.SetDirectory(None)
-            else: tomerge.Add(report[p].raw())
+            else: 
+                tomerge.Add(report[p].raw())
+                
     report['data_obs'] = HistoWithNuisances(tomerge)
+    if options.alternative_signal and options.alternative_mca:
+        # Turn back to common usage now the observation asimov has been submitted
+        asimovprocesses = mca.listSignals() + mca.listBackgrounds()
+        report.pop(options.alternative_signal)
 else:
     report['data_obs'] = report['data'].Clone("x_data_obs") 
+
 
 if options.categ:
     allreports = dict()

@@ -15,7 +15,9 @@ elif 'gae' in os.environ['HOSTNAME']:
     queue ="batch"
 
 else: 
-    raise RuntimeError("You need ntuples to run the analysis :)")
+    ORIGIN    = "/nfs/user/pvischia/tth/ul/NanoTrees_UL_v2_060422_skim2lss_nt/"
+    queue = "cp3"
+    #raise RuntimeError("You need ntuples to run the analysis :)")
 
 submit = '''sbatch -c %d -p %s  --wrap '{command}' '''%(nCores, queue)
 
@@ -41,7 +43,7 @@ os.system("test -d cards/{OUTNAME} || mkdir -p cards/{OUTNAME}".format(OUTNAME=O
 OPTIONS="{OPTIONS} --od cards/{OUTNAME} ".format(OPTIONS=OPTIONS, OUTNAME=OUTNAME)
 
 
-T2L="-P {ORIGIN}/{YEAR} --FMCs {{P}}/0_jmeUnc_v1  --FMCs {{P}}/2_btagSF/  --Fs {{P}}/6_HiggsPtReg_2lss1tau/ --Fs {{P}}/6_HiggsPtReg_2lss3l/ --Fs {{P}}/3_tauCount --FMCs {{P}}/2_scalefactors_lep/ --Fs {{P}}/4_evtVars --FMCs {{P}}/6_ttWforlepton --Fs {{P}}/7_Vars_forttWDiff_25 --Fs {{P}}/1_recl  --Fs {{P}}/6_mva2lss_new --Fs {{P}}/6_mva3l  --Fs {{P}}/6_mva2lss1tau  --FMCs {{P}}/6_tauSF_new/ --xf GGHZZ4L_new,qqHZZ4L,tWll,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW ".format(ORIGIN=ORIGIN, YEAR=YEAR)
+T2L="-P {ORIGIN}/{YEAR} --FMCs {{P}}/0_jmeUnc_v1  --FMCs {{P}}/2_btagSF/  --Fs {{P}}/6_HiggsPtReg_2lss1tau/ --Fs {{P}}/6_HiggsPtReg_2lss3l/ --Fs {{P}}/3_tauCount --FMCs {{P}}/2_scalefactors_lep/ --Fs {{P}}/4_evtVars --FMCs {{P}}/6_ttWforlepton --Fs {{P}}/7_Vars_forttWDiff_25 --Fs {{P}}/1_recl  --Fs {{P}}/6_mva2lss_new --Fs {{P}}/6_mva3l_new  --Fs {{P}}/6_mva2lss1tau_new  --FMCs {{P}}/6_tauSF_new/ --xf GGHZZ4L_new,qqHZZ4L,tWll,WW_DPS,WpWpJJ,WWW_ll,T_sch_lep,GluGluToHHTo2V2Tau,TGJets_lep,WWTo2L2Nu_DPS,GluGluToHHTo4Tau,ZGTo2LG,GluGluToHHTo4V,TTTW ".format(ORIGIN=ORIGIN, YEAR=YEAR)
 T3L=T2L
 T4L=T2L
 

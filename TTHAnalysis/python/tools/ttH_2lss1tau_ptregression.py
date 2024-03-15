@@ -14,6 +14,11 @@ from copy import deepcopy
 import ROOT
 import numpy as np
 
+
+file = ROOT.TFile("/home/ucl/cp3/atalier/final_tth/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/data/TauIDSFs/TauES_dm_DeepTau2017v2p1VSjet_UL2018.root")
+hist = file.Get('tes')
+
+
 class ttH_2lss1tau_ptregression(Module):
 
     def __init__(self, variations=[], doSystJEC=True):
@@ -88,9 +93,13 @@ class ttH_2lss1tau_ptregression(Module):
             'Hj_tagger_hadTop'      : getattr(ev,'BDThttTT_eventReco_Hj_score%s'%(var)) if getattr(ev,'BDThttTT_eventReco_Hj_score%s'%(var)) > 0 else 0 ,
             'avg_dr_jet'            : getattr(ev,'avg_dr_jet%s'%var) if  getattr(ev,'avg_dr_jet%s'%var) > 0 else -9,
             'mTTH_2lss1tau'         : ev.mTTH_2lss1tau,
-            'Tau_pt'                : getattr(ev,'thetau').pt  if getattr(ev,'thetau') else 0,
+            'Tau_pt'                : getattr(ev,'thetau').pt*hist.GetBinContent(hist.GetXaxis().FindBin(ev.TauSel_Recl_decayMode[int(ev.Tau_tight2lss1tau_idx)]))  if getattr(ev,'thetau') else 0,
             'Tau_eta'               : getattr(ev,'thetau').eta if getattr(ev,'thetau') else 0,
             'Tau_phi'               : getattr(ev,'thetau').phi if getattr(ev,'thetau') else 0,
+#            'Tau_pt'                : getattr(ev,'thetau').pt*hist.GetBinContent(hist.GetXaxis().FindBin(getattr(ev,'thedm'))  if getattr(ev,'thetau') else 0,
+#            'Tau_eta'               : getattr(ev,'thetau').eta*hist.GetBinContent(hist.GetXaxis().FindBin(getattr(ev,'thedm')) if getattr(ev,'thetau') else 0,
+#            'Tau_phi'               : getattr(ev,'thetau').phi*hist.GetBinContent(hist.GetXaxis().FindBin(getattr(ev,'thedm')) if getattr(ev,'thetau') else 0,
+
         }
 
 
@@ -102,7 +111,11 @@ class ttH_2lss1tau_ptregression(Module):
         varorder=['Lep1_pt','Lep2_pt','Lep1_eta','Lep2_eta','Lep1_phi','Lep2_phi','nSelJets','SelJet1_pt','SelJet2_pt','SelJet1_eta','SelJet2_eta','SelJet1_phi','SelJet2_phi','SelJet1_isFromHadTop','SelJet2_isFromHadTop','SelJet1_btagDeepFlavB','SelJet2_btagDeepFlavB','met','HTT_score','visHiggs_pt','visHiggs_eta','mT_lep2','mT_lep1','Hj_tagger_hadTop','avg_dr_jet','mTTH_2lss1tau','Tau_pt','Tau_eta','Tau_phi']
 
         taus = [ t for t in Collection(event,'TauSel_Recl')]
+        #dms = [ d for d in Collection(event,'TauSel_Recl_decayMode')]
+        #print("ciao ", taus)
         setattr(event , 'thetau', taus[int(event.Tau_tight2lss1tau_idx)] if event.Tau_tight2lss1tau_idx > -1 else None)
+#        setattr(event , 'thedm', dms[int(event.Tau_tight2lss1tau_idx)] if event.Tau_tight2lss1tau_idx > -1 else None)
+
         all_leps = [l for l in Collection(event,"LepGood")]
         nFO = getattr(event,"nLepFO_Recl")
         chosen = getattr(event,"iLepFO_Recl")
@@ -119,10 +132,10 @@ class ttH_2lss1tau_ptregression(Module):
 
         if event.thetau and len(leps)>1:
             higgsLepton = leps[0] if deltaR(event.thetau,leps[0]) < deltaR(event.thetau,leps[1]) else leps[1]
-            visHiggs = higgsLepton.p4() + event.thetau.p4()
+            visHiggs = higgsLepton.p4() + event.thetau.p4()*hist.GetBinContent(hist.GetXaxis().FindBin(event.TauSel_Recl_decayMode[int(event.Tau_tight2lss1tau_idx)]))
 
 
-            tthSystem = higgsLepton.p4() + event.thetau.p4()
+            tthSystem = higgsLepton.p4() + event.thetau.p4()*hist.GetBinContent(hist.GetXaxis().FindBin(event.TauSel_Recl_decayMode[int(event.Tau_tight2lss1tau_idx)]))
             for j in [j for j in jets if j.pt >= 25][:4]:
                 tthSystem+=j.p4()
             vmet=ROOT.TLorentzVector()

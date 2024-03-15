@@ -10,7 +10,14 @@ from math import sqrt, cos, sin
 from copy import deepcopy
 import ROOT as r 
 
+file = r.TFile("/home/ucl/cp3/atalier/final_tth/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/data/TauIDSFs/TauES_dm_DeepTau2017v2p1VSjet_UL2018.root")
+hist = file.Get('tes')
+
 def mTauTauVis( ev, ind ): 
+    #file = r.TFile("/home/ucl/cp3/atalier/final_tth/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/data/TauIDSFs/TauES_dm_DeepTau2017v2p1VSjet_UL2018.root")
+    #hist = file.Get('tes')
+    #    tes  = hist.GetBinContent(hist.GetXaxis().FindBin(dm))
+
     all_leps = [l for l in Collection(ev,"LepGood")]
     nFO = getattr(ev,"nLepFO_Recl")
     chosen = getattr(ev,"iLepFO_Recl")
@@ -19,8 +26,12 @@ def mTauTauVis( ev, ind ):
     
     if ev.Tau_tight2lss1tau_idx < 0: return -1
     taus = [ t for t in Collection(ev, 'TauSel_Recl')]
+    dms = [ d for d in Collection(ev, 'TauSel_Recl_decayMode')]
 
-    return (leps[ind].p4() + taus[int(ev.Tau_tight2lss1tau_idx)].p4()).M()
+    #dm = ev.TauSel_Recl_decayMode
+    #tes  = hist.GetBinContent(hist.GetXaxis().FindBin(dm))
+    #print("ciao ", tes)
+    return (leps[ind].p4() + (taus[int(ev.Tau_tight2lss1tau_idx)].p4()*hist.GetBinContent(hist.GetXaxis().FindBin(dms[int(ev.Tau_tight2lss1tau_idx)])) )).M()  
 
 def massL3( ev, var ): 
     if ev.Tau_tight2lss1tau_idx < 0: return -1
@@ -31,10 +42,11 @@ def massL3( ev, var ):
     if len(leps) < 2: return 0
 
     taus = [ t for t in Collection(ev, 'TauSel_Recl')]
+    dms = [ d for d in Collection(ev, 'TauSel_Recl_decayMode')]
     l1=r.TLorentzVector();l2=r.TLorentzVector()
     l1.SetPtEtaPhiM(leps[0].conePt, leps[0].eta, leps[0].phi, 0)
     l2.SetPtEtaPhiM(leps[1].conePt, leps[1].eta, leps[1].phi, 0)
-    part = l1 + l2 + taus[int(ev.Tau_tight2lss1tau_idx)].p4()
+    part = l1 + l2 + taus[int(ev.Tau_tight2lss1tau_idx)].p4()*hist.GetBinContent(hist.GetXaxis().FindBin(dms[int(ev.Tau_tight2lss1tau_idx)]))
     
     met_pt  = getattr(ev,'MET_pt%s'%var) 
     met_phi = getattr(ev,'MET_phi%s'%var)
@@ -132,9 +144,9 @@ class finalMVA_DNN_2lss1tau(Module):
                 'nJetForward'            : lambda ev : getattr(ev,'nFwdJet%s_Recl'%var),
                 "mT_lep1"                : lambda ev : getattr(ev,'MT_met_lep1%s'%var),
                 "mT_lep2"                : lambda ev : getattr(ev,'MT_met_lep2%s'%var),
-                'tau1_pt'                : lambda ev : ev.TauSel_Recl_pt [int(ev.Tau_tight2lss1tau_idx)] if ev.Tau_tight2lss1tau_idx > -1 else 0, 
-                'tau1_eta'               : lambda ev : ev.TauSel_Recl_eta[int(ev.Tau_tight2lss1tau_idx)] if ev.Tau_tight2lss1tau_idx > -1 else 0, 
-                'tau1_phi'               : lambda ev : ev.TauSel_Recl_phi[int(ev.Tau_tight2lss1tau_idx)] if ev.Tau_tight2lss1tau_idx > -1 else 0, 
+                'tau1_pt'                : lambda ev : ev.TauSel_Recl_pt [int(ev.Tau_tight2lss1tau_idx)]*hist.GetBinContent(hist.GetXaxis().FindBin(ev.TauSel_Recl_decayMode)) if ev.Tau_tight2lss1tau_idx > -1 else 0, 
+                'tau1_eta'               : lambda ev : ev.TauSel_Recl_eta[int(ev.Tau_tight2lss1tau_idx)]*hist.GetBinContent(hist.GetXaxis().FindBin(ev.TauSel_Recl_decayMode)) if ev.Tau_tight2lss1tau_idx > -1 else 0, 
+                'tau1_phi'               : lambda ev : ev.TauSel_Recl_phi[int(ev.Tau_tight2lss1tau_idx)]*hist.GetBinContent(hist.GetXaxis().FindBin(ev.TauSel_Recl_decayMode)) if ev.Tau_tight2lss1tau_idx > -1 else 0, 
                 'mindr_tau_jet'          : lambda ev : getattr(ev,'mindr_tau_jet%s'%var),
                 'mTauTauVis1'            : lambda ev : mTauTauVis(ev, 0),
                 'mTauTauVis2'            : lambda ev : mTauTauVis(ev, 1),
@@ -145,7 +157,7 @@ class finalMVA_DNN_2lss1tau(Module):
 
 
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
-        print self.outVars
+        #print self.outVars
         declareOutput(self, wrappedOutputTree, self.outVars)
         
     def analyze(self,event):

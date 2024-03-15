@@ -144,7 +144,7 @@ class finalMVA_DNN_2lss1tau(Module):
                 'nJetForward'            : lambda ev : getattr(ev,'nFwdJet%s_Recl'%var),
                 "mT_lep1"                : lambda ev : getattr(ev,'MT_met_lep1%s'%var),
                 "mT_lep2"                : lambda ev : getattr(ev,'MT_met_lep2%s'%var),
-                'tau1_pt'                : lambda ev : ev.TauSel_Recl_pt [int(ev.Tau_tight2lss1tau_idx)]*hist.GetBinContent(hist.GetXaxis().FindBin(ev.TauSel_Recl_decayMode)) if ev.Tau_tight2lss1tau_idx > -1 else 0, 
+                'tau1_pt'                : lambda ev : ev.TauSel_Recl_pt [int(ev.Tau_tight2lss1tau_idx)]*hist.GetBinContent(hist.GetXaxis().FindBin(ev.TauSel_Recl_decayMode[int(ev.Tau_tight2lss1tau_idx)])) if ev.Tau_tight2lss1tau_idx > -1 else 0, 
                 'tau1_eta'               : lambda ev : ev.TauSel_Recl_eta[int(ev.Tau_tight2lss1tau_idx)] if ev.Tau_tight2lss1tau_idx > -1 else 0, 
                 'tau1_phi'               : lambda ev : ev.TauSel_Recl_phi[int(ev.Tau_tight2lss1tau_idx)] if ev.Tau_tight2lss1tau_idx > -1 else 0, 
                 'mindr_tau_jet'          : lambda ev : getattr(ev,'mindr_tau_jet%s'%var),

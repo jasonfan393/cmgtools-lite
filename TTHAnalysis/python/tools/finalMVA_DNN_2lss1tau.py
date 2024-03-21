@@ -15,7 +15,7 @@ import ROOT as r
 
 class finalMVA_DNN_2lss1tau(Module):
     def __init__(self, tesYear = "2018", variations=[], doSystJEC=True, fillInputs=False):
-        rootFile = "/home/ucl/cp3/atalier/final_tth/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/data/TauIDSFs/TauES_dm_DeepTau2017v2p1VSjet_UL{}.root".format(tesYear)
+        self.rootFile = "/home/ucl/cp3/atalier/final_tth/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/data/TauIDSFs/TauES_dm_DeepTau2017v2p1VSjet_UL{}.root".format(tesYear)
         self.outVars = []
         self._MVAs   = []
         self.fillInputs = fillInputs

@@ -15,13 +15,11 @@ import ROOT
 import numpy as np
 
 
-file = ROOT.TFile("/home/ucl/cp3/atalier/final_tth/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/data/TauIDSFs/TauES_dm_DeepTau2017v2p1VSjet_UL2018.root")
-hist = file.Get('tes')
 
 
 class ttH_2lss1tau_ptregression(Module):
 
-    def __init__(self, variations=[], doSystJEC=True):
+    def __init__(self, tesYear = "2018", variations=[], doSystJEC=True):
         from keras.models import load_model # I acknowledge this is horrible, but it's currently necessary until the global pt_dnns are streamlined
         import tensorflow as tf # I acknowledge this is horrible, but it's currently necessary until the global pt_dnns are streamlined
         def loss_MAEDeltaVar(y_true, y_pred):
@@ -59,6 +57,8 @@ class ttH_2lss1tau_ptregression(Module):
         self._MVAs=[]
         self.outVars=[]
         self.model_regression = load_model(os.path.join(os.environ["CMSSW_BASE"], "src/CMGTools/TTHAnalysis/data/regressionMVA/dnn_trained_2lss1tau_UL.h5"), custom_objects={'loss_MSEDeltaVar': loss_MSEDeltaVar})
+        tesFile = ROOT.TFile("/home/ucl/cp3/atalier/final_tth/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/data/TauIDSFs/TauES_dm_DeepTau2017v2p1VSjet_UL{}.root".format(tesYear))
+        self.tesHist = tesFile.Get('tes')
 
         for var in self.systsJEC: 
             self.outVars.extend( ['ttH_higgs_pt_2lss1tau%s_'%self.systsJEC[var] ])
@@ -93,12 +93,12 @@ class ttH_2lss1tau_ptregression(Module):
             'Hj_tagger_hadTop'      : getattr(ev,'BDThttTT_eventReco_Hj_score%s'%(var)) if getattr(ev,'BDThttTT_eventReco_Hj_score%s'%(var)) > 0 else 0 ,
             'avg_dr_jet'            : getattr(ev,'avg_dr_jet%s'%var) if  getattr(ev,'avg_dr_jet%s'%var) > 0 else -9,
             'mTTH_2lss1tau'         : ev.mTTH_2lss1tau,
-            'Tau_pt'                : getattr(ev,'thetau').pt*hist.GetBinContent(hist.GetXaxis().FindBin(ev.TauSel_Recl_decayMode[int(ev.Tau_tight2lss1tau_idx)]))  if getattr(ev,'thetau') else 0,
+            'Tau_pt'                : getattr(ev,'thetau').pt*self.tesHist.GetBinContent(self.tesHist.GetXaxis().FindBin(ev.TauSel_Recl_decayMode[int(ev.Tau_tight2lss1tau_idx)]))  if getattr(ev,'thetau') else 0,
             'Tau_eta'               : getattr(ev,'thetau').eta if getattr(ev,'thetau') else 0,
             'Tau_phi'               : getattr(ev,'thetau').phi if getattr(ev,'thetau') else 0,
-#            'Tau_pt'                : getattr(ev,'thetau').pt*hist.GetBinContent(hist.GetXaxis().FindBin(getattr(ev,'thedm'))  if getattr(ev,'thetau') else 0,
-#            'Tau_eta'               : getattr(ev,'thetau').eta*hist.GetBinContent(hist.GetXaxis().FindBin(getattr(ev,'thedm')) if getattr(ev,'thetau') else 0,
-#            'Tau_phi'               : getattr(ev,'thetau').phi*hist.GetBinContent(hist.GetXaxis().FindBin(getattr(ev,'thedm')) if getattr(ev,'thetau') else 0,
+#            'Tau_pt'                : getattr(ev,'thetau').pt*self.tesHist.GetBinContent(self.tesHist.GetXaxis().FindBin(getattr(ev,'thedm'))  if getattr(ev,'thetau') else 0,
+#            'Tau_eta'               : getattr(ev,'thetau').eta*self.tesHist.GetBinContent(self.tesHist.GetXaxis().FindBin(getattr(ev,'thedm')) if getattr(ev,'thetau') else 0,
+#            'Tau_phi'               : getattr(ev,'thetau').phi*self.tesHist.GetBinContent(self.tesHist.GetXaxis().FindBin(getattr(ev,'thedm')) if getattr(ev,'thetau') else 0,
 
         }
 
@@ -132,10 +132,10 @@ class ttH_2lss1tau_ptregression(Module):
 
         if event.thetau and len(leps)>1:
             higgsLepton = leps[0] if deltaR(event.thetau,leps[0]) < deltaR(event.thetau,leps[1]) else leps[1]
-            visHiggs = higgsLepton.p4() + event.thetau.p4()*hist.GetBinContent(hist.GetXaxis().FindBin(event.TauSel_Recl_decayMode[int(event.Tau_tight2lss1tau_idx)]))
+            visHiggs = higgsLepton.p4() + event.thetau.p4()*self.tesHist.GetBinContent(self.tesHist.GetXaxis().FindBin(event.TauSel_Recl_decayMode[int(event.Tau_tight2lss1tau_idx)]))
 
 
-            tthSystem = higgsLepton.p4() + event.thetau.p4()*hist.GetBinContent(hist.GetXaxis().FindBin(event.TauSel_Recl_decayMode[int(event.Tau_tight2lss1tau_idx)]))
+            tthSystem = higgsLepton.p4() + event.thetau.p4()*self.tesHist.GetBinContent(self.tesHist.GetXaxis().FindBin(event.TauSel_Recl_decayMode[int(event.Tau_tight2lss1tau_idx)]))
             for j in [j for j in jets if j.pt >= 25][:4]:
                 tthSystem+=j.p4()
             vmet=ROOT.TLorentzVector()

@@ -10,10 +10,8 @@ from math import sqrt, cos, sin
 from copy import deepcopy
 import ROOT as r 
 
-file = r.TFile("/home/ucl/cp3/atalier/final_tth/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/data/TauIDSFs/TauES_dm_DeepTau2017v2p1VSjet_UL2018.root")
-hist = file.Get('tes')
 
-def mTauTauVis( ev, ind ): 
+def mTauTauVis( ev, ind, hist): 
     #file = r.TFile("/home/ucl/cp3/atalier/final_tth/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/data/TauIDSFs/TauES_dm_DeepTau2017v2p1VSjet_UL2018.root")
     #hist = file.Get('tes')
     #    tes  = hist.GetBinContent(hist.GetXaxis().FindBin(dm))
@@ -33,7 +31,7 @@ def mTauTauVis( ev, ind ):
     #print("ciao ", tes)
     return (leps[ind].p4() + (taus[int(ev.Tau_tight2lss1tau_idx)].p4()*hist.GetBinContent(hist.GetXaxis().FindBin(dms[int(ev.Tau_tight2lss1tau_idx)])) )).M()  
 
-def massL3( ev, var ): 
+def massL3( ev, var, hist): 
     if ev.Tau_tight2lss1tau_idx < 0: return -1
     all_leps = [l for l in Collection(ev,"LepGood")]
     nFO = getattr(ev,"nLepFO_Recl")
@@ -55,7 +53,9 @@ def massL3( ev, var ):
 
 
 class finalMVA_DNN_2lss1tau(Module):
-    def __init__(self, variations=[], doSystJEC=True, fillInputs=False):
+    def __init__(self, tesYear = "2018", variations=[], doSystJEC=True, fillInputs=False):
+        file = r.TFile("/home/ucl/cp3/atalier/final_tth/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/data/TauIDSFs/TauES_dm_DeepTau2017v2p1VSjet_UL{}.root".format(tesYear))
+        self.tesHist = file.Get('tes')
         self.outVars = []
         self._MVAs   = []
         self.fillInputs = fillInputs
@@ -144,13 +144,13 @@ class finalMVA_DNN_2lss1tau(Module):
                 'nJetForward'            : lambda ev : getattr(ev,'nFwdJet%s_Recl'%var),
                 "mT_lep1"                : lambda ev : getattr(ev,'MT_met_lep1%s'%var),
                 "mT_lep2"                : lambda ev : getattr(ev,'MT_met_lep2%s'%var),
-                'tau1_pt'                : lambda ev : ev.TauSel_Recl_pt [int(ev.Tau_tight2lss1tau_idx)]*hist.GetBinContent(hist.GetXaxis().FindBin(ev.TauSel_Recl_decayMode[int(ev.Tau_tight2lss1tau_idx)])) if ev.Tau_tight2lss1tau_idx > -1 else 0, 
+                'tau1_pt'                : lambda ev : ev.TauSel_Recl_pt [int(ev.Tau_tight2lss1tau_idx)]*self.tesHist.GetBinContent(self.tesHist.GetXaxis().FindBin(ev.TauSel_Recl_decayMode[int(ev.Tau_tight2lss1tau_idx)])) if ev.Tau_tight2lss1tau_idx > -1 else 0, 
                 'tau1_eta'               : lambda ev : ev.TauSel_Recl_eta[int(ev.Tau_tight2lss1tau_idx)] if ev.Tau_tight2lss1tau_idx > -1 else 0, 
                 'tau1_phi'               : lambda ev : ev.TauSel_Recl_phi[int(ev.Tau_tight2lss1tau_idx)] if ev.Tau_tight2lss1tau_idx > -1 else 0, 
                 'mindr_tau_jet'          : lambda ev : getattr(ev,'mindr_tau_jet%s'%var),
-                'mTauTauVis1'            : lambda ev : mTauTauVis(ev, 0),
-                'mTauTauVis2'            : lambda ev : mTauTauVis(ev, 1),
-                'massL3'                 : lambda ev : massL3(ev, var),
+                'mTauTauVis1'            : lambda ev : mTauTauVis(ev, 0, self.tesHist),
+                'mTauTauVis2'            : lambda ev : mTauTauVis(ev, 1, self.tesHist),
+                'massL3'                 : lambda ev : massL3(ev, var, self.tesHist),
 
             }
 

@@ -68,10 +68,10 @@ class finalMVA_DNN_2lss1tau(Module):
         self._MVAs.extend( [ worker_2lss1tau_unclUp, worker_2lss1tau_unclDown])
         self.outVars.extend( ['DNN_2lss1tau_unclUp_' + x for x in cats_2lss1tau] +  ['DNN_2lss1tau_unclDown_' + x for x in cats_2lss1tau])
     def applyTES(self, ev):
-        file = ROOT.TFile(self.rootFile)
+        file = r.TFile(self.rootFile)
         hist = file.Get('tes')
         return hist.GetBinContent(hist.GetXaxis().FindBin(ev.TauSel_Recl_decayMode[int(ev.Tau_tight2lss1tau_idx)]))
-    def mTauTauVis( ev, ind): 
+    def mTauTauVis(self, ev, ind): 
         file = r.TFile(self.rootFile)
         hist = file.Get('tes')
         #    tes  = hist.GetBinContent(hist.GetXaxis().FindBin(dm))

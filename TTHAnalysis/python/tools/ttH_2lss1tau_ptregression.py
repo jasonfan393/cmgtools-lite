@@ -98,9 +98,9 @@ class ttH_2lss1tau_ptregression(Module):
             'Tau_pt'                : getattr(ev,'thetau').pt*self.applyTES(ev)  if getattr(ev,'thetau') else 0,
             'Tau_eta'               : getattr(ev,'thetau').eta if getattr(ev,'thetau') else 0,
             'Tau_phi'               : getattr(ev,'thetau').phi if getattr(ev,'thetau') else 0,
-#            'Tau_pt'                : getattr(ev,'thetau').pt*self.tesHist.GetBinContent(self.tesHist.GetXaxis().FindBin(getattr(ev,'thedm'))  if getattr(ev,'thetau') else 0,
-#            'Tau_eta'               : getattr(ev,'thetau').eta*self.tesHist.GetBinContent(self.tesHist.GetXaxis().FindBin(getattr(ev,'thedm')) if getattr(ev,'thetau') else 0,
-#            'Tau_phi'               : getattr(ev,'thetau').phi*self.tesHist.GetBinContent(self.tesHist.GetXaxis().FindBin(getattr(ev,'thedm')) if getattr(ev,'thetau') else 0,
+#            'Tau_pt'                : getattr(ev,'thetau').pt*hist.GetBinContent(hist.GetXaxis().FindBin(getattr(ev,'thedm'))  if getattr(ev,'thetau') else 0,
+#            'Tau_eta'               : getattr(ev,'thetau').eta*hist.GetBinContent(hist.GetXaxis().FindBin(getattr(ev,'thedm')) if getattr(ev,'thetau') else 0,
+#            'Tau_phi'               : getattr(ev,'thetau').phi*hist.GetBinContent(hist.GetXaxis().FindBin(getattr(ev,'thedm')) if getattr(ev,'thetau') else 0,
 
         }
 
